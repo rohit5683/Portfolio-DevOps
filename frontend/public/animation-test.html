@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation Test</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0f172a;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      #test-info {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 1000;
+      }
+      #tsparticles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="test-info">
+      <h2>Animation Test Page</h2>
+      <p id="status">Loading...</p>
+      <p id="canvas-check"></p>
+      <p id="particles-check"></p>
+    </div>
+
+    <div id="tsparticles"></div>
+
+    <script type="module">
+      import { tsParticles } from "https://cdn.jsdelivr.net/npm/@tsparticles/engine@3/+esm";
+      import { loadSlim } from "https://cdn.jsdelivr.net/npm/@tsparticles/slim@3/+esm";
+
+      document.getElementById("status").textContent =
+        "Initializing particles...";
+
+      async function loadParticles() {
+        await loadSlim(tsParticles);
+
+        await tsParticles.load({
+          id: "tsparticles",
+          options: {
+            background: {
+              color: "#0f172a",
+            },
+            particles: {
+              color: { value: "#60a5fa" },
+              links: {
+                color: "#60a5fa",
+                distance: 150,
+                enable: true,
+                opacity: 0.8,
+                width: 2,
+              },
+              move: {
+                enable: true,
+                speed: 2,
+              },
+              number: {
+                value: 120,
+              },
+              opacity: {
+                value: 0.8,
+              },
+              size: {
+                value: { min: 2, max: 6 },
+              },
+            },
+          },
+        });
+
+        document.getElementById("status").textContent = "✅ Particles loaded!";
+
+        setTimeout(() => {
+          const canvas = document.querySelector("canvas");
+          const particles = document.querySelector("#tsparticles");
+
+          document.getElementById("canvas-check").textContent = canvas
+            ? "✅ Canvas element found"
+            : "❌ No canvas element";
+          document.getElementById("particles-check").textContent = particles
+            ? "✅ Particles container found"
+            : "❌ No particles container";
+        }, 1000);
+      }
+
+      loadParticles().catch((err) => {
+        document.getElementById("status").textContent =
+          "❌ Error: " + err.message;
+      });
+    </script>
+  </body>
+</html>
