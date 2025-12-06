@@ -11,44 +11,21 @@ export class EmailService {
     this.initTransporter();
   }
 
-  private async initTransporter() {
+  private initTransporter() {
     const user = this.configService.get<string>('SMTP_USER');
     const pass = this.configService.get<string>('SMTP_PASS');
 
     if (user && pass) {
-      const host =
-        this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com';
-      const port = this.configService.get<number>('SMTP_PORT') || 587;
-      const secure = port === 465;
-
-      this.logger.log(
-        `Initializing SMTP Transporter: Host=${host}, Port=${port}, Secure=${secure}`,
-      );
-
       this.transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure,
+        host: this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com',
+        port: this.configService.get<number>('SMTP_PORT') || 587,
+        secure: this.configService.get<number>('SMTP_PORT') === 465, // true for 465, false for other ports
         auth: {
           user,
           pass,
         },
-        logger: true,
-        debug: true,
-        connectionTimeout: 60000, // 60 seconds
-        greetingTimeout: 60000, // 60 seconds
-        socketTimeout: 60000, // 60 seconds
-        dnsTimeout: 5000,
-      } as nodemailer.TransportOptions); // Cast to TransportOptions to allow custom properties if needed
-
-      this.logger.log('Email transporter initialized. Verifying connection...');
-
-      try {
-        await this.transporter.verify();
-        this.logger.log('✅ SMTP Connection established successfully!');
-      } catch (error) {
-        this.logger.error('❌ SMTP Connection failed:', error);
-      }
+      });
+      this.logger.log('Email transporter initialized with SMTP credentials');
     } else {
       // Fallback to Ethereal or just logging
       this.logger.warn(
