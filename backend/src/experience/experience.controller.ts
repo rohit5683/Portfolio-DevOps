@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ExperienceService } from './experience.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -16,11 +18,13 @@ export class ExperienceController {
   constructor(private readonly experienceService: ExperienceService) {}
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async findAll() {
     return this.experienceService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   async findOne(@Param('id') id: string) {
     return this.experienceService.findOne(id);
   }

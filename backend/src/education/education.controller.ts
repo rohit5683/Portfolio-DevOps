@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { EducationService } from './education.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -16,11 +18,13 @@ export class EducationController {
   constructor(private readonly educationService: EducationService) {}
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.educationService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.educationService.findOne(id);
   }

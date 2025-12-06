@@ -6,7 +6,9 @@ import {
   Put,
   Param,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ProfileService } from './profile.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -15,6 +17,7 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async getProfile() {
     return this.profileService.findOne();
   }

@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ProjectsService } from './projects.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -16,11 +18,13 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async findAll() {
     return this.projectsService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   async findOne(@Param('id') id: string) {
     return this.projectsService.findOne(id);
   }

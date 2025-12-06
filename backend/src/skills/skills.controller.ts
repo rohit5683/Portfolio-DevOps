@@ -7,7 +7,9 @@ import {
   Body,
   Param,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { SkillsService } from './skills.service';
 import { CreateSkillDto, UpdateSkillDto } from './dto/skill.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -17,11 +19,13 @@ export class SkillsController {
   constructor(private readonly skillsService: SkillsService) {}
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.skillsService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.skillsService.findOne(id);
   }
