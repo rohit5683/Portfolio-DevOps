@@ -143,6 +143,154 @@ export class AuthService {
     }
   }
 
+  async resendOtp(tempToken: string) {
+    try {
+      const payload = this.jwtService.verify(tempToken, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
+
+      if (payload.role !== 'mfa_pending') {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
+      const user = await this.usersService.findById(payload.sub);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      // Only resend for email method
+      if (user.mfaMethod !== 'email') {
+        throw new UnauthorizedException(
+          'Resend OTP is only available for email authentication',
+        );
+      }
+
+      // Generate new OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+      await this.usersService.update((user as any)._id, { otp, otpExpires });
+      await this.emailService.sendMfaOtp(user.email, otp);
+
+      return {
+        success: true,
+        message: 'OTP sent successfully',
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Failed to resend OTP');
+    }
+  }
+
+  async forgotPassword(email: string) {
+    try {
+      const user = await this.usersService.findByEmail(email);
+      if (!user) {
+        // Don't reveal if user exists or not for security
+        return {
+          success: true,
+          message:
+            'If this email exists, you will receive a password reset code',
+        };
+      }
+
+      // Generate OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+      await this.usersService.update((user as any)._id, { otp, otpExpires });
+      await this.emailService.sendPasswordResetOtp(user.email, otp);
+
+      return {
+        success: true,
+        message: 'If this email exists, you will receive a password reset code',
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Failed to process request');
+    }
+  }
+
+  async verifyResetOtp(email: string, otp: string) {
+    try {
+      const user = await this.usersService.findByEmail(email);
+      if (!user) {
+        throw new UnauthorizedException('Invalid request');
+      }
+
+      if (!user.otp || !user.otpExpires) {
+        throw new UnauthorizedException(
+          'No OTP found. Please request a new one',
+        );
+      }
+
+      if (new Date() > user.otpExpires) {
+        throw new UnauthorizedException(
+          'OTP expired. Please request a new one',
+        );
+      }
+
+      if (user.otp !== otp) {
+        throw new UnauthorizedException('Invalid OTP');
+      }
+
+      // Clear OTP and generate reset token
+      await this.usersService.update((user as any)._id, {
+        otp: null,
+        otpExpires: null,
+      });
+
+      // Create a temporary reset token
+      const resetToken = this.jwtService.sign(
+        {
+          email: user.email,
+          sub: (user as any)._id,
+          purpose: 'password_reset',
+        },
+        {
+          secret: this.configService.get<string>('JWT_SECRET'),
+          expiresIn: '15m',
+        },
+      );
+
+      return {
+        success: true,
+        resetToken,
+        message: 'OTP verified successfully',
+      };
+    } catch (error) {
+      throw new UnauthorizedException('OTP verification failed');
+    }
+  }
+
+  async resetPassword(resetToken: string, newPassword: string) {
+    try {
+      const payload = this.jwtService.verify(resetToken, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
+
+      if (payload.purpose !== 'password_reset') {
+        throw new UnauthorizedException('Invalid token');
+      }
+
+      const user = await this.usersService.findById(payload.sub);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await this.usersService.update((user as any)._id, {
+        passwordHash: hashedPassword,
+      });
+
+      return {
+        success: true,
+        message: 'Password reset successfully',
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Failed to reset password');
+    }
+  }
+
   private async issueTokens(user: any) {
     const payload = { email: user.email, sub: user._id, role: user.role };
     const accessToken = this.jwtService.sign(payload, {

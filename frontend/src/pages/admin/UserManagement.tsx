@@ -202,6 +202,36 @@ const UserManagement = () => {
     }
   };
 
+  const handleChangeMfaMethod = async (userId: string, method: 'email' | 'totp') => {
+    try {
+      await api.patch(`/users/${userId}/mfa-method`, { method });
+      
+      // Update local state
+      setUsers(users.map(u => 
+        u._id === userId 
+          ? { ...u, mfaMethod: method } 
+          : u
+      ));
+      
+      // If switching to TOTP, optionally prompt to setup
+      if (method === 'totp') {
+        const user = users.find(u => u._id === userId);
+        if (user && !user.mfaMethod) {
+          // User is switching to TOTP for the first time
+          const shouldSetup = window.confirm(
+            `MFA method changed to TOTP. Would you like to setup Google Authenticator for ${user.email} now?`
+          );
+          if (shouldSetup) {
+            handleSetupTotp(userId, user.email);
+          }
+        }
+      }
+    } catch (error: any) {
+      console.error('Failed to update MFA method:', error);
+      alert(error.response?.data?.message || 'Failed to update MFA method. Please try again.');
+    }
+  };
+
   const filteredUsers = users.filter(user =>
     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.role.toLowerCase().includes(searchQuery.toLowerCase())
@@ -282,6 +312,7 @@ const UserManagement = () => {
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Role</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">MFA Status</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">MFA Method</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">MFA Toggle</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">Actions</th>
                   </tr>
@@ -303,6 +334,20 @@ const UserManagement = () => {
                         }`}>
                           {user.mfaEnabled ? '✓ Enabled' : '✗ Disabled'}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        {user.mfaEnabled ? (
+                          <select
+                            value={user.mfaMethod || 'email'}
+                            onChange={(e) => handleChangeMfaMethod(user._id, e.target.value as 'email' | 'totp')}
+                            className="px-3 py-1 bg-white/5 border border-white/20 text-white rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                          >
+                            <option value="email" className="bg-gray-800">📧 Email</option>
+                            <option value="totp" className="bg-gray-800">📱 TOTP</option>
+                          </select>
+                        ) : (
+                          <span className="text-gray-500 text-sm">N/A</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <button
