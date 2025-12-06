@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 async function populateAboutData() {
   try {
-    await mongoose.connect('mongodb://localhost:27017/portfolio');
+    const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio-devops';
+    await mongoose.connect(uri);
     console.log('Connected to MongoDB');
 
     const Profile = mongoose.model('Profile', new mongoose.Schema({}, { strict: false }));

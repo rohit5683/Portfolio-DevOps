@@ -1,7 +1,8 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 async function switchToEmailMFA() {
-  const uri = 'mongodb://localhost:27017';
+  const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio-devops';
   const client = new MongoClient(uri);
 
   try {
