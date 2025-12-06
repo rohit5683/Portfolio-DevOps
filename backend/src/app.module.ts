@@ -23,6 +23,7 @@ import { ContactModule } from './contact/contact.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URI'),
+        dbName: 'portfolio-devops',
       }),
       inject: [ConfigService],
     }),

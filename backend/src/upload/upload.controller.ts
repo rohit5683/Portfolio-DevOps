@@ -1,31 +1,48 @@
 import {
   Controller,
   Post,
+  Get,
+  Param,
+  Res,
   UseInterceptors,
   UploadedFiles,
   UploadedFile,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { FilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { AuthGuard } from '@nestjs/passport';
+import type { Response } from 'express';
+import { UploadService } from './upload.service';
 
 @Controller('upload')
 export class UploadController {
+  constructor(private readonly uploadService: UploadService) {}
+
+  @Get('file/:id')
+  async getFileById(@Param('id') id: string, @Res() res: Response) {
+    return this.serveFile(id, res);
+  }
+
+  @Get('file/:id/:filename')
+  async getFileByIdAndFilename(@Param('id') id: string, @Res() res: Response) {
+    return this.serveFile(id, res);
+  }
+
+  private async serveFile(id: string, res: Response) {
+    const file = await this.uploadService.getFile(id);
+    res.set({
+      'Content-Type': file.contentType,
+      'Content-Length': file.size,
+      'Content-Disposition': `inline; filename="${file.filename}"`,
+    });
+    res.send(file.data);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Post('projects')
   @UseInterceptors(
     FilesInterceptor('images', 10, {
-      storage: diskStorage({
-        destination: './uploads/projects',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `project-${uniqueSuffix}${ext}`);
-        },
-      }),
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
           return callback(new Error('Only image files are allowed!'), false);
@@ -33,15 +50,20 @@ export class UploadController {
         callback(null, true);
       },
       limits: {
-        fileSize: 50 * 1024 * 1024, // 50MB limit
+        fileSize: 10 * 1024 * 1024, // 10MB limit
       },
     }),
   )
-  uploadProjectImages(@UploadedFiles() files: Express.Multer.File[]) {
-    const fileUrls = files.map(
-      (file) =>
-        `${process.env.BACKEND_URL || 'http://localhost:3000'}/uploads/projects/${file.filename}`,
+  async uploadProjectImages(@UploadedFiles() files: Express.Multer.File[]) {
+    const uploadedFiles = await Promise.all(
+      files.map((file) => this.uploadService.saveFile(file)),
     );
+
+    const fileUrls = uploadedFiles.map(
+      (file) =>
+        `${process.env.BACKEND_URL || 'http://localhost:3000'}/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
+    );
+
     return {
       message: 'Files uploaded successfully',
       urls: fileUrls,
@@ -52,15 +74,6 @@ export class UploadController {
   @Post('education')
   @UseInterceptors(
     FilesInterceptor('documents', 10, {
-      storage: diskStorage({
-        destination: './uploads/education',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `education-${uniqueSuffix}${ext}`);
-        },
-      }),
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp|pdf)$/)) {
           return callback(
@@ -71,15 +84,22 @@ export class UploadController {
         callback(null, true);
       },
       limits: {
-        fileSize: 50 * 1024 * 1024, // 50MB limit for documents
+        fileSize: 10 * 1024 * 1024, // 10MB limit
       },
     }),
   )
-  uploadEducationDocuments(@UploadedFiles() files: Express.Multer.File[]) {
-    const fileUrls = files.map(
-      (file) =>
-        `${process.env.BACKEND_URL || 'http://localhost:3000'}/uploads/education/${file.filename}`,
+  async uploadEducationDocuments(
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    const uploadedFiles = await Promise.all(
+      files.map((file) => this.uploadService.saveFile(file)),
     );
+
+    const fileUrls = uploadedFiles.map(
+      (file) =>
+        `${process.env.BACKEND_URL || 'http://localhost:3000'}/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
+    );
+
     return {
       message: 'Education documents uploaded successfully',
       urls: fileUrls,
@@ -90,15 +110,6 @@ export class UploadController {
   @Post('skills')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/skills',
-        filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          cb(null, `skill-${uniqueSuffix}${ext}`);
-        },
-      }),
       fileFilter: (req, file, cb) => {
         if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|svg\+xml|webp)$/)) {
           return cb(new Error('Only image files are allowed!'), false);
@@ -106,16 +117,19 @@ export class UploadController {
         cb(null, true);
       },
       limits: {
-        fileSize: 50 * 1024 * 1024, // 50MB
+        fileSize: 5 * 1024 * 1024, // 5MB
       },
     }),
   )
-  uploadSkillIcon(@UploadedFile() file: Express.Multer.File) {
+  async uploadSkillIcon(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new Error('File is required');
     }
+
+    const savedFile = await this.uploadService.saveFile(file);
+
     return {
-      url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/uploads/skills/${file.filename}`,
+      url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/upload/file/${savedFile._id}/${encodeURIComponent(savedFile.filename)}`,
     };
   }
 }
