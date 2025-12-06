@@ -17,7 +17,9 @@ export class EmailService {
 
     if (user && pass) {
       this.transporter = nodemailer.createTransport({
-        service: 'gmail', // Or configure host/port manually
+        host: this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com',
+        port: this.configService.get<number>('SMTP_PORT') || 587,
+        secure: this.configService.get<number>('SMTP_PORT') === 465, // true for 465, false for other ports
         auth: {
           user,
           pass,

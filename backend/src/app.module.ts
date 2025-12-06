@@ -24,10 +24,6 @@ import { ContactModule } from './contact/contact.module';
       isGlobal: true,
       ttl: 300000, // 5 minutes in milliseconds
     }),
-    CacheModule.register({
-      isGlobal: true,
-      ttl: 300000, // 5 minutes in milliseconds
-    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
