@@ -1,42 +1,31 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 @Injectable()
 export class EmailService {
-  private transporter: nodemailer.Transporter;
+  private resend: Resend;
   private readonly logger = new Logger(EmailService.name);
 
   constructor(private configService: ConfigService) {
-    this.initTransporter();
+    this.initResend();
   }
 
-  private initTransporter() {
-    const user = this.configService.get<string>('SMTP_USER');
-    const pass = this.configService.get<string>('SMTP_PASS');
+  private initResend() {
+    const apiKey = this.configService.get<string>('RESEND_API_KEY');
 
-    if (user && pass) {
-      this.transporter = nodemailer.createTransport({
-        host: this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com',
-        port: this.configService.get<number>('SMTP_PORT') || 587,
-        secure: this.configService.get<number>('SMTP_PORT') === 465, // true for 465, false for other ports
-        auth: {
-          user,
-          pass,
-        },
-      });
-      this.logger.log('Email transporter initialized with SMTP credentials');
+    if (apiKey) {
+      this.resend = new Resend(apiKey);
+      this.logger.log('Resend client initialized');
     } else {
-      // Fallback to Ethereal or just logging
       this.logger.warn(
-        'No SMTP credentials found. Using console logging for emails.',
+        'No RESEND_API_KEY found. Using console logging for emails.',
       );
-      // We could set up Ethereal here, but console log is easier for immediate dev feedback
     }
   }
 
   async sendMfaOtp(email: string, otp: string) {
-    if (!this.transporter) {
+    if (!this.resend) {
       this.logger.log(
         `[MOCK EMAIL] To: ${email}, Subject: Admin Login OTP, Body: Your OTP is ${otp}`,
       );
@@ -44,8 +33,8 @@ export class EmailService {
     }
 
     try {
-      await this.transporter.sendMail({
-        from: '"Portfolio Admin" <noreply@portfolio.com>',
+      const { data, error } = await this.resend.emails.send({
+        from: 'Portfolio Admin <onboarding@resend.dev>', // Use verified domain in prod
         to: email,
         subject: '🔐 Your Admin Login Verification Code',
         text: `Your One-Time Password (OTP) for admin login is: ${otp}. It expires in 10 minutes. If you didn't request this, please ignore this email.`,
@@ -141,16 +130,22 @@ export class EmailService {
           </html>
         `,
       });
-      this.logger.log(`OTP sent to ${email}`);
+
+      if (error) {
+        this.logger.error(`Failed to send OTP to ${email}`, error);
+        this.logger.warn(`[FALLBACK] OTP for ${email}: ${otp}`);
+        return;
+      }
+
+      this.logger.log(`OTP sent to ${email}. ID: ${data?.id}`);
     } catch (error) {
       this.logger.error(`Failed to send OTP to ${email}`, error);
-      // Fallback to log in case of error (for dev purposes only, remove in prod!)
       this.logger.warn(`[FALLBACK] OTP for ${email}: ${otp}`);
     }
   }
 
   async sendPasswordResetOtp(email: string, otp: string) {
-    if (!this.transporter) {
+    if (!this.resend) {
       this.logger.log(
         `[MOCK EMAIL] To: ${email}, Subject: Password Reset OTP, Body: Your OTP is ${otp}`,
       );
@@ -158,8 +153,8 @@ export class EmailService {
     }
 
     try {
-      await this.transporter.sendMail({
-        from: '"Portfolio Admin" <noreply@portfolio.com>',
+      const { data, error } = await this.resend.emails.send({
+        from: 'Portfolio Admin <onboarding@resend.dev>',
         to: email,
         subject: '🔑 Password Reset Verification Code',
         text: `Your password reset OTP is: ${otp}. It expires in 10 minutes. If you didn't request this, please ignore this email.`,
@@ -244,7 +239,17 @@ export class EmailService {
           </html>
         `,
       });
-      this.logger.log(`Password reset OTP sent to ${email}`);
+
+      if (error) {
+        this.logger.error(
+          `Failed to send password reset OTP to ${email}`,
+          error,
+        );
+        this.logger.warn(`[FALLBACK] Password reset OTP for ${email}: ${otp}`);
+        return;
+      }
+
+      this.logger.log(`Password reset OTP sent to ${email}. ID: ${data?.id}`);
     } catch (error) {
       this.logger.error(`Failed to send password reset OTP to ${email}`, error);
       this.logger.warn(`[FALLBACK] Password reset OTP for ${email}: ${otp}`);
@@ -259,9 +264,9 @@ export class EmailService {
   }) {
     const recipientEmail =
       this.configService.get<string>('RECIPIENT_EMAIL') ||
-      this.configService.get<string>('SMTP_USER');
+      this.configService.get<string>('SMTP_USER'); // Fallback to SMTP_USER if RECIPIENT_EMAIL not set, though SMTP_USER is deprecated
 
-    if (!this.transporter) {
+    if (!this.resend) {
       this.logger.log(
         `[MOCK EMAIL] Contact Form Submission\nFrom: ${contactData.name} <${contactData.email}>\nSubject: ${contactData.subject}\nMessage: ${contactData.message}`,
       );
@@ -269,10 +274,10 @@ export class EmailService {
     }
 
     try {
-      await this.transporter.sendMail({
-        from: `"${contactData.name}" <${contactData.email}>`,
+      const { data, error } = await this.resend.emails.send({
+        from: 'Portfolio Contact <onboarding@resend.dev>',
         replyTo: contactData.email,
-        to: recipientEmail,
+        to: recipientEmail || 'rohit.vishwakarma5683@gmail.com', // Hard fallback if no env var
         subject: `📬 Portfolio Contact: ${contactData.subject}`,
         text: `You have received a new message from your portfolio contact form.\n\nName: ${contactData.name}\nEmail: ${contactData.email}\nSubject: ${contactData.subject}\n\nMessage:\n${contactData.message}`,
         html: `
@@ -374,8 +379,17 @@ export class EmailService {
           </html>
         `,
       });
+
+      if (error) {
+        this.logger.error(
+          `Failed to send contact email from ${contactData.email}`,
+          error,
+        );
+        throw new Error('Failed to send email. Please try again later.');
+      }
+
       this.logger.log(
-        `Contact email sent from ${contactData.email} to ${recipientEmail}`,
+        `Contact email sent from ${contactData.email} to ${recipientEmail}. ID: ${data?.id}`,
       );
     } catch (error) {
       this.logger.error(
