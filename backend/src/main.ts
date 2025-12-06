@@ -17,6 +17,7 @@ async function bootstrap() {
     'http://localhost:3000',
     'https://portfolio-dev-ops-3tbx.vercel.app', // Replace with your actual Vercel domain
     process.env.FRONTEND_URL, // Add from environment variable
+    ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
   ].filter(Boolean);
 
   app.enableCors({
