@@ -11,7 +11,7 @@ export class EmailService {
     this.initTransporter();
   }
 
-  private initTransporter() {
+  private async initTransporter() {
     const user = this.configService.get<string>('SMTP_USER');
     const pass = this.configService.get<string>('SMTP_PASS');
 
