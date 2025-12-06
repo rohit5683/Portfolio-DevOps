@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import Tilt from 'react-parallax-tilt';
+import Skeleton from '../../components/common/Skeleton';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -10,19 +11,28 @@ const Home = () => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Fetch profile and skills data
   useEffect(() => {
-    api.get('/profile')
-      .then(res => setProfile(res.data))
-      .catch(err => console.error('Failed to fetch profile', err));
-
-    api.get('/skills')
-      .then(res => {
-        const featuredSkills = res.data.filter((skill: any) => skill.featured);
+    const fetchData = async () => {
+      try {
+        const [profileRes, skillsRes] = await Promise.all([
+          api.get('/profile'),
+          api.get('/skills')
+        ]);
+        
+        setProfile(profileRes.data);
+        const featuredSkills = skillsRes.data.filter((skill: any) => skill.featured);
         setSkills(featuredSkills);
-      })
-      .catch(err => console.error('Failed to fetch skills', err));
+      } catch (err) {
+        console.error('Failed to fetch data', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const roles = profile?.roles || [
@@ -86,7 +96,11 @@ const Home = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               Hi, I'm <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
-                {profile?.name || 'Rohit Vishwakarma'}
+                {loading ? (
+                  <Skeleton width={300} height={60} className="mt-2" />
+                ) : (
+                  profile?.name || 'Rohit Vishwakarma'
+                )}
               </span>
             </h1>
             
@@ -100,9 +114,16 @@ const Home = () => {
               </h2>
             </div>
             
-            <p className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              {profile?.tagline || 'Building scalable infrastructure, automating deployments, and optimizing cloud solutions for high-performance applications.'}
-            </p>
+            <div className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              {loading ? (
+                <div className="space-y-2">
+                  <Skeleton width="100%" height={20} />
+                  <Skeleton width="80%" height={20} />
+                </div>
+              ) : (
+                profile?.tagline || 'Building scalable infrastructure, automating deployments, and optimizing cloud solutions for high-performance applications.'
+              )}
+            </div>
             
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <button 
@@ -120,17 +141,21 @@ const Home = () => {
               >
                 Contact Me
               </button>
-              <a 
-                href={profile?.contact?.linkedin || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3 bg-[#0077b5]/20 hover:bg-[#0077b5]/30 text-blue-400 rounded-xl font-bold backdrop-blur-md border border-[#0077b5]/30 hover:border-[#0077b5]/50 transition-all flex items-center gap-2 transform hover:-translate-y-1 text-sm md:text-base"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-                LinkedIn
-              </a>
+              {loading ? (
+                <Skeleton width={140} height={48} variant="rounded" />
+              ) : (
+                <a 
+                  href={profile?.contact?.linkedin || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-3 bg-[#0077b5]/20 hover:bg-[#0077b5]/30 text-blue-400 rounded-xl font-bold backdrop-blur-md border border-[#0077b5]/30 hover:border-[#0077b5]/50 transition-all flex items-center gap-2 transform hover:-translate-y-1 text-sm md:text-base"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                  LinkedIn
+                </a>
+              )}
             </div>
           </div>
 
@@ -151,7 +176,9 @@ const Home = () => {
                 
                 {/* Profile picture */}
                 <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl backdrop-blur-sm bg-gradient-to-br from-blue-500/10 to-purple-500/10 group">
-                  {profile?.photoUrl ? (
+                  {loading ? (
+                    <Skeleton variant="circular" width="100%" height="100%" />
+                  ) : profile?.photoUrl ? (
                     <img 
                       src={profile.photoUrl} 
                       alt="Profile" 
@@ -168,7 +195,7 @@ const Home = () => {
                 </div>
                 
                 {/* Floating badges */}
-                {profile?.badges?.map((badge: any, index: number) => {
+                {!loading && profile?.badges?.map((badge: any, index: number) => {
                   const getPositionClass = (pos: string) => {
                     switch (pos) {
                       case 'top-right': return 'top-10 -right-4';
@@ -203,7 +230,7 @@ const Home = () => {
                 })}
                 
                 {/* Fallback if no badges */}
-                {(!profile?.badges || profile.badges.length === 0) && (
+                {!loading && (!profile?.badges || profile.badges.length === 0) && (
                   <>
                     <div className="absolute top-10 -right-4 px-4 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl text-xs font-bold shadow-xl animate-float">
                       <span className="text-green-400 mr-2">●</span> Available for hire
@@ -220,23 +247,33 @@ const Home = () => {
 
         {/* Statistics Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
-          {stats.map((stat: any, index: number) => (
-            <Tilt
-              key={index}
-              tiltMaxAngleX={15}
-              tiltMaxAngleY={15}
-              scale={1.05}
-              transitionSpeed={1500}
-              className="h-full"
-            >
-              <div className="h-full bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300 transform origin-left">{stat.icon}</div>
-                <div className="text-3xl font-bold text-white mb-1 tracking-tight">{stat.value}</div>
-                <div className="text-xs text-blue-200 font-medium uppercase tracking-wider">{stat.label}</div>
+          {loading ? (
+            Array(4).fill(0).map((_, i) => (
+              <div key={i} className="h-32 bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10">
+                <Skeleton width={40} height={40} className="mb-3" />
+                <Skeleton width={80} height={32} className="mb-1" />
+                <Skeleton width={100} height={16} />
               </div>
-            </Tilt>
-          ))}
+            ))
+          ) : (
+            stats.map((stat: any, index: number) => (
+              <Tilt
+                key={index}
+                tiltMaxAngleX={15}
+                tiltMaxAngleY={15}
+                scale={1.05}
+                transitionSpeed={1500}
+                className="h-full"
+              >
+                <div className="h-full bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300 transform origin-left">{stat.icon}</div>
+                  <div className="text-3xl font-bold text-white mb-1 tracking-tight">{stat.value}</div>
+                  <div className="text-xs text-blue-200 font-medium uppercase tracking-wider">{stat.label}</div>
+                </div>
+              </Tilt>
+            ))
+          )}
         </div>
 
         {/* Tech Stack Section */}
@@ -251,36 +288,46 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {skills.map((tech, index) => (
-              <Tilt
-                key={index}
-                tiltMaxAngleX={20}
-                tiltMaxAngleY={20}
-                scale={1.1}
-                transitionSpeed={400}
-              >
-                <div className="group relative bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] cursor-pointer h-full flex flex-col items-center justify-center gap-3">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${getProficiencyColor(tech.proficiency)} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-500`}></div>
-                  
-                  <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
-                    {tech.iconUrl ? (
-                      <img src={tech.iconUrl} alt={tech.name} className="w-10 h-10 object-contain" />
-                    ) : (
-                      <span>⚡</span>
-                    )}
-                  </div>
-                  <div className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">{tech.name}</div>
-                  
-                  {/* Proficiency Bar */}
-                  <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div 
-                      className={`h-full bg-gradient-to-r ${getProficiencyColor(tech.proficiency)}`}
-                      style={{ width: `${tech.proficiency}%` }}
-                    ></div>
-                  </div>
+            {loading ? (
+              Array(6).fill(0).map((_, i) => (
+                <div key={i} className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 h-32 flex flex-col items-center justify-center gap-3">
+                  <Skeleton variant="circular" width={40} height={40} />
+                  <Skeleton width={80} height={16} />
+                  <Skeleton width="100%" height={4} />
                 </div>
-              </Tilt>
-            ))}
+              ))
+            ) : (
+              skills.map((tech, index) => (
+                <Tilt
+                  key={index}
+                  tiltMaxAngleX={20}
+                  tiltMaxAngleY={20}
+                  scale={1.1}
+                  transitionSpeed={400}
+                >
+                  <div className="group relative bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] cursor-pointer h-full flex flex-col items-center justify-center gap-3">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${getProficiencyColor(tech.proficiency)} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-500`}></div>
+                    
+                    <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                      {tech.iconUrl ? (
+                        <img src={tech.iconUrl} alt={tech.name} className="w-10 h-10 object-contain" />
+                      ) : (
+                        <span>⚡</span>
+                      )}
+                    </div>
+                    <div className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">{tech.name}</div>
+                    
+                    {/* Proficiency Bar */}
+                    <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div 
+                        className={`h-full bg-gradient-to-r ${getProficiencyColor(tech.proficiency)}`}
+                        style={{ width: `${tech.proficiency}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </Tilt>
+              ))
+            )}
           </div>
         </div>
 

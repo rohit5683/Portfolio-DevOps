@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import api from '../../services/api';
 import Tilt from 'react-parallax-tilt';
+import Skeleton from '../../components/common/Skeleton';
 
 const About = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -88,7 +89,76 @@ const About = () => {
   ];
 
   if (loading) {
-    return <div className="container mx-auto text-center text-white text-xl mt-20">Loading...</div>;
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          {/* Header Skeleton */}
+          <div className="text-center mb-16">
+            <Skeleton width={300} height={48} className="mx-auto mb-4" />
+            <Skeleton width={500} height={24} className="mx-auto" />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            <div className="lg:col-span-2 space-y-8">
+              {/* Bio Skeleton */}
+              <div className="bg-white/5 backdrop-blur-2xl p-8 rounded-2xl border border-white/10">
+                <Skeleton width={200} height={32} className="mb-4" />
+                <div className="space-y-2">
+                  <Skeleton width="100%" height={16} />
+                  <Skeleton width="100%" height={16} />
+                  <Skeleton width="80%" height={16} />
+                </div>
+              </div>
+
+              {/* Highlights Skeleton */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {Array(4).fill(0).map((_, i) => (
+                  <div key={i} className="bg-white/5 backdrop-blur-2xl p-6 rounded-xl border border-white/10">
+                    <Skeleton width={48} height={48} className="mb-4" />
+                    <Skeleton width={150} height={24} className="mb-2" />
+                    <Skeleton width="100%" height={16} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {/* Stats Skeleton */}
+              <div className="bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10">
+                <Skeleton width={120} height={24} className="mb-4" />
+                <div className="space-y-5">
+                  {Array(4).fill(0).map((_, i) => (
+                    <div key={i}>
+                      <div className="flex justify-between mb-2">
+                        <Skeleton width={80} height={16} />
+                        <Skeleton width={40} height={16} />
+                      </div>
+                      <Skeleton width="100%" height={10} variant="rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Contact Info Skeleton */}
+              <div className="bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10">
+                <Skeleton width={100} height={24} className="mb-4" />
+                <div className="space-y-4">
+                  {Array(3).fill(0).map((_, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <Skeleton width={48} height={48} variant="rounded" />
+                      <div>
+                        <Skeleton width={60} height={12} className="mb-1" />
+                        <Skeleton width={100} height={16} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

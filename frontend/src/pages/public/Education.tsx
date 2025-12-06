@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Tilt from 'react-parallax-tilt';
 import api from '../../services/api';
+import Skeleton from '../../components/common/Skeleton';
 
 // Portal Document Preview Component
 const DocumentPreview = ({ 
@@ -196,8 +197,64 @@ const Education = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="container mx-auto px-4 py-12 min-h-screen">
+        <div className="text-center mb-16">
+          <Skeleton width={300} height={48} className="mx-auto mb-6" />
+          <Skeleton width={500} height={24} className="mx-auto" />
+        </div>
+
+        {/* Search and Filter Skeletons */}
+        <div className="max-w-5xl mx-auto mb-16 space-y-8">
+          <Skeleton width="100%" height={56} className="max-w-lg mx-auto rounded-xl" />
+          <div className="flex flex-wrap justify-center gap-4">
+            {Array(5).fill(0).map((_, i) => (
+              <Skeleton key={i} width={120} height={48} className="rounded-full" />
+            ))}
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto relative px-4">
+          {/* Vertical Timeline Line Skeleton */}
+          <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-white/10 rounded-full"></div>
+
+          <div className="space-y-16">
+            {Array(3).fill(0).map((_, index) => (
+              <div 
+                key={index} 
+                className={`relative flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} items-center w-full`}
+              >
+                {/* Timeline Dot Skeleton */}
+                <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white/20 rounded-full border-4 border-gray-900 z-10"></div>
+
+                {/* Content Card Skeleton */}
+                <div className="w-full md:w-[calc(50%-2rem)] ml-16 md:ml-0">
+                  <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10">
+                    <div className="flex items-start gap-3 mb-3">
+                      <Skeleton width={48} height={48} variant="rounded" />
+                      <div className="flex-1">
+                        <Skeleton width={200} height={24} className="mb-2" />
+                        <Skeleton width={100} height={16} />
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2 mb-3">
+                      <Skeleton width={120} height={20} className="rounded-full" />
+                      <Skeleton width={80} height={20} className="rounded-full" />
+                    </div>
+
+                    <Skeleton width={150} height={20} className="mb-3" />
+                    <Skeleton width={100} height={16} className="mb-3" />
+
+                    <div className="space-y-2 pt-3 border-t border-white/5">
+                      <Skeleton width="100%" height={12} />
+                      <Skeleton width="90%" height={12} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

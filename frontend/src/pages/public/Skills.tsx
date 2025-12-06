@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import api from '../../services/api';
 import Tilt from 'react-parallax-tilt';
+import Skeleton from '../../components/common/Skeleton';
 
 const Skills = () => {
   const [skills, setSkills] = useState<any[]>([]);
@@ -106,8 +107,51 @@ const Skills = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="container mx-auto px-4 py-12 min-h-screen">
+        <div className="text-center mb-16">
+          <Skeleton width={300} height={48} className="mx-auto mb-6" />
+          <Skeleton width={500} height={24} className="mx-auto" />
+        </div>
+
+        {/* Search and Filter Skeletons */}
+        <div className="max-w-7xl mx-auto mb-12 space-y-8">
+          <Skeleton width="100%" height={56} className="max-w-lg mx-auto rounded-xl" />
+          <div className="flex flex-wrap justify-center gap-4">
+            {Array(5).fill(0).map((_, i) => (
+              <Skeleton key={i} width={100} height={48} className="rounded-full" />
+            ))}
+          </div>
+        </div>
+
+        {/* Skills Grid Skeleton */}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {Array(8).fill(0).map((_, i) => (
+              <div key={i} className="h-full bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10">
+                <div className="flex items-center gap-4 mb-6">
+                  <Skeleton width={64} height={64} className="rounded-2xl" />
+                  <div className="flex-1">
+                    <Skeleton width={100} height={24} className="mb-2" />
+                    <Skeleton width={60} height={16} />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Skeleton width={60} height={12} />
+                    <Skeleton width={30} height={12} />
+                  </div>
+                  <Skeleton width="100%" height={8} className="rounded-full" />
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
+                  <Skeleton width={80} height={16} />
+                  <Skeleton width={60} height={16} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

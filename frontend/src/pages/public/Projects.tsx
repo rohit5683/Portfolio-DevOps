@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Tilt from 'react-parallax-tilt';
 import api from '../../services/api';
+import Skeleton from '../../components/common/Skeleton';
 
 // Portal Gallery Component
 const ImageGallery = ({ 
@@ -305,8 +306,56 @@ const Projects = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="container mx-auto px-4 py-12 min-h-screen">
+        <div className="text-center mb-16">
+          <Skeleton width={300} height={48} className="mx-auto mb-6" />
+          <Skeleton width={500} height={24} className="mx-auto" />
+        </div>
+
+        {/* Search and Filter Skeletons */}
+        <div className="max-w-7xl mx-auto mb-12 space-y-8">
+          <Skeleton width="100%" height={56} className="max-w-lg mx-auto rounded-xl" />
+          <div className="flex flex-wrap justify-center gap-4">
+            {Array(5).fill(0).map((_, i) => (
+              <Skeleton key={i} width={120} height={48} className="rounded-full" />
+            ))}
+          </div>
+        </div>
+
+        {/* Projects Grid Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {Array(4).fill(0).map((_, i) => (
+            <div key={i} className="h-full bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden flex flex-col">
+              {/* Image Skeleton */}
+              <Skeleton width="100%" height={256} className="rounded-none" />
+              
+              {/* Content Skeleton */}
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex justify-between mb-3">
+                  <Skeleton width={200} height={32} />
+                  <Skeleton width={80} height={24} />
+                </div>
+                
+                <div className="space-y-2 mb-6">
+                  <Skeleton width="100%" height={16} />
+                  <Skeleton width="100%" height={16} />
+                  <Skeleton width="80%" height={16} />
+                </div>
+
+                <div className="flex gap-2 mb-6">
+                  <Skeleton width={80} height={24} className="rounded-full" />
+                  <Skeleton width={80} height={24} className="rounded-full" />
+                  <Skeleton width={80} height={24} className="rounded-full" />
+                </div>
+
+                <div className="mt-auto flex gap-3 pt-4 border-t border-white/5">
+                  <Skeleton width="100%" height={48} className="rounded-xl" />
+                  <Skeleton width="100%" height={48} className="rounded-xl" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

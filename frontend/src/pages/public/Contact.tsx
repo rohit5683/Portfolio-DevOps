@@ -9,6 +9,7 @@ import {
   FaCheck
 } from 'react-icons/fa';
 import api from '../../services/api';
+import Skeleton from '../../components/common/Skeleton';
 
 const Contact = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -20,6 +21,7 @@ const Contact = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [errors, setErrors] = useState<any>({});
   const [errorMessage, setErrorMessage] = useState('');
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -28,8 +30,14 @@ const Contact = () => {
   useEffect(() => {
     // Fetch profile data
     api.get('/profile')
-      .then(res => setProfile(res.data))
-      .catch(err => console.error('Failed to fetch profile', err));
+      .then(res => {
+        setProfile(res.data);
+        setPageLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch profile', err);
+        setPageLoading(false);
+      });
 
     // Update time
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -187,43 +195,57 @@ const Contact = () => {
           <div className="lg:col-span-1 space-y-4">
             <h2 className="text-2xl font-bold text-white mb-6">Connect With Me</h2>
             
-            {contactMethods.map((method) => (
-              <div
-                key={method.label}
-                className={`bg-gradient-to-br ${method.color} backdrop-blur-xl p-4 rounded-xl border ${method.borderColor} ${method.hoverColor} shadow-lg transition-all group`}
-              >
-                <div className="flex items-center justify-between">
-                  <a
-                    href={method.href}
-                    target={method.href.startsWith('http') ? '_blank' : undefined}
-                    rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="flex items-center gap-3 flex-1"
-                  >
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                      <method.icon className="w-6 h-6 text-white" />
-                    </div>
+            {pageLoading ? (
+              Array(5).fill(0).map((_, i) => (
+                <div key={i} className="bg-white/5 backdrop-blur-xl p-4 rounded-xl border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <Skeleton width={48} height={48} variant="circular" />
                     <div className="flex-1">
-                      <h3 className="text-sm font-bold text-white">{method.label}</h3>
-                      <p className="text-gray-300 text-xs break-all">{method.value}</p>
+                      <Skeleton width={80} height={16} className="mb-2" />
+                      <Skeleton width={150} height={12} />
                     </div>
-                  </a>
-                  
-                  {method.copyable && (
-                    <button
-                      onClick={() => copyToClipboard(method.value, method.label)}
-                      className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                      title="Copy to clipboard"
-                    >
-                      {copiedField === method.label ? (
-                        <FaCheck className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <FaCopy className="w-4 h-4 text-gray-400 hover:text-white" />
-                      )}
-                    </button>
-                  )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              contactMethods.map((method) => (
+                <div
+                  key={method.label}
+                  className={`bg-gradient-to-br ${method.color} backdrop-blur-xl p-4 rounded-xl border ${method.borderColor} ${method.hoverColor} shadow-lg transition-all group`}
+                >
+                  <div className="flex items-center justify-between">
+                    <a
+                      href={method.href}
+                      target={method.href.startsWith('http') ? '_blank' : undefined}
+                      rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className="flex items-center gap-3 flex-1"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                        <method.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-sm font-bold text-white">{method.label}</h3>
+                        <p className="text-gray-300 text-xs break-all">{method.value}</p>
+                      </div>
+                    </a>
+                    
+                    {method.copyable && (
+                      <button
+                        onClick={() => copyToClipboard(method.value, method.label)}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        title="Copy to clipboard"
+                      >
+                        {copiedField === method.label ? (
+                          <FaCheck className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <FaCopy className="w-4 h-4 text-gray-400 hover:text-white" />
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
 
             {/* Quick Info */}
             <div className="bg-white/5 backdrop-blur-xl p-6 rounded-xl border border-white/10 mt-6">
