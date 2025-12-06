@@ -35,9 +35,9 @@ export class EmailService {
         },
         logger: true,
         debug: true,
-        connectionTimeout: 10000,
-        greetingTimeout: 10000,
-        socketTimeout: 10000,
+        connectionTimeout: 60000, // 60 seconds
+        greetingTimeout: 60000, // 60 seconds
+        socketTimeout: 60000, // 60 seconds
         dnsTimeout: 5000,
       } as nodemailer.TransportOptions); // Cast to TransportOptions to allow custom properties if needed
 
