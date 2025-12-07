@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import Tilt from 'react-parallax-tilt';
 import api from '../../services/api';
 import Skeleton from '../../components/common/Skeleton';
+import SEO from '../../components/common/SEO';
 
 const Experience = () => {
   const [experience, setExperience] = useState<any[]>([]);
@@ -117,7 +118,12 @@ const Experience = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 min-h-screen">
+    <div className="container mx-auto px-4 py-12">
+      <SEO 
+        title="Experience"
+        description="My professional work history and achievements as a DevOps Engineer."
+        keywords={['Work Experience', 'Resume', 'Career History']}
+      />
       <div className="text-center mb-16">
         <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
           Professional Journey

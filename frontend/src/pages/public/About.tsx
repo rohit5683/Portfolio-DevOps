@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import api from '../../services/api';
 import Tilt from 'react-parallax-tilt';
 import Skeleton from '../../components/common/Skeleton';
+import SEO from '../../components/common/SEO';
 
 const About = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -163,6 +164,11 @@ const About = () => {
 
   return (
     <div className="container mx-auto px-4 py-12">
+      <SEO 
+        title="About Me"
+        description="Learn more about Rohit Vishwakarma, a passionate DevOps Engineer with experience in cloud infrastructure, CI/CD, and automation."
+        keywords={['About Rohit', 'DevOps Experience', 'Career Journey']}
+      />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16 fade-in-element opacity-0">

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import api from '../../services/api';
 import Tilt from 'react-parallax-tilt';
 import Skeleton from '../../components/common/Skeleton';
+import SEO from '../../components/common/SEO';
 
 const Skills = () => {
   const [skills, setSkills] = useState<any[]>([]);
@@ -157,8 +158,13 @@ const Skills = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 min-h-screen">
-      <div className="text-center mb-16">
+    <div className="container mx-auto px-4 py-12">
+      <SEO 
+        title="Skills"
+        description="Detailed breakdown of my technical skills in Cloud, DevOps, Programming, and Tools."
+        keywords={['Technical Skills', 'AWS', 'Docker', 'Kubernetes', 'Python', 'Go']}
+      />
+      <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
           Technical Arsenal
         </h1>

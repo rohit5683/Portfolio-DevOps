@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import Tilt from 'react-parallax-tilt';
 import Skeleton from '../../components/common/Skeleton';
+import SEO from '../../components/common/SEO';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -78,12 +79,16 @@ const Home = () => {
   const getProficiencyColor = (proficiency: number) => {
     if (proficiency >= 90) return 'from-green-400 to-emerald-600';
     if (proficiency >= 75) return 'from-blue-400 to-cyan-600';
-    if (proficiency >= 60) return 'from-yellow-400 to-orange-600';
-    return 'from-red-400 to-pink-600';
+    return 'from-gray-400 to-gray-600';
   };
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-20 overflow-hidden">
+      <SEO 
+        title="Home"
+        description="Rohit Vishwakarma - DevOps Engineer specializing in AWS, Kubernetes, and Infrastructure Automation. View my portfolio and projects."
+        keywords={['DevOps Portfolio', 'Cloud Engineer', 'Infrastructure as Code']}
+      />
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">

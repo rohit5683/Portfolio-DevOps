@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import Tilt from 'react-parallax-tilt';
 import api from '../../services/api';
 import Skeleton from '../../components/common/Skeleton';
+import SEO from '../../components/common/SEO';
 
 // Portal Gallery Component
 const ImageGallery = ({ 
@@ -307,12 +308,11 @@ const Projects = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12 min-h-screen">
-        <div className="text-center mb-16">
-          <Skeleton width={300} height={48} className="mx-auto mb-6" />
-          <Skeleton width={500} height={24} className="mx-auto" />
-        </div>
-
-        {/* Search and Filter Skeletons */}
+        <SEO 
+          title="Projects"
+          description="Explore my DevOps projects including cloud infrastructure setups, CI/CD pipelines, and automation scripts."
+          keywords={['DevOps Projects', 'Terraform Examples', 'Kubernetes Clusters', 'CI/CD Pipelines']}
+        />
         <div className="max-w-7xl mx-auto mb-12 space-y-8">
           <Skeleton width="100%" height={56} className="max-w-lg mx-auto rounded-xl" />
           <div className="flex flex-wrap justify-center gap-4">

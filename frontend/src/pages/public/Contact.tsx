@@ -9,6 +9,7 @@ import {
   FaCheck
 } from 'react-icons/fa';
 import api from '../../services/api';
+import SEO from '../../components/common/SEO';
 import Skeleton from '../../components/common/Skeleton';
 
 const Contact = () => {
@@ -169,7 +170,12 @@ const Contact = () => {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <div className="max-w-6xl mx-auto">
+      <SEO 
+        title="Contact"
+        description="Get in touch with me for freelance projects, job opportunities, or collaboration."
+        keywords={['Contact', 'Hire DevOps Engineer', 'Freelance']}
+      />
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
