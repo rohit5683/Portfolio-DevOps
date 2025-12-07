@@ -324,7 +324,22 @@ const About = () => {
             </Tilt>
 
             {/* Download Resume */}
-            <button className="fade-in-element opacity-0 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center gap-3 group relative overflow-hidden">
+            <button 
+              onClick={async () => {
+                try {
+                  const btn = document.getElementById('resume-btn');
+                  if (btn) btn.innerText = 'Generating...';
+                  await import('../../services/resumeService').then(mod => mod.generateResume());
+                  if (btn) btn.innerText = 'Download Resume';
+                } catch (e) {
+                  console.error(e);
+                  const btn = document.getElementById('resume-btn');
+                  if (btn) btn.innerText = 'Failed to Download';
+                }
+              }}
+              id="resume-btn"
+              className="fade-in-element opacity-0 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center gap-3 group relative overflow-hidden"
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
               <svg className="w-6 h-6 relative group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
