@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import AnimatedBackground from '../../components/layout/AnimatedBackground';
 import UploadProgress from '../../components/common/UploadProgress';
+import { getImageUrl } from '../../utils/imageUtils';
 
 const EducationEdit = () => {
   const navigate = useNavigate();
@@ -464,7 +465,7 @@ const EducationEdit = () => {
                   <p className="text-blue-400 font-medium">{edu.degree} in {edu.fieldOfStudy}</p>
                   <p className="text-sm text-gray-400 mt-1">{edu.startDate} - {edu.endDate}</p>
                 </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => handleEdit(edu)}
                     className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors"
@@ -491,7 +492,7 @@ const EducationEdit = () => {
                     {edu.documents.map((doc: string, idx: number) => (
                       <a
                         key={idx}
-                        href={doc}
+                        href={getImageUrl(doc)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-3 py-1 bg-purple-500/10 text-purple-300 text-xs rounded border border-purple-500/20 hover:bg-purple-500/20 transition-colors"

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import Tilt from 'react-parallax-tilt';
 import api from '../../services/api';
 import Skeleton from '../../components/common/Skeleton';
+import { getImageUrl } from '../../utils/imageUtils';
 
 // Portal Document Preview Component
 const DocumentPreview = ({ 
@@ -13,6 +14,8 @@ const DocumentPreview = ({
   onClose: () => void;
 }) => {
   const isPdf = documentUrl.toLowerCase().endsWith('.pdf');
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   // Memoize close handler
   const handleClose = useCallback((e?: React.MouseEvent) => {
@@ -63,26 +66,47 @@ const DocumentPreview = ({
         className="relative w-full max-w-5xl h-[85vh] bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-white/10 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 bg-gray-900">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
+
         {isPdf ? (
           <iframe
-            src={documentUrl}
+            src={getImageUrl(documentUrl)}
             className="w-full h-full"
             title="PDF Document"
+            onLoad={() => setIsLoading(false)}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-black/50">
-            <img 
-              src={documentUrl} 
-              alt="Document preview"
-              className="max-w-full max-h-full object-contain"
-            />
+            {!hasError ? (
+              <img 
+                src={getImageUrl(documentUrl)} 
+                alt="Document preview"
+                className={`max-w-full max-h-full object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+                onLoad={() => setIsLoading(false)}
+                onError={() => {
+                  setIsLoading(false);
+                  setHasError(true);
+                }}
+              />
+            ) : (
+              <div className="text-center text-red-400">
+                <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p>Failed to load image</p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Footer Actions */}
         <div className="absolute bottom-6 right-6 flex gap-3">
           <a
-            href={documentUrl}
+            href={getImageUrl(documentUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all font-medium shadow-lg hover:shadow-blue-500/30 flex items-center gap-2 transform hover:-translate-y-0.5"
@@ -352,7 +376,7 @@ const Education = () => {
                           {edu.logoUrl ? (
                             <div className="w-12 h-12 rounded-xl bg-white/10 p-1.5 border border-white/10 flex-shrink-0">
                               <img 
-                                src={edu.logoUrl} 
+                                src={getImageUrl(edu.logoUrl)} 
                                 alt={edu.schoolCollege || edu.school} 
                                 className="w-full h-full object-contain"
                                 onError={(e) => {
@@ -445,7 +469,7 @@ const Education = () => {
                                     ) : (
                                       <div className="aspect-[4/3] relative">
                                         <img
-                                          src={doc}
+                                          src={getImageUrl(doc)}
                                           alt={`Document ${idx + 1}`}
                                           className="w-full h-full object-cover"
                                         />
@@ -464,7 +488,7 @@ const Education = () => {
                           </div>
                         )}
                       </div>
-                    </Tilt>
+                      </Tilt>
                     </div>
                   </div>
                 </div>
@@ -476,9 +500,7 @@ const Education = () => {
             <div className="text-center py-20">
               <div className="inline-block p-6 rounded-full bg-white/5 mb-4">
                 <svg className="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-white mb-2">No education entries found</h3>
@@ -495,73 +517,73 @@ const Education = () => {
             </div>
           )}
         </div>
+
+        {/* Document Preview Portal */}
+        {previewDocument && (
+          <DocumentPreview
+            documentUrl={previewDocument}
+            onClose={closeDocumentPreview}
+          />
+        )}
+
+        <style>{`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-fadeInUp {
+            animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          }
+
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-10px);
+            }
+          }
+
+          .animate-float {
+            animation: float 6s ease-in-out infinite;
+          }
+
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+          
+          .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+          }
+          
+          @keyframes gradient-x {
+            0%, 100% {
+              background-size: 200% 200%;
+              background-position: left center;
+            }
+            50% {
+              background-size: 200% 200%;
+              background-position: right center;
+            }
+          }
+
+          .animate-gradient-x {
+            animation: gradient-x 15s ease infinite;
+          }
+        `}</style>
       </div>
-
-      {/* Document Preview Portal */}
-      {previewDocument && (
-        <DocumentPreview
-          documentUrl={previewDocument}
-          onClose={closeDocumentPreview}
-        />
-      )}
-
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fadeInUp {
-          animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out forwards;
-        }
-        
-        @keyframes gradient-x {
-          0%, 100% {
-            background-size: 200% 200%;
-            background-position: left center;
-          }
-          50% {
-            background-size: 200% 200%;
-            background-position: right center;
-          }
-        }
-
-        .animate-gradient-x {
-          animation: gradient-x 15s ease infinite;
-        }
-      `}</style>
     </>
   );
 };

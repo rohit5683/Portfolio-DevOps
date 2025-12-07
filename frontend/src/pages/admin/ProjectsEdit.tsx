@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import AnimatedBackground from '../../components/layout/AnimatedBackground';
 import UploadProgress from '../../components/common/UploadProgress';
+import { getImageUrl } from '../../utils/imageUtils';
 
 const ProjectsEdit = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<any[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [newProject, setNewProject] = useState({ 
     title: '', 
     description: '', 
@@ -36,6 +38,40 @@ const ProjectsEdit = () => {
       await api.delete(`/projects/${id}`);
       fetchProjects();
     }
+  };
+
+  const handleEdit = (project: any) => {
+    setEditingId(project._id);
+    setNewProject({
+      title: project.title,
+      description: project.description,
+      techStack: project.techStack.join(', '),
+      images: project.images.join(', '),
+      link: project.link || '',
+      githubLink: project.githubLink || '',
+      status: project.status || 'completed',
+      featured: project.featured || false,
+      category: project.category || 'web',
+      completionDate: project.completionDate || ''
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setNewProject({ 
+      title: '', 
+      description: '', 
+      techStack: '', 
+      images: '', 
+      link: '', 
+      githubLink: '', 
+      status: 'completed', 
+      featured: false, 
+      category: 'web', 
+      completionDate: '' 
+    });
+    setUploadedFiles([]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +113,7 @@ const ProjectsEdit = () => {
     }
   };
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Upload files if any
@@ -100,10 +136,21 @@ const ProjectsEdit = () => {
       images: allImageUrls
     };
     
-    await api.post('/projects', projectData);
-    setNewProject({ title: '', description: '', techStack: '', images: '', link: '', githubLink: '', status: 'completed', featured: false, category: 'web', completionDate: '' });
-    setUploadedFiles([]);
-    fetchProjects();
+    try {
+      if (editingId) {
+        await api.put(`/projects/${editingId}`, projectData);
+        alert('Project updated successfully!');
+      } else {
+        await api.post('/projects', projectData);
+        alert('Project created successfully!');
+      }
+      
+      handleCancel(); // Reset form
+      fetchProjects();
+    } catch (error) {
+      console.error('Failed to save project:', error);
+      alert('Failed to save project. Please check console for details.');
+    }
   };
 
   return (
@@ -130,8 +177,10 @@ const ProjectsEdit = () => {
         </div>
         
         <div className="mb-8 bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl">
-          <h2 className="text-xl font-bold mb-6 text-white">Add New Project</h2>
-          <form onSubmit={handleCreate} className="space-y-4">
+          <h2 className="text-xl font-bold mb-6 text-white">
+            {editingId ? 'Edit Project' : 'Add New Project'}
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
@@ -261,13 +310,26 @@ const ProjectsEdit = () => {
                 className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
-            <button 
-              type="submit" 
-              disabled={uploading}
-              className="bg-green-600 px-6 py-3 rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {uploading ? 'Uploading...' : 'Add Project'}
-            </button>
+            
+            <div className="flex gap-3">
+              <button 
+                type="submit" 
+                disabled={uploading}
+                className="flex-1 bg-green-600 px-6 py-3 rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {uploading ? 'Uploading...' : (editingId ? 'Update Project' : 'Add Project')}
+              </button>
+              
+              {editingId && (
+                <button 
+                  type="button"
+                  onClick={handleCancel}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white font-bold rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
         </div>
 
@@ -283,7 +345,7 @@ const ProjectsEdit = () => {
                   {project.images.map((img: string, idx: number) => (
                     <img 
                       key={idx}
-                      src={img} 
+                      src={getImageUrl(img)} 
                       alt={`${project.title} - ${idx + 1}`}
                       className="h-20 w-32 object-cover rounded border border-white/20"
                     />
@@ -313,12 +375,20 @@ const ProjectsEdit = () => {
                 )}
               </div>
               
-              <button 
-                onClick={() => handleDelete(project._id)} 
-                className="bg-red-600 px-4 py-2 rounded text-white hover:bg-red-700 transition-colors"
-              >
-                Delete
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => handleEdit(project)} 
+                  className="flex-1 bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition-colors"
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(project._id)} 
+                  className="flex-1 bg-red-600 px-4 py-2 rounded text-white hover:bg-red-700 transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

@@ -60,8 +60,7 @@ export class UploadController {
     );
 
     const fileUrls = uploadedFiles.map(
-      (file) =>
-        `${process.env.BACKEND_URL || 'http://localhost:3000'}/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
+      (file) => `/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
     );
 
     return {
@@ -96,8 +95,7 @@ export class UploadController {
     );
 
     const fileUrls = uploadedFiles.map(
-      (file) =>
-        `${process.env.BACKEND_URL || 'http://localhost:3000'}/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
+      (file) => `/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
     );
 
     return {
@@ -129,7 +127,7 @@ export class UploadController {
     const savedFile = await this.uploadService.saveFile(file);
 
     return {
-      url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/upload/file/${savedFile._id}/${encodeURIComponent(savedFile.filename)}`,
+      url: `/upload/file/${savedFile._id}/${encodeURIComponent(savedFile.filename)}`,
     };
   }
 }
