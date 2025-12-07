@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 interface SEOProps {
   title: string;
@@ -9,46 +9,48 @@ interface SEOProps {
   type?: string;
 }
 
-const SEO = ({ 
-  title, 
-  description, 
-  keywords = [], 
-  image = '/profile-transparent.png', 
+const SEO = ({
+  title,
+  description,
+  keywords = [],
+  image = "/profile-transparent.png",
   url = window.location.href,
-  type = 'website'
+  type = "website",
 }: SEOProps) => {
-  const siteTitle = 'Rohit Vishwakarma | DevOps Engineer';
-  const fullTitle = title === 'Home' ? siteTitle : `${title} | ${siteTitle}`;
+  const siteTitle = "Rohit Vishwakarma | DevOps Engineer";
+  const fullTitle = title === "Home" ? siteTitle : `${title} | ${siteTitle}`;
   const defaultKeywords = [
-    'DevOps Engineer',
-    'Cloud Architect',
-    'AWS',
-    'Kubernetes',
-    'Terraform',
-    'Ansible',
-    'CI/CD',
-    'Rohit Vishwakarma',
-    'Portfolio'
+    "DevOps Engineer",
+    "Cloud Architect",
+    "AWS",
+    "Kubernetes",
+    "Terraform",
+    "Ansible",
+    "CI/CD",
+    "Rohit Vishwakarma",
+    "Portfolio",
   ];
 
-  const allKeywords = [...new Set([...defaultKeywords, ...keywords])].join(', ');
+  const allKeywords = [...new Set([...defaultKeywords, ...keywords])].join(
+    ", ",
+  );
 
   // Structured Data for Person
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Rohit Vishwakarma",
-    "url": "https://rvdevops.com",
-    "image": "https://rohit-devops.com/profile.jpg",
-    "jobTitle": "DevOps Engineer",
-    "worksFor": {
+    name: "Rohit Vishwakarma",
+    url: "https://rvdevops.com",
+    image: "https://rohit-devops.com/profile.jpg",
+    jobTitle: "DevOps Engineer",
+    worksFor: {
       "@type": "Organization",
-      "name": "Artiqulus Technologies"
+      name: "Artiqulus Technologies",
     },
-    "sameAs": [
+    sameAs: [
       "https://www.linkedin.com/in/rohitvishwakarma568347",
-      "https://github.com/rohit5683"
-    ]
+      "https://github.com/rohit5683",
+    ],
   };
 
   return (
@@ -74,9 +76,7 @@ const SEO = ({
       <meta property="twitter:image" content={image} />
 
       {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(personSchema)}
-      </script>
+      <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
     </Helmet>
   );
 };

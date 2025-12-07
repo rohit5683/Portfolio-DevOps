@@ -1,6 +1,6 @@
-import Navbar from './Navbar';
-import AnimatedBackground from './AnimatedBackground';
-import { Outlet } from 'react-router-dom';
+import Navbar from "./Navbar";
+import AnimatedBackground from "./AnimatedBackground";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../../services/api';
-import AnimatedBackground from '../../components/layout/AnimatedBackground';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
+import AnimatedBackground from "../../components/layout/AnimatedBackground";
 
 const AboutEdit = () => {
   const navigate = useNavigate();
@@ -9,10 +9,13 @@ const AboutEdit = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/profile').then(res => {
-      setProfile(res.data);
-      setLoading(false);
-    }).catch(console.error);
+    api
+      .get("/profile")
+      .then((res) => {
+        setProfile(res.data);
+        setLoading(false);
+      })
+      .catch(console.error);
   }, []);
 
   const handleSave = async (section: string) => {
@@ -20,12 +23,13 @@ const AboutEdit = () => {
       await api.put(`/profile/${profile._id}`, profile);
       alert(`${section} updated successfully!`);
     } catch (error) {
-      console.error('Failed to update profile', error);
-      alert('Failed to update profile');
+      console.error("Failed to update profile", error);
+      alert("Failed to update profile");
     }
   };
 
-  if (loading) return <div className="text-white text-center mt-20">Loading...</div>;
+  if (loading)
+    return <div className="text-white text-center mt-20">Loading...</div>;
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -33,8 +37,8 @@ const AboutEdit = () => {
       <div className="relative z-10 container mx-auto p-6 pt-20">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-white">Edit About Section</h1>
-          <button 
-            onClick={() => navigate('/portal')}
+          <button
+            onClick={() => navigate("/portal")}
             className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
             Back to Dashboard
@@ -47,26 +51,34 @@ const AboutEdit = () => {
             <h2 className="text-xl font-bold text-white mb-4">About Page</h2>
             <div className="space-y-4">
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">Headline</label>
+                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                  Headline
+                </label>
                 <input
                   type="text"
-                  value={profile.headline || ''}
-                  onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
+                  value={profile.headline || ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, headline: e.target.value })
+                  }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                   placeholder="AWS Certified Cloud Practitioner"
                 />
               </div>
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">About Text</label>
+                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                  About Text
+                </label>
                 <textarea
-                  value={profile.about || ''}
-                  onChange={(e) => setProfile({ ...profile, about: e.target.value })}
+                  value={profile.about || ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, about: e.target.value })
+                  }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white h-32 focus:outline-none focus:border-blue-500 transition-colors"
                   placeholder="Tell visitors about yourself..."
                 />
               </div>
               <button
-                onClick={() => handleSave('About Page')}
+                onClick={() => handleSave("About Page")}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save About
@@ -76,17 +88,21 @@ const AboutEdit = () => {
 
           {/* About Page Subtitle */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">About Page Subtitle</h2>
+            <h2 className="text-xl font-bold text-white mb-4">
+              About Page Subtitle
+            </h2>
             <div className="space-y-4">
               <textarea
-                value={profile.aboutSubtitle || ''}
-                onChange={(e) => setProfile({ ...profile, aboutSubtitle: e.target.value })}
+                value={profile.aboutSubtitle || ""}
+                onChange={(e) =>
+                  setProfile({ ...profile, aboutSubtitle: e.target.value })
+                }
                 className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                 rows={2}
                 placeholder="DevOps Engineer passionate about automation and cloud infrastructure"
               />
               <button
-                onClick={() => handleSave('About Subtitle')}
+                onClick={() => handleSave("About Subtitle")}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Subtitle
@@ -96,26 +112,39 @@ const AboutEdit = () => {
 
           {/* Location and Availability */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">Location & Availability</h2>
+            <h2 className="text-xl font-bold text-white mb-4">
+              Location & Availability
+            </h2>
             <div className="space-y-4">
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">Location</label>
+                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                  Location
+                </label>
                 <input
                   type="text"
-                  value={profile.location || ''}
-                  onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                  value={profile.location || ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, location: e.target.value })
+                  }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                   placeholder="India"
                 />
               </div>
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">Availability Status</label>
+                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                  Availability Status
+                </label>
                 <select
-                  value={profile.availability?.status || 'available'}
-                  onChange={(e) => setProfile({ 
-                    ...profile, 
-                    availability: { ...profile.availability, status: e.target.value }
-                  })}
+                  value={profile.availability?.status || "available"}
+                  onChange={(e) =>
+                    setProfile({
+                      ...profile,
+                      availability: {
+                        ...profile.availability,
+                        status: e.target.value,
+                      },
+                    })
+                  }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                 >
                   <option value="available">Available</option>
@@ -124,20 +153,27 @@ const AboutEdit = () => {
                 </select>
               </div>
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">Availability Message</label>
+                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                  Availability Message
+                </label>
                 <input
                   type="text"
-                  value={profile.availability?.message || ''}
-                  onChange={(e) => setProfile({ 
-                    ...profile, 
-                    availability: { ...profile.availability, message: e.target.value }
-                  })}
+                  value={profile.availability?.message || ""}
+                  onChange={(e) =>
+                    setProfile({
+                      ...profile,
+                      availability: {
+                        ...profile.availability,
+                        message: e.target.value,
+                      },
+                    })
+                  }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                   placeholder="Open to opportunities"
                 />
               </div>
               <button
-                onClick={() => handleSave('Location & Availability')}
+                onClick={() => handleSave("Location & Availability")}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Location & Availability
@@ -147,10 +183,15 @@ const AboutEdit = () => {
 
           {/* About Page Highlights */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-4">About Page Highlights</h2>
+            <h2 className="text-xl font-bold text-white mb-4">
+              About Page Highlights
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               {profile.highlights?.map((highlight: any, index: number) => (
-                <div key={index} className="bg-white/5 p-4 rounded-lg border border-white/10">
+                <div
+                  key={index}
+                  className="bg-white/5 p-4 rounded-lg border border-white/10"
+                >
                   <div className="flex justify-between items-start mb-2">
                     <input
                       type="text"
@@ -201,16 +242,25 @@ const AboutEdit = () => {
             </div>
             <div className="flex gap-4">
               <button
-                onClick={() => setProfile({
-                  ...profile,
-                  highlights: [...(profile.highlights || []), { icon: '🎯', title: 'New Highlight', description: 'Description here' }]
-                })}
+                onClick={() =>
+                  setProfile({
+                    ...profile,
+                    highlights: [
+                      ...(profile.highlights || []),
+                      {
+                        icon: "🎯",
+                        title: "New Highlight",
+                        description: "Description here",
+                      },
+                    ],
+                  })
+                }
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Add Highlight
               </button>
               <button
-                onClick={() => handleSave('Highlights')}
+                onClick={() => handleSave("Highlights")}
                 className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Highlights
@@ -220,10 +270,15 @@ const AboutEdit = () => {
 
           {/* About Page Animated Stats */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-4">About Page Animated Statistics</h2>
+            <h2 className="text-xl font-bold text-white mb-4">
+              About Page Animated Statistics
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               {profile.animatedStats?.map((stat: any, index: number) => (
-                <div key={index} className="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-4 items-start">
+                <div
+                  key={index}
+                  className="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-4 items-start"
+                >
                   <div className="flex-1 space-y-2">
                     <input
                       type="text"
@@ -274,23 +329,27 @@ const AboutEdit = () => {
             </div>
             <div className="flex gap-4">
               <button
-                onClick={() => setProfile({
-                  ...profile,
-                  animatedStats: [...(profile.animatedStats || []), { label: 'New Stat', value: 0, icon: '📊' }]
-                })}
+                onClick={() =>
+                  setProfile({
+                    ...profile,
+                    animatedStats: [
+                      ...(profile.animatedStats || []),
+                      { label: "New Stat", value: 0, icon: "📊" },
+                    ],
+                  })
+                }
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Add Stat
               </button>
               <button
-                onClick={() => handleSave('Animated Stats')}
+                onClick={() => handleSave("Animated Stats")}
                 className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Animated Stats
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>

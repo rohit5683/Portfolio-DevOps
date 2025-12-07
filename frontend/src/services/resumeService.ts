@@ -45,7 +45,7 @@ export const generateResume = async () => {
       yPos,
       {
         align: "center",
-      }
+      },
     );
     yPos += 8;
 
@@ -58,7 +58,7 @@ export const generateResume = async () => {
       yPos,
       {
         align: "center",
-      }
+      },
     );
     yPos += 6;
 
@@ -97,7 +97,7 @@ export const generateResume = async () => {
       doc.setTextColor(0);
       const splitAbout = doc.splitTextToSize(
         profile.about,
-        pageWidth - margin * 2
+        pageWidth - margin * 2,
       );
       doc.text(splitAbout, margin, yPos);
       yPos += splitAbout.length * 5 + 8;
@@ -174,7 +174,7 @@ export const generateResume = async () => {
         doc.setFont("helvetica", "normal");
         const dateRange = `${new Date(exp.startDate).toLocaleDateString(
           "en-US",
-          { month: "short", year: "numeric" }
+          { month: "short", year: "numeric" },
         )} – ${
           exp.endDate
             ? new Date(exp.endDate).toLocaleDateString("en-US", {
@@ -197,7 +197,7 @@ export const generateResume = async () => {
           doc.setFontSize(10);
           const splitDesc = doc.splitTextToSize(
             exp.description,
-            pageWidth - margin * 2
+            pageWidth - margin * 2,
           );
           doc.text(splitDesc, margin, yPos);
           yPos += splitDesc.length * 5 + 2;
@@ -210,7 +210,7 @@ export const generateResume = async () => {
             const bullet = `•  ${ach}`;
             const splitBullet = doc.splitTextToSize(
               bullet,
-              pageWidth - margin * 2 - 5
+              pageWidth - margin * 2 - 5,
             );
             doc.text(splitBullet, margin + 2, yPos);
             yPos += splitBullet.length * 5;
@@ -244,7 +244,7 @@ export const generateResume = async () => {
           doc.setFontSize(10);
           const splitDesc = doc.splitTextToSize(
             proj.description,
-            pageWidth - margin * 2
+            pageWidth - margin * 2,
           );
           doc.text(splitDesc, margin, yPos);
           yPos += splitDesc.length * 5;
@@ -284,7 +284,7 @@ export const generateResume = async () => {
           `${edu.startDate} – ${edu.endDate}`,
           pageWidth - margin,
           yPos,
-          { align: "right" }
+          { align: "right" },
         );
         yPos += 5;
 

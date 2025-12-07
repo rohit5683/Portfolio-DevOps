@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
-import api from '../../services/api';
-import Tilt from 'react-parallax-tilt';
-import Skeleton from '../../components/common/Skeleton';
-import SEO from '../../components/common/SEO';
+import { useEffect, useState, useRef } from "react";
+import api from "../../services/api";
+import Tilt from "react-parallax-tilt";
+import Skeleton from "../../components/common/Skeleton";
+import SEO from "../../components/common/SEO";
 
 const About = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -11,13 +11,14 @@ const About = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    api.get('/profile')
-      .then(res => {
+    api
+      .get("/profile")
+      .then((res) => {
         setProfile(res.data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error('Failed to fetch profile', err);
+      .catch((err) => {
+        console.error("Failed to fetch profile", err);
         setLoading(false);
       });
   }, []);
@@ -33,7 +34,7 @@ const About = () => {
       const interval = setInterval(() => {
         currentStep++;
         const progress = currentStep / steps;
-        
+
         const newStats: any = {};
         profile.animatedStats.forEach((stat: any) => {
           newStats[stat.label] = Math.floor(stat.value * progress);
@@ -59,14 +60,14 @@ const About = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fadeInUp');
+            entry.target.classList.add("animate-fadeInUp");
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
-    const elements = document.querySelectorAll('.fade-in-element');
+    const elements = document.querySelectorAll(".fade-in-element");
     elements.forEach((el) => observerRef.current?.observe(el));
 
     return () => observerRef.current?.disconnect();
@@ -74,19 +75,35 @@ const About = () => {
 
   const getProgressGradient = (index: number) => {
     const gradients = [
-      'bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500',
-      'bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500',
-      'bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500',
-      'bg-gradient-to-r from-rose-500 via-pink-500 to-red-500',
+      "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500",
+      "bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500",
+      "bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500",
+      "bg-gradient-to-r from-rose-500 via-pink-500 to-red-500",
     ];
     return gradients[index % gradients.length];
   };
 
   const highlights = profile?.highlights || [
-    { icon: '🏆', title: 'AWS Certified', description: 'Solutions Architect & DevOps Professional' },
-    { icon: '🔧', title: 'Infrastructure as Code', description: 'Expert in Terraform & Ansible' },
-    { icon: '🐳', title: 'Container Orchestration', description: 'Kubernetes & Docker specialist' },
-    { icon: '📊', title: 'CI/CD Pipelines', description: 'Jenkins, GitHub Actions, GitLab CI' },
+    {
+      icon: "🏆",
+      title: "AWS Certified",
+      description: "Solutions Architect & DevOps Professional",
+    },
+    {
+      icon: "🔧",
+      title: "Infrastructure as Code",
+      description: "Expert in Terraform & Ansible",
+    },
+    {
+      icon: "🐳",
+      title: "Container Orchestration",
+      description: "Kubernetes & Docker specialist",
+    },
+    {
+      icon: "📊",
+      title: "CI/CD Pipelines",
+      description: "Jenkins, GitHub Actions, GitLab CI",
+    },
   ];
 
   if (loading) {
@@ -113,13 +130,18 @@ const About = () => {
 
               {/* Highlights Skeleton */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Array(4).fill(0).map((_, i) => (
-                  <div key={i} className="bg-white/5 backdrop-blur-2xl p-6 rounded-xl border border-white/10">
-                    <Skeleton width={48} height={48} className="mb-4" />
-                    <Skeleton width={150} height={24} className="mb-2" />
-                    <Skeleton width="100%" height={16} />
-                  </div>
-                ))}
+                {Array(4)
+                  .fill(0)
+                  .map((_, i) => (
+                    <div
+                      key={i}
+                      className="bg-white/5 backdrop-blur-2xl p-6 rounded-xl border border-white/10"
+                    >
+                      <Skeleton width={48} height={48} className="mb-4" />
+                      <Skeleton width={150} height={24} className="mb-2" />
+                      <Skeleton width="100%" height={16} />
+                    </div>
+                  ))}
               </div>
             </div>
 
@@ -128,15 +150,17 @@ const About = () => {
               <div className="bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10">
                 <Skeleton width={120} height={24} className="mb-4" />
                 <div className="space-y-5">
-                  {Array(4).fill(0).map((_, i) => (
-                    <div key={i}>
-                      <div className="flex justify-between mb-2">
-                        <Skeleton width={80} height={16} />
-                        <Skeleton width={40} height={16} />
+                  {Array(4)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div key={i}>
+                        <div className="flex justify-between mb-2">
+                          <Skeleton width={80} height={16} />
+                          <Skeleton width={40} height={16} />
+                        </div>
+                        <Skeleton width="100%" height={10} variant="rounded" />
                       </div>
-                      <Skeleton width="100%" height={10} variant="rounded" />
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
 
@@ -144,15 +168,17 @@ const About = () => {
               <div className="bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10">
                 <Skeleton width={100} height={24} className="mb-4" />
                 <div className="space-y-4">
-                  {Array(3).fill(0).map((_, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <Skeleton width={48} height={48} variant="rounded" />
-                      <div>
-                        <Skeleton width={60} height={12} className="mb-1" />
-                        <Skeleton width={100} height={16} />
+                  {Array(3)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <Skeleton width={48} height={48} variant="rounded" />
+                        <div>
+                          <Skeleton width={60} height={12} className="mb-1" />
+                          <Skeleton width={100} height={16} />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>
@@ -164,10 +190,10 @@ const About = () => {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <SEO 
+      <SEO
         title="About Me"
         description="Learn more about Rohit Vishwakarma, a passionate DevOps Engineer with experience in cloud infrastructure, CI/CD, and automation."
-        keywords={['About Rohit', 'DevOps Experience', 'Career Journey']}
+        keywords={["About Rohit", "DevOps Experience", "Career Journey"]}
       />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -176,7 +202,8 @@ const About = () => {
             About Me
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-            {profile?.aboutSubtitle || 'DevOps Engineer passionate about automation and cloud infrastructure'}
+            {profile?.aboutSubtitle ||
+              "DevOps Engineer passionate about automation and cloud infrastructure"}
           </p>
         </div>
 
@@ -202,10 +229,11 @@ const About = () => {
                     {profile.headline}
                   </h2>
                 )}
-                
+
                 <div className="prose prose-lg prose-invert max-w-none">
                   <p className="text-gray-300 text-base leading-relaxed whitespace-pre-wrap">
-                    {profile?.about || "Passionate DevOps Engineer with extensive experience in cloud infrastructure, automation, and continuous integration/deployment. Specialized in building scalable, reliable systems that enable teams to deliver software faster and more efficiently."}
+                    {profile?.about ||
+                      "Passionate DevOps Engineer with extensive experience in cloud infrastructure, automation, and continuous integration/deployment. Specialized in building scalable, reliable systems that enable teams to deliver software faster and more efficiently."}
                   </p>
                 </div>
               </div>
@@ -226,13 +254,19 @@ const About = () => {
                   scale={1.05}
                   transitionSpeed={1500}
                 >
-                  <div 
+                  <div
                     className="fade-in-element opacity-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-2xl p-6 rounded-xl border border-white/10 hover:border-blue-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] h-full group"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{highlight.icon}</div>
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">{highlight.title}</h3>
-                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">{highlight.description}</p>
+                    <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                      {highlight.icon}
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                      {highlight.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                      {highlight.description}
+                    </p>
                   </div>
                 </Tilt>
               ))}
@@ -255,8 +289,18 @@ const About = () => {
             >
               <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10 hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
                 <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-4 flex items-center gap-2">
-                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  <svg
+                    className="w-6 h-6 text-purple-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
                   </svg>
                   Statistics
                 </h3>
@@ -264,13 +308,19 @@ const About = () => {
                   {profile?.animatedStats?.map((stat: any, index: number) => (
                     <div key={index}>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-300 text-sm font-medium">{stat.label}</span>
-                        <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{stats[stat.label] || 0}+</span>
+                        <span className="text-gray-300 text-sm font-medium">
+                          {stat.label}
+                        </span>
+                        <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                          {stats[stat.label] || 0}+
+                        </span>
                       </div>
                       <div className="h-2.5 bg-white/10 rounded-full overflow-hidden relative">
-                        <div 
+                        <div
                           className={`h-full rounded-full transition-all duration-2000 relative overflow-hidden ${getProgressGradient(index)}`}
-                          style={{ width: `${Math.min((stats[stat.label] || 0) / stat.value * 100, 100)}%` }}
+                          style={{
+                            width: `${Math.min(((stats[stat.label] || 0) / stat.value) * 100, 100)}%`,
+                          }}
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
                         </div>
@@ -303,8 +353,12 @@ const About = () => {
                       <span className="text-xl">💼</span>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Role</div>
-                      <div className="text-white font-semibold group-hover:text-blue-400 transition-colors">{profile?.role || 'DevOps Engineer'}</div>
+                      <div className="text-xs text-gray-400 uppercase tracking-wider">
+                        Role
+                      </div>
+                      <div className="text-white font-semibold group-hover:text-blue-400 transition-colors">
+                        {profile?.role || "DevOps Engineer"}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 group cursor-pointer">
@@ -312,8 +366,12 @@ const About = () => {
                       <span className="text-xl">🌍</span>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Location</div>
-                      <div className="text-white font-semibold group-hover:text-green-400 transition-colors">{profile?.location || 'India'}</div>
+                      <div className="text-xs text-gray-400 uppercase tracking-wider">
+                        Location
+                      </div>
+                      <div className="text-white font-semibold group-hover:text-green-400 transition-colors">
+                        {profile?.location || "India"}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 group cursor-pointer">
@@ -321,8 +379,13 @@ const About = () => {
                       <span className="text-xl">✅</span>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Availability</div>
-                      <div className="text-green-400 font-semibold group-hover:text-green-300 transition-colors">{profile?.availability?.message || 'Open to opportunities'}</div>
+                      <div className="text-xs text-gray-400 uppercase tracking-wider">
+                        Availability
+                      </div>
+                      <div className="text-green-400 font-semibold group-hover:text-green-300 transition-colors">
+                        {profile?.availability?.message ||
+                          "Open to opportunities"}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -330,25 +393,37 @@ const About = () => {
             </Tilt>
 
             {/* Download Resume */}
-            <button 
+            <button
               onClick={async () => {
                 try {
-                  const btn = document.getElementById('resume-btn');
-                  if (btn) btn.innerText = 'Generating...';
-                  await import('../../services/resumeService').then(mod => mod.generateResume());
-                  if (btn) btn.innerText = 'Download Resume';
+                  const btn = document.getElementById("resume-btn");
+                  if (btn) btn.innerText = "Generating...";
+                  await import("../../services/resumeService").then((mod) =>
+                    mod.generateResume(),
+                  );
+                  if (btn) btn.innerText = "Download Resume";
                 } catch (e) {
                   console.error(e);
-                  const btn = document.getElementById('resume-btn');
-                  if (btn) btn.innerText = 'Failed to Download';
+                  const btn = document.getElementById("resume-btn");
+                  if (btn) btn.innerText = "Failed to Download";
                 }
               }}
               id="resume-btn"
               className="fade-in-element opacity-0 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center gap-3 group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-              <svg className="w-6 h-6 relative group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              <svg
+                className="w-6 h-6 relative group-hover:animate-bounce"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
               <span className="relative">Download Resume</span>
             </button>
@@ -372,24 +447,30 @@ const About = () => {
               Let's Work Together
             </h2>
             <p className="text-gray-300 text-base mb-8 max-w-2xl mx-auto leading-relaxed">
-              I'm always interested in hearing about new projects and opportunities. Whether you have a question or just want to say hi, feel free to reach out!
+              I'm always interested in hearing about new projects and
+              opportunities. Whether you have a question or just want to say hi,
+              feel free to reach out!
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a 
+              <a
                 href="/contact"
                 className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] group relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
                 <span className="relative">Get in Touch</span>
               </a>
-              <a 
-                href={profile?.contact?.linkedin || '#'}
+              <a
+                href={profile?.contact?.linkedin || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold backdrop-blur-md border border-white/20 hover:border-blue-500/40 transition-all duration-300 flex items-center gap-3 group hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]"
               >
-                <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                <svg
+                  className="w-6 h-6 group-hover:scale-110 transition-transform"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                 </svg>
                 LinkedIn
               </a>

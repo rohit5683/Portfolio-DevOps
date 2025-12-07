@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface Particle {
   x: number;
@@ -16,13 +16,16 @@ const AnimatedBackground = () => {
   useEffect(() => {
     // Check initial theme
     const checkTheme = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
+      setIsDark(document.documentElement.classList.contains("dark"));
     };
     checkTheme();
 
     // Watch for theme changes
     const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -34,16 +37,16 @@ const AnimatedBackground = () => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Set canvas size
@@ -52,7 +55,7 @@ const AnimatedBackground = () => {
       canvas.height = window.innerHeight;
     };
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
 
     if (isMobile) {
       // ============================================
@@ -63,26 +66,52 @@ const AnimatedBackground = () => {
 
       const drawMobileAnimation = () => {
         // Clear with theme-aware background
-        ctx.fillStyle = isDark ? '#0f172a' : '#f8fafc';
+        ctx.fillStyle = isDark ? "#0f172a" : "#f8fafc";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Create animated gradient waves
         const waves = [
-          { y: canvas.height * 0.3, amplitude: 30, frequency: 0.02, speed: 0.5 },
-          { y: canvas.height * 0.5, amplitude: 40, frequency: 0.015, speed: 0.3 },
-          { y: canvas.height * 0.7, amplitude: 35, frequency: 0.025, speed: 0.4 },
+          {
+            y: canvas.height * 0.3,
+            amplitude: 30,
+            frequency: 0.02,
+            speed: 0.5,
+          },
+          {
+            y: canvas.height * 0.5,
+            amplitude: 40,
+            frequency: 0.015,
+            speed: 0.3,
+          },
+          {
+            y: canvas.height * 0.7,
+            amplitude: 35,
+            frequency: 0.025,
+            speed: 0.4,
+          },
         ];
 
-        const waveColors = isDark 
-          ? ['rgba(59, 130, 246, 0.1)', 'rgba(139, 92, 246, 0.08)', 'rgba(59, 130, 246, 0.06)']
-          : ['rgba(59, 130, 246, 0.05)', 'rgba(139, 92, 246, 0.04)', 'rgba(59, 130, 246, 0.03)'];
+        const waveColors = isDark
+          ? [
+              "rgba(59, 130, 246, 0.1)",
+              "rgba(139, 92, 246, 0.08)",
+              "rgba(59, 130, 246, 0.06)",
+            ]
+          : [
+              "rgba(59, 130, 246, 0.05)",
+              "rgba(139, 92, 246, 0.04)",
+              "rgba(59, 130, 246, 0.03)",
+            ];
 
         waves.forEach((wave, index) => {
           ctx.beginPath();
           ctx.moveTo(0, wave.y);
 
           for (let x = 0; x < canvas.width; x++) {
-            const y = wave.y + Math.sin(x * wave.frequency + offset * wave.speed) * wave.amplitude;
+            const y =
+              wave.y +
+              Math.sin(x * wave.frequency + offset * wave.speed) *
+                wave.amplitude;
             ctx.lineTo(x, y);
           }
 
@@ -102,13 +131,31 @@ const AnimatedBackground = () => {
         ];
 
         const orbColors = isDark
-          ? ['rgba(59, 130, 246, 0.15)', 'rgba(139, 92, 246, 0.12)', 'rgba(59, 130, 246, 0.1)']
-          : ['rgba(59, 130, 246, 0.08)', 'rgba(139, 92, 246, 0.06)', 'rgba(59, 130, 246, 0.05)'];
+          ? [
+              "rgba(59, 130, 246, 0.15)",
+              "rgba(139, 92, 246, 0.12)",
+              "rgba(59, 130, 246, 0.1)",
+            ]
+          : [
+              "rgba(59, 130, 246, 0.08)",
+              "rgba(139, 92, 246, 0.06)",
+              "rgba(59, 130, 246, 0.05)",
+            ];
 
         orbs.forEach((orb, index) => {
-          const gradient = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius);
+          const gradient = ctx.createRadialGradient(
+            orb.x,
+            orb.y,
+            0,
+            orb.x,
+            orb.y,
+            orb.radius,
+          );
           gradient.addColorStop(0, orbColors[index]);
-          gradient.addColorStop(1, isDark ? 'rgba(59, 130, 246, 0)' : 'rgba(59, 130, 246, 0)');
+          gradient.addColorStop(
+            1,
+            isDark ? "rgba(59, 130, 246, 0)" : "rgba(59, 130, 246, 0)",
+          );
 
           ctx.beginPath();
           ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
@@ -124,15 +171,20 @@ const AnimatedBackground = () => {
 
       return () => {
         cancelAnimationFrame(animationId);
-        window.removeEventListener('resize', resizeCanvas);
+        window.removeEventListener("resize", resizeCanvas);
       };
     } else {
       // ============================================
       // DESKTOP: Original particle system
       // ============================================
-      
+
       // Gradient mesh points for background
-      const gradientPoints: Array<{ x: number; y: number; vx: number; vy: number }> = [];
+      const gradientPoints: Array<{
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+      }> = [];
       const numGradientPoints = 4;
 
       for (let i = 0; i < numGradientPoints; i++) {
@@ -161,19 +213,19 @@ const AnimatedBackground = () => {
 
       // Mouse interaction
       let mouse = { x: 0, y: 0, radius: 150 };
-      
+
       const handleMouseMove = (e: MouseEvent) => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
       };
-      
-      window.addEventListener('mousemove', handleMouseMove);
+
+      window.addEventListener("mousemove", handleMouseMove);
 
       // Animation loop
       let animationId: number;
       const animate = () => {
         // Draw gradient background based on theme
-        ctx.fillStyle = isDark ? '#0f172a' : '#f8fafc';
+        ctx.fillStyle = isDark ? "#0f172a" : "#f8fafc";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Update and draw gradient blobs
@@ -185,21 +237,27 @@ const AnimatedBackground = () => {
           if (point.y < 0 || point.y > canvas.height) point.vy *= -1;
 
           const gradient = ctx.createRadialGradient(
-            point.x, point.y, 0,
-            point.x, point.y, 350
+            point.x,
+            point.y,
+            0,
+            point.x,
+            point.y,
+            350,
           );
 
-          const colors = isDark ? [
-            ['rgba(59, 130, 246, 0.15)', 'rgba(59, 130, 246, 0)'],
-            ['rgba(139, 92, 246, 0.15)', 'rgba(139, 92, 246, 0)'],
-            ['rgba(236, 72, 153, 0.15)', 'rgba(236, 72, 153, 0)'],
-            ['rgba(34, 211, 238, 0.15)', 'rgba(34, 211, 238, 0)'],
-          ] : [
-            ['rgba(59, 130, 246, 0.08)', 'rgba(59, 130, 246, 0)'],
-            ['rgba(139, 92, 246, 0.08)', 'rgba(139, 92, 246, 0)'],
-            ['rgba(236, 72, 153, 0.08)', 'rgba(236, 72, 153, 0)'],
-            ['rgba(34, 211, 238, 0.08)', 'rgba(34, 211, 238, 0)'],
-          ];
+          const colors = isDark
+            ? [
+                ["rgba(59, 130, 246, 0.15)", "rgba(59, 130, 246, 0)"],
+                ["rgba(139, 92, 246, 0.15)", "rgba(139, 92, 246, 0)"],
+                ["rgba(236, 72, 153, 0.15)", "rgba(236, 72, 153, 0)"],
+                ["rgba(34, 211, 238, 0.15)", "rgba(34, 211, 238, 0)"],
+              ]
+            : [
+                ["rgba(59, 130, 246, 0.08)", "rgba(59, 130, 246, 0)"],
+                ["rgba(139, 92, 246, 0.08)", "rgba(139, 92, 246, 0)"],
+                ["rgba(236, 72, 153, 0.08)", "rgba(236, 72, 153, 0)"],
+                ["rgba(34, 211, 238, 0.08)", "rgba(34, 211, 238, 0)"],
+              ];
 
           const [color1, color2] = colors[index % colors.length];
           gradient.addColorStop(0, color1);
@@ -215,7 +273,7 @@ const AnimatedBackground = () => {
           const dx = mouse.x - particle.x;
           const dy = mouse.y - particle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          
+
           if (distance < mouse.radius) {
             const force = (mouse.radius - distance) / mouse.radius;
             const angle = Math.atan2(dy, dx);
@@ -244,7 +302,9 @@ const AnimatedBackground = () => {
           // Draw particle with theme-aware color
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-          ctx.fillStyle = isDark ? 'rgba(96, 165, 250, 0.8)' : 'rgba(59, 130, 246, 0.6)';
+          ctx.fillStyle = isDark
+            ? "rgba(96, 165, 250, 0.8)"
+            : "rgba(59, 130, 246, 0.6)";
           ctx.fill();
         });
 
@@ -260,8 +320,8 @@ const AnimatedBackground = () => {
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
               const opacity = (1 - distance / maxDistance) * 0.5;
-              ctx.strokeStyle = isDark 
-                ? `rgba(96, 165, 250, ${opacity})` 
+              ctx.strokeStyle = isDark
+                ? `rgba(96, 165, 250, ${opacity})`
                 : `rgba(59, 130, 246, ${opacity * 0.7})`;
               ctx.lineWidth = 1;
               ctx.stroke();
@@ -275,8 +335,8 @@ const AnimatedBackground = () => {
       animate();
 
       return () => {
-        window.removeEventListener('resize', resizeCanvas);
-        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener("resize", resizeCanvas);
+        window.removeEventListener("mousemove", handleMouseMove);
         cancelAnimationFrame(animationId);
       };
     }
