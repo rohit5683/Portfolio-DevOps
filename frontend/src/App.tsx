@@ -19,6 +19,7 @@ import UserManagement from './pages/admin/UserManagement';
 import TotpSetup from './pages/admin/TotpSetup';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import Layout from './components/layout/Layout';
+import AdminLayout from './components/layout/AdminLayout';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -55,14 +56,16 @@ function App() {
           <Route path="/portal/login" element={<Login />} />
           <Route path="/portal/totp-setup" element={<TotpSetup />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/portal" element={<Dashboard />} />
-            <Route path="/portal/profile" element={<ProfileEdit />} />
-            <Route path="/portal/about" element={<AboutEdit />} />
-            <Route path="/portal/projects" element={<ProjectsEdit />} />
-            <Route path="/portal/experience" element={<ExperienceEdit />} />
-            <Route path="/portal/education" element={<EducationEdit />} />
-            <Route path="/portal/skills" element={<SkillsEdit />} />
-            <Route path="/portal/users" element={<UserManagement />} />
+            <Route element={<AdminLayout />}>
+              <Route path="/portal" element={<Dashboard />} />
+              <Route path="/portal/profile" element={<ProfileEdit />} />
+              <Route path="/portal/about" element={<AboutEdit />} />
+              <Route path="/portal/projects" element={<ProjectsEdit />} />
+              <Route path="/portal/experience" element={<ExperienceEdit />} />
+              <Route path="/portal/education" element={<EducationEdit />} />
+              <Route path="/portal/skills" element={<SkillsEdit />} />
+              <Route path="/portal/users" element={<UserManagement />} />
+            </Route>
           </Route>
         </Routes>
       </Router>
