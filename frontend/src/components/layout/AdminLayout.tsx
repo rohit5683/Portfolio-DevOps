@@ -5,7 +5,7 @@ const AdminLayout = () => {
   return (
     <>
       {/* Session Timer - Floating Top Center */}
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 backdrop-blur-sm rounded-lg shadow-lg">
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
         <SessionTimer />
       </div>
 

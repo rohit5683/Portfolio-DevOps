@@ -22,10 +22,10 @@ const SessionTimer = () => {
   };
 
   return (
-    <div className={`flex items-center gap-2 md:gap-3 px-3 py-1.5 md:px-4 md:py-2 rounded-full backdrop-blur-md shadow-lg transition-all duration-300 ${
+    <div className={`flex items-center gap-2 md:gap-3 px-3 py-1.5 md:px-4 md:py-2 rounded-full backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-300 ${
       showWarning 
         ? 'bg-red-500/10 shadow-red-500/20 animate-pulse' 
-        : 'bg-white/5 shadow-blue-500/10 hover:shadow-blue-500/20'
+        : 'bg-gradient-to-br from-white/10 to-white/5 shadow-black/20 hover:shadow-black/30 hover:bg-white/10'
     }`}>
       <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${showWarning ? 'bg-red-500' : 'bg-blue-500 animate-pulse'}`}></div>
       <div className="flex flex-col leading-none">
