@@ -35,7 +35,7 @@ const AboutEdit = () => {
           <h1 className="text-3xl font-bold text-white">Edit About Section</h1>
           <button 
             onClick={() => navigate('/portal')}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
             Back to Dashboard
           </button>
@@ -67,7 +67,7 @@ const AboutEdit = () => {
               </div>
               <button
                 onClick={() => handleSave('About Page')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save About
               </button>
@@ -87,7 +87,7 @@ const AboutEdit = () => {
               />
               <button
                 onClick={() => handleSave('About Subtitle')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Subtitle
               </button>
@@ -138,7 +138,7 @@ const AboutEdit = () => {
               </div>
               <button
                 onClick={() => handleSave('Location & Availability')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Location & Availability
               </button>
@@ -205,13 +205,13 @@ const AboutEdit = () => {
                   ...profile,
                   highlights: [...(profile.highlights || []), { icon: '🎯', title: 'New Highlight', description: 'Description here' }]
                 })}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Add Highlight
               </button>
               <button
                 onClick={() => handleSave('Highlights')}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Highlights
               </button>
@@ -278,13 +278,13 @@ const AboutEdit = () => {
                   ...profile,
                   animatedStats: [...(profile.animatedStats || []), { label: 'New Stat', value: 0, icon: '📊' }]
                 })}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Add Stat
               </button>
               <button
                 onClick={() => handleSave('Animated Stats')}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Animated Stats
               </button>

@@ -10,14 +10,29 @@ const ProfileEdit = () => {
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [editingBadgeIndex, setEditingBadgeIndex] = useState<number>(-1);
 
+  const [skills, setSkills] = useState<any[]>([]);
+
   useEffect(() => {
-    api.get('/profile').then(res => {
-      setProfile(res.data);
-      if (res.data.photoUrl) {
-        setPhotoPreview(res.data.photoUrl);
+    const fetchData = async () => {
+      try {
+        const [profileRes, skillsRes] = await Promise.all([
+          api.get('/profile'),
+          api.get('/skills')
+        ]);
+        
+        setProfile(profileRes.data);
+        if (profileRes.data.photoUrl) {
+          setPhotoPreview(profileRes.data.photoUrl);
+        }
+        setSkills(skillsRes.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch data', error);
+        setLoading(false);
       }
-      setLoading(false);
-    }).catch(console.error);
+    };
+
+    fetchData();
   }, []);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +65,18 @@ const ProfileEdit = () => {
     }
   };
 
+  const handleToggleFeatured = async (skillId: string, currentStatus: boolean) => {
+    try {
+      await api.put(`/skills/${skillId}`, { featured: !currentStatus });
+      setSkills(skills.map(skill => 
+        skill._id === skillId ? { ...skill, featured: !currentStatus } : skill
+      ));
+    } catch (error) {
+      console.error('Failed to update skill', error);
+      alert('Failed to update skill status');
+    }
+  };
+
   if (loading) return <div className="text-white text-center mt-20">Loading...</div>;
 
   return (
@@ -60,7 +87,7 @@ const ProfileEdit = () => {
           <h1 className="text-3xl font-bold text-white">Edit Profile</h1>
           <button 
             onClick={() => navigate('/portal')}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
             Back to Dashboard
           </button>
@@ -94,7 +121,7 @@ const ProfileEdit = () => {
               <p className="text-gray-400 text-xs text-center">Max size: 2MB</p>
               <button
                 onClick={() => handleSave('Photo')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Photo
               </button>
@@ -137,7 +164,7 @@ const ProfileEdit = () => {
               </div>
               <button
                 onClick={() => handleSave('Home Page')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Home Page
               </button>
@@ -172,7 +199,7 @@ const ProfileEdit = () => {
               </div>
               <button
                 onClick={() => handleSave('Contact Information')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Contact Info
               </button>
@@ -207,7 +234,7 @@ const ProfileEdit = () => {
                       input.value = '';
                     }
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 rounded-lg transition-colors"
+                  className="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 text-sm md:text-base rounded-lg transition-colors"
                 >
                   Add
                 </button>
@@ -231,7 +258,7 @@ const ProfileEdit = () => {
               </div>
               <button
                 onClick={() => handleSave('Roles')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Roles
               </button>
@@ -300,13 +327,13 @@ const ProfileEdit = () => {
                   ...profile,
                   stats: [...(profile.stats || []), { label: 'New Stat', value: '0+', icon: '📊' }]
                 })}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Add Statistic
               </button>
               <button
                 onClick={() => handleSave('Statistics')}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Statistics
               </button>
@@ -484,7 +511,7 @@ const ProfileEdit = () => {
                   setProfile({ ...profile, badges: newBadges });
                   setEditingBadgeIndex(newBadges.length - 1); // Automatically enter edit mode
                 }}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors flex items-center justify-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -493,7 +520,7 @@ const ProfileEdit = () => {
               </button>
               <button
                 onClick={() => handleSave('Badges')}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors flex items-center justify-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
@@ -504,6 +531,57 @@ const ProfileEdit = () => {
           </div>
 
 
+
+          {/* Core Technologies (Featured Skills) Card */}
+          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-white">Core Technologies</h2>
+                <p className="text-gray-400 text-sm">Select skills to display in the "Core Technologies" section on the home page.</p>
+              </div>
+              <button
+                onClick={() => navigate('/portal/skills')}
+                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Add New Skill
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {skills.map((skill) => (
+                <div 
+                  key={skill._id}
+                  onClick={() => handleToggleFeatured(skill._id, skill.featured)}
+                  className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center gap-3 ${
+                    skill.featured 
+                      ? 'bg-blue-500/20 border-blue-500/50 hover:bg-blue-500/30' 
+                      : 'bg-white/5 border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                  <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                    skill.featured ? 'bg-blue-500 border-blue-500' : 'border-gray-500'
+                  }`}>
+                    {skill.featured && (
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    {skill.iconUrl && (
+                      <img src={skill.iconUrl} alt="" className="w-6 h-6 object-contain" />
+                    )}
+                    <span className={`text-sm font-medium truncate ${skill.featured ? 'text-white' : 'text-gray-400'}`}>
+                      {skill.name}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Social Links Card */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
@@ -541,7 +619,7 @@ const ProfileEdit = () => {
               </div>
               <button
                 onClick={() => handleSave('Social Links')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
               >
                 Save Social Links
               </button>

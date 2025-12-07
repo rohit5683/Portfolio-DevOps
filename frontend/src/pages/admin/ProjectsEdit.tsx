@@ -170,7 +170,7 @@ const ProjectsEdit = () => {
           <h1 className="text-3xl font-bold text-white">Manage Projects</h1>
           <button 
             onClick={() => navigate('/portal')}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
             Back to Dashboard
           </button>
@@ -315,7 +315,7 @@ const ProjectsEdit = () => {
               <button 
                 type="submit" 
                 disabled={uploading}
-                className="flex-1 bg-green-600 px-6 py-3 rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-green-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {uploading ? 'Uploading...' : (editingId ? 'Update Project' : 'Add Project')}
               </button>
@@ -324,7 +324,7 @@ const ProjectsEdit = () => {
                 <button 
                   type="button"
                   onClick={handleCancel}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white font-bold rounded-lg transition-colors"
+                  className="px-4 py-2 md:px-6 md:py-3 text-sm md:text-base bg-gray-600 hover:bg-gray-500 text-white font-bold rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -378,13 +378,13 @@ const ProjectsEdit = () => {
               <div className="flex gap-2">
                 <button 
                   onClick={() => handleEdit(project)} 
-                  className="flex-1 bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition-colors"
+                  className="flex-1 bg-blue-600 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm rounded text-white hover:bg-blue-700 transition-colors"
                 >
                   Edit
                 </button>
                 <button 
                   onClick={() => handleDelete(project._id)} 
-                  className="flex-1 bg-red-600 px-4 py-2 rounded text-white hover:bg-red-700 transition-colors"
+                  className="flex-1 bg-red-600 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm rounded text-white hover:bg-red-700 transition-colors"
                 >
                   Delete
                 </button>

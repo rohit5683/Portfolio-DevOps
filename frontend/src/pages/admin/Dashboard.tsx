@@ -152,7 +152,7 @@ const Dashboard = () => {
             <a 
               href="/" 
               target="_blank" 
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/10 transition-all flex items-center gap-2"
+              className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/10 transition-all flex items-center gap-2"
             >
               <span>View Live Site</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@ const Dashboard = () => {
             </a>
             <button 
               onClick={logout} 
-              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg border border-red-500/20 transition-all flex items-center gap-2"
+              className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg border border-red-500/20 transition-all flex items-center gap-2"
             >
               <span>Logout</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

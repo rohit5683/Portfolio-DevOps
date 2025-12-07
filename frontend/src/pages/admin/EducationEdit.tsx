@@ -217,7 +217,7 @@ const EducationEdit = () => {
         <h1 className="text-3xl font-bold text-white">Manage Education</h1>
         <button 
           onClick={() => navigate('/portal')}
-          className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+          className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
         >
           Back to Dashboard
         </button>
@@ -433,7 +433,7 @@ const EducationEdit = () => {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-1.5 md:py-2 text-sm md:text-base rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {uploading ? 'Uploading...' : (editingId ? 'Update' : 'Add')}
                 </button>
@@ -441,7 +441,7 @@ const EducationEdit = () => {
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                    className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
                     Cancel
                   </button>
@@ -468,13 +468,13 @@ const EducationEdit = () => {
                 <div className="flex gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => handleEdit(edu)}
-                    className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors"
+                    className="p-1.5 md:p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(edu._id)}
-                    className="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                    className="p-1.5 md:p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
                   >
                     Delete
                   </button>

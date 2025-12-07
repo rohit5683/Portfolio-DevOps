@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { jwtDecode } from 'jwt-decode';
+
 
 interface AuthContextType {
   user: any;
@@ -7,7 +7,7 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
-  remainingTime: number | null;
+
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,74 +15,59 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     setUser(null);
-    setRemainingTime(null);
   }, []);
-
-  const checkTokenExpiration = useCallback((token: string) => {
-    try {
-      const decoded: any = jwtDecode(token);
-      if (decoded.exp) {
-        const currentTime = Math.floor(Date.now() / 1000);
-        const timeLeft = decoded.exp - currentTime;
-        
-        if (timeLeft <= 0) {
-          logout();
-          return null;
-        }
-        return timeLeft;
-      }
-    } catch (error) {
-      console.error('Invalid token:', error);
-      logout();
-    }
-    return null;
-  }, [logout]);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
-      const timeLeft = checkTokenExpiration(token);
-      if (timeLeft !== null) {
-        setUser({ email: 'rohit@example.com' }); // Placeholder, ideally decode from token or fetch profile
-        setRemainingTime(timeLeft);
-      }
+      setUser({ email: 'rohit@example.com' }); // Placeholder
     }
     setIsLoading(false);
-  }, [checkTokenExpiration]);
+  }, []);
 
+  // Inactivity Tracker
   useEffect(() => {
     if (!user) return;
 
-    const timer = setInterval(() => {
-      setRemainingTime((prev) => {
-        if (prev === null || prev <= 0) {
-          clearInterval(timer);
-          logout();
-          return null;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    let lastActivity = Date.now();
+    const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 minutes
 
-    return () => clearInterval(timer);
+    const updateActivity = () => {
+      lastActivity = Date.now();
+    };
+
+    const checkInactivity = () => {
+      if (Date.now() - lastActivity > INACTIVITY_LIMIT) {
+        logout();
+      }
+    };
+
+    // Events to track activity
+    const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+    events.forEach(event => window.addEventListener(event, updateActivity));
+
+    // Check every minute
+    const interval = setInterval(checkInactivity, 60 * 1000);
+
+    return () => {
+      events.forEach(event => window.removeEventListener(event, updateActivity));
+      clearInterval(interval);
+    };
   }, [user, logout]);
 
   const login = (token: string, refreshToken: string) => {
     localStorage.setItem('accessToken', token);
     localStorage.setItem('refreshToken', refreshToken);
     setUser({ email: 'rohit@example.com' }); // Placeholder
-    const timeLeft = checkTokenExpiration(token);
-    setRemainingTime(timeLeft);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user, isLoading, remainingTime }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

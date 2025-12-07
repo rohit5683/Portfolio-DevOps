@@ -152,7 +152,7 @@ const SkillsEdit = () => {
           <h1 className="text-3xl font-bold text-white">Manage Skills</h1>
           <button 
             onClick={() => navigate('/portal')}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
             Back to Dashboard
           </button>
@@ -268,7 +268,7 @@ const SkillsEdit = () => {
             <div className="flex gap-4">
               <button
                 type="submit"
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                className="px-4 py-2 md:px-6 md:py-2 text-sm md:text-base bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
                 {editingId ? 'Update Skill' : 'Add Skill'}
               </button>
@@ -276,7 +276,7 @@ const SkillsEdit = () => {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 md:px-6 md:py-2 text-sm md:text-base bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -337,13 +337,13 @@ const SkillsEdit = () => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleEdit(skill)}
-                    className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
+                    className="flex-1 px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-xs md:text-sm"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(skill._id)}
-                    className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm"
+                    className="flex-1 px-3 py-1.5 md:px-4 md:py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-xs md:text-sm"
                   >
                     Delete
                   </button>
