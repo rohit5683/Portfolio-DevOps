@@ -308,7 +308,7 @@ const Certifications = () => {
           <div className="h-12 w-96 bg-white/10 rounded-lg mx-auto mb-4 animate-pulse"></div>
           <div className="h-6 w-48 bg-white/10 rounded-lg mx-auto animate-pulse"></div>
         </div>
-        <div className="relative w-[90vw] max-w-[800px] h-[420px] md:h-[450px]">
+        <div className="relative w-[85vw] max-w-[800px] h-[420px] md:h-[450px]">
           <SkeletonCard />
         </div>
       </div>
@@ -336,7 +336,7 @@ const Certifications = () => {
         <p className="text-gray-400">Swipe to explore my credentials</p>
       </div>
 
-      <div className="relative w-[90vw] max-w-[800px] h-[420px] md:h-[450px] perspective-1000">
+      <div className="relative w-[85vw] max-w-[800px] h-[420px] md:h-[450px] perspective-1000">
         {certifications.length > 0 ? (
           <AnimatePresence initial={false}>
             {/* Render cards in reverse order so the current one is on top */}
