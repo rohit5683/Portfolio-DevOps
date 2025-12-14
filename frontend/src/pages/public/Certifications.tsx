@@ -125,6 +125,35 @@ const ImageGallery = ({
   );
 };
 
+const SkeletonCard = () => (
+  <div className="w-full h-full bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col md:flex-row relative animate-pulse">
+    {/* Image Section Skeleton */}
+    <div className="relative h-48 md:h-full md:w-2/5 bg-white/5"></div>
+
+    {/* Content Section Skeleton */}
+    <div className="flex-1 p-6 md:p-8 flex flex-col justify-between bg-black/20">
+      <div>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-6 w-20 bg-white/10 rounded-full"></div>
+          <div className="h-6 w-24 bg-white/10 rounded-full"></div>
+          <div className="h-4 w-32 bg-white/10 rounded ml-auto"></div>
+        </div>
+        <div className="h-8 w-3/4 bg-white/10 rounded mb-4"></div>
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-white/10 rounded"></div>
+          <div className="h-4 w-full bg-white/10 rounded"></div>
+          <div className="h-4 w-2/3 bg-white/10 rounded"></div>
+        </div>
+      </div>
+
+      <div className="flex gap-4 mt-6">
+        <div className="h-12 flex-1 bg-white/10 rounded-xl"></div>
+        <div className="h-12 w-12 bg-white/10 rounded-xl"></div>
+      </div>
+    </div>
+  </div>
+);
+
 const Card = ({ cert, index, setIndex, openGallery }: any) => {
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-30, 30]);
@@ -276,8 +305,14 @@ const Certifications = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-[400px] h-[600px] bg-white/5 rounded-3xl animate-pulse"></div>
+      <div className="min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden relative">
+        <div className="text-center mb-12 relative z-10">
+          <div className="h-12 w-96 bg-white/10 rounded-lg mx-auto mb-4 animate-pulse"></div>
+          <div className="h-6 w-48 bg-white/10 rounded-lg mx-auto animate-pulse"></div>
+        </div>
+        <div className="relative w-[90vw] max-w-[800px] h-[450px]">
+          <SkeletonCard />
+        </div>
       </div>
     );
   }
