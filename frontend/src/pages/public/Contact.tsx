@@ -184,7 +184,7 @@ const Contact = () => {
         description="Get in touch with me for freelance projects, job opportunities, or collaboration."
         keywords={["Contact", "Hire DevOps Engineer", "Freelance"]}
       />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
