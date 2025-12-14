@@ -2,6 +2,65 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+    [{ align: [] }],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "align",
+  "link",
+  "image",
+];
+
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error("ReactQuill Error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
+          <h3 className="font-bold mb-2">Editor Error</h3>
+          <p className="text-sm font-mono">{this.state.error?.message}</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 const ExperienceEdit = () => {
   const navigate = useNavigate();
@@ -65,22 +124,39 @@ const ExperienceEdit = () => {
   };
 
   const handleEdit = (exp: any) => {
+    console.log("Editing experience:", exp);
     setEditingId(exp._id);
-    setNewExp({
-      title: exp.title,
-      company: exp.company,
-      startDate: exp.startDate.split("T")[0],
-      endDate: exp.endDate ? exp.endDate.split("T")[0] : "",
-      description: exp.description,
-      roleDescription: exp.roleDescription || "",
-      companyLogo: exp.companyLogo || "",
-      techStack: exp.techStack ? exp.techStack.join(", ") : "",
-      achievements: "",
-      location: exp.location || "",
-    });
-    setAchievementsList(exp.achievements || []);
-    setChallengesList(exp.challenges || []);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
+    try {
+      const formatDate = (dateString: string) => {
+        if (!dateString) return "";
+        try {
+          return dateString.split("T")[0];
+        } catch (e) {
+          console.error("Error formatting date:", dateString, e);
+          return "";
+        }
+      };
+
+      setNewExp({
+        title: exp.title || "",
+        company: exp.company || "",
+        startDate: formatDate(exp.startDate),
+        endDate: formatDate(exp.endDate),
+        description: exp.description || "",
+        roleDescription: exp.roleDescription || "",
+        companyLogo: exp.companyLogo || "",
+        techStack: exp.techStack ? (Array.isArray(exp.techStack) ? exp.techStack.join(", ") : exp.techStack) : "",
+        achievements: "",
+        location: exp.location || "",
+      });
+      setAchievementsList(exp.achievements || []);
+      setChallengesList(exp.challenges || []);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      console.error("Error in handleEdit:", error);
+      alert("Failed to load experience for editing. Please check console for details.");
+    }
   };
 
   const handleCancelEdit = () => {
@@ -104,37 +180,46 @@ const ExperienceEdit = () => {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const expData = {
-      ...newExp,
-      techStack: newExp.techStack
-        .split(",")
-        .map((t) => t.trim())
-        .filter((t) => t),
-      achievements: achievementsList,
-      challenges: challengesList,
-    };
+    try {
+      const expData = {
+        ...newExp,
+        techStack: typeof newExp.techStack === 'string' 
+          ? newExp.techStack.split(",").map((t) => t.trim()).filter((t) => t)
+          : newExp.techStack, // Handle case where it might already be an array (though it shouldn't be)
+        achievements: achievementsList,
+        challenges: challengesList,
+      };
+      console.log("Submitting experience data:", expData);
 
-    if (editingId) {
-      await api.put(`/experience/${editingId}`, expData);
-    } else {
-      await api.post("/experience", expData);
+      if (editingId) {
+        await api.put(`/experience/${editingId}`, expData);
+        alert("Experience updated successfully!");
+      } else {
+        await api.post("/experience", expData);
+        alert("Experience added successfully!");
+      }
+
+      // Only clear form on success
+      setEditingId(null);
+      setNewExp({
+        title: "",
+        company: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+        roleDescription: "",
+        companyLogo: "",
+        techStack: "",
+        achievements: "",
+        location: "",
+      });
+      setAchievementsList([]);
+      setChallengesList([]);
+      fetchExperience();
+    } catch (error) {
+      console.error("Error saving experience:", error);
+      alert("Failed to save experience. Please check the console for details.");
     }
-    setEditingId(null);
-    setNewExp({
-      title: "",
-      company: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-      roleDescription: "",
-      companyLogo: "",
-      techStack: "",
-      achievements: "",
-      location: "",
-    });
-    setAchievementsList([]);
-    setChallengesList([]);
-    fetchExperience();
   };
 
   return (
@@ -166,7 +251,7 @@ const ExperienceEdit = () => {
                   placeholder="e.g. DevOps Engineer"
                   value={newExp.title}
                   onChange={(e) =>
-                    setNewExp({ ...newExp, title: e.target.value })
+                    setNewExp((prev) => ({ ...prev, title: e.target.value }))
                   }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
                   required
@@ -181,7 +266,7 @@ const ExperienceEdit = () => {
                   placeholder="e.g. Tech Corp"
                   value={newExp.company}
                   onChange={(e) =>
-                    setNewExp({ ...newExp, company: e.target.value })
+                    setNewExp((prev) => ({ ...prev, company: e.target.value }))
                   }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
                   required
@@ -199,7 +284,7 @@ const ExperienceEdit = () => {
                   placeholder="https://example.com/logo.png"
                   value={newExp.companyLogo}
                   onChange={(e) =>
-                    setNewExp({ ...newExp, companyLogo: e.target.value })
+                    setNewExp((prev) => ({ ...prev, companyLogo: e.target.value }))
                   }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
@@ -213,7 +298,7 @@ const ExperienceEdit = () => {
                   placeholder="e.g. Remote, New York, NY"
                   value={newExp.location}
                   onChange={(e) =>
-                    setNewExp({ ...newExp, location: e.target.value })
+                    setNewExp((prev) => ({ ...prev, location: e.target.value }))
                   }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
@@ -229,7 +314,7 @@ const ExperienceEdit = () => {
                   type="date"
                   value={newExp.startDate}
                   onChange={(e) =>
-                    setNewExp({ ...newExp, startDate: e.target.value })
+                    setNewExp((prev) => ({ ...prev, startDate: e.target.value }))
                   }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                   required
@@ -243,7 +328,7 @@ const ExperienceEdit = () => {
                   type="date"
                   value={newExp.endDate}
                   onChange={(e) =>
-                    setNewExp({ ...newExp, endDate: e.target.value })
+                    setNewExp((prev) => ({ ...prev, endDate: e.target.value }))
                   }
                   className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
                 />
@@ -259,7 +344,7 @@ const ExperienceEdit = () => {
                 placeholder="e.g. AWS, Docker, Kubernetes, Jenkins"
                 value={newExp.techStack}
                 onChange={(e) =>
-                  setNewExp({ ...newExp, techStack: e.target.value })
+                  setNewExp((prev) => ({ ...prev, techStack: e.target.value }))
                 }
                 className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
               />
@@ -269,29 +354,89 @@ const ExperienceEdit = () => {
               <label className="block text-gray-300 text-sm font-semibold mb-2">
                 Description
               </label>
-              <textarea
-                placeholder="Brief overview of the role..."
-                value={newExp.description}
-                onChange={(e) =>
-                  setNewExp({ ...newExp, description: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-24"
-                required
-              />
+              <div className="bg-white/5 rounded-lg border border-white/10">
+                <ErrorBoundary>
+                  <ReactQuill
+                    theme="snow"
+                    value={newExp.description}
+                    onChange={(content) => {
+                      console.log("Description updated:", content);
+                      setNewExp((prev) => ({ ...prev, description: content }));
+                    }}
+                    modules={modules}
+                    formats={formats}
+                    className="text-white [&_.ql-editor]:min-h-[100px] [&_.ql-toolbar]:border-white/10 [&_.ql-container]:border-white/10 [&_.ql-editor]:text-base"
+                  />
+                </ErrorBoundary>
+              </div>
             </div>
 
             <div>
               <label className="block text-gray-300 text-sm font-semibold mb-2">
                 Detailed Role Description
               </label>
-              <textarea
-                placeholder="Comprehensive description of responsibilities and impact..."
-                value={newExp.roleDescription}
-                onChange={(e) =>
-                  setNewExp({ ...newExp, roleDescription: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-48"
-              />
+              <div className="bg-white/5 rounded-lg border border-white/10">
+                <style>
+                  {`
+                    /* Toolbar Icons - Stroke */
+                    .ql-snow.ql-toolbar button svg .ql-stroke,
+                    .ql-snow .ql-toolbar button svg .ql-stroke,
+                    .ql-snow.ql-toolbar button svg line,
+                    .ql-snow.ql-toolbar button svg path,
+                    .ql-snow.ql-toolbar button svg rect,
+                    .ql-snow.ql-toolbar button svg polyline {
+                      stroke: #e5e7eb !important;
+                    }
+                    
+                    /* Toolbar Icons - Fill */
+                    .ql-snow.ql-toolbar button svg .ql-fill,
+                    .ql-snow .ql-toolbar button svg .ql-fill {
+                      fill: #e5e7eb !important;
+                    }
+                    
+                    /* Active State */
+                    .ql-snow.ql-toolbar button.ql-active svg .ql-stroke {
+                      stroke: #60a5fa !important; /* blue-400 */
+                    }
+                    .ql-snow.ql-toolbar button.ql-active svg .ql-fill {
+                      fill: #60a5fa !important;
+                    }
+
+                    /* Picker (Dropdowns) */
+                    .ql-snow .ql-picker { color: #e5e7eb !important; }
+                    .ql-snow .ql-picker-label { color: #e5e7eb !important; }
+                    .ql-snow .ql-picker-label svg .ql-stroke { stroke: #e5e7eb !important; }
+                    .ql-snow .ql-picker-options { background-color: #1f2937 !important; border-color: #374151 !important; }
+                    .ql-snow .ql-picker-item { color: #e5e7eb !important; }
+                    .ql-snow .ql-picker-item:hover { color: #60a5fa !important; }
+
+                    /* Editor Content */
+                    .ql-editor { color: #e5e7eb !important; min-height: 200px; }
+                    .ql-editor.ql-blank::before { color: #9ca3af !important; font-style: normal !important; }
+                    
+                    /* Borders */
+                    .ql-toolbar { border-color: rgba(255, 255, 255, 0.1) !important; }
+                    .ql-container { border-color: rgba(255, 255, 255, 0.1) !important; }
+
+                    /* Lists - Override Tailwind Reset */
+                    .ql-editor ol { list-style-type: decimal !important; padding-left: 1.5em !important; }
+                    .ql-editor ul { list-style-type: disc !important; padding-left: 1.5em !important; }
+                    .ql-editor li { margin-bottom: 0.5em !important; }
+                  `}
+                </style>
+                <ErrorBoundary>
+                  <ReactQuill
+                    theme="snow"
+                    value={newExp.roleDescription}
+                    onChange={(content) =>
+                      setNewExp((prev) => ({ ...prev, roleDescription: content }))
+                    }
+                    modules={modules}
+                    formats={formats}
+                    className="text-white"
+                  />
+                </ErrorBoundary>
+              </div>
             </div>
 
             {/* Achievements Section */}

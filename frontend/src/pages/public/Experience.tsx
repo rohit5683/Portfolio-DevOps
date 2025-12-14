@@ -4,6 +4,7 @@ import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
 import Modal from "../../components/common/Modal";
+import DOMPurify from "dompurify";
 
 const SpotlightCard = ({ 
   children, 
@@ -315,8 +316,8 @@ const Experience = () => {
                       </div>
 
                       {/* Description */}
-                      <p className="text-gray-300 text-xs leading-relaxed mb-3">
-                        {exp.description}
+                      <p className="text-gray-300 text-xs leading-relaxed mb-3 line-clamp-3">
+                        {exp.description?.replace(/<[^>]*>?/gm, '')}
                       </p>
 
                       {/* Tech Stack */}
@@ -447,6 +448,48 @@ const Experience = () => {
         .animate-fadeInUp {
           animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
+
+        /* Rich Text Content Styles */
+        .rich-text-content p { margin-bottom: 1rem; }
+        .rich-text-content p:last-child { margin-bottom: 0; }
+        
+        /* Lists */
+        .rich-text-content ul { list-style-type: disc !important; padding-left: 1.5rem !important; margin-bottom: 1rem; }
+        .rich-text-content ol { list-style-type: decimal !important; padding-left: 1.5rem !important; margin-bottom: 1rem; }
+        .rich-text-content li { margin-bottom: 0.25rem; }
+        
+        /* Nested Lists */
+        .rich-text-content ul ul, .rich-text-content ol ul { list-style-type: circle !important; margin-left: 1.5rem !important; }
+        .rich-text-content ul ol, .rich-text-content ol ol { list-style-type: lower-alpha !important; margin-left: 1.5rem !important; }
+
+        /* Quill Specific List Handling */
+        .rich-text-content li[data-list="bullet"] { list-style-type: disc !important; }
+        .rich-text-content li[data-list="ordered"] { list-style-type: decimal !important; }
+        .rich-text-content .ql-indent-1 { margin-left: 2rem !important; }
+        .rich-text-content .ql-indent-2 { margin-left: 4rem !important; }
+        .rich-text-content .ql-indent-3 { margin-left: 6rem !important; }
+        .rich-text-content .ql-indent-4 { margin-left: 8rem !important; }
+        .rich-text-content .ql-indent-5 { margin-left: 10rem !important; }
+        .rich-text-content .ql-indent-6 { margin-left: 12rem !important; }
+        .rich-text-content .ql-indent-7 { margin-left: 14rem !important; }
+        .rich-text-content .ql-indent-8 { margin-left: 16rem !important; }
+        
+        .rich-text-content .ql-ui { display: none !important; }
+        .rich-text-content blockquote { border-left: 4px solid #6b7280; padding-left: 1rem; font-style: italic; margin-bottom: 1rem; }
+        
+        /* Typography */
+        .rich-text-content h1 { font-size: 1.5rem !important; font-weight: 800 !important; color: white !important; margin-top: 1.5rem; margin-bottom: 1rem; }
+        .rich-text-content h2 { font-size: 1.25rem !important; font-weight: 700 !important; color: white !important; margin-top: 1.25rem; margin-bottom: 0.75rem; }
+        .rich-text-content h3 { font-size: 1.1rem !important; font-weight: 700 !important; color: white !important; margin-top: 1rem; margin-bottom: 0.5rem; }
+        .rich-text-content strong, .rich-text-content b { font-weight: 700 !important; color: white !important; }
+        
+        /* Alignment */
+        .rich-text-content .ql-align-center { text-align: center; }
+        .rich-text-content .ql-align-right { text-align: right; }
+        .rich-text-content .ql-align-justify { text-align: justify; }
+
+        .rich-text-content a { color: #60a5fa; text-decoration: underline; }
+        .rich-text-content a:hover { color: #93c5fd; }
 
         @keyframes float {
           0%, 100% {
@@ -588,10 +631,12 @@ const Experience = () => {
                   </div>
                   Role Overview
                 </h4>
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-gray-300 leading-relaxed whitespace-pre-wrap text-sm/7 font-light">
-                    {selectedExperience.description}
-                  </p>
+                <div className="text-gray-300 leading-relaxed text-sm/7 font-light rich-text-content">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(selectedExperience.description),
+                    }}
+                  />
                 </div>
               </div>
 
@@ -606,10 +651,12 @@ const Experience = () => {
                     </div>
                     Description
                   </h4>
-                  <div className="prose prose-invert max-w-none">
-                    <p className="text-gray-300 leading-relaxed whitespace-pre-wrap text-sm/7 font-light">
-                      {selectedExperience.roleDescription}
-                    </p>
+                  <div className="text-gray-300 leading-relaxed text-sm/7 font-light rich-text-content">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(selectedExperience.roleDescription),
+                      }}
+                    />
                   </div>
                 </div>
               )}
