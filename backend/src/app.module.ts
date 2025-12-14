@@ -14,6 +14,7 @@ import { SkillsModule } from './skills/skills.module';
 import { UploadModule } from './upload/upload.module';
 import { EmailModule } from './email/email.module';
 import { ContactModule } from './contact/contact.module';
+import { CertificationsModule } from './certifications/certifications.module';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { ContactModule } from './contact/contact.module';
     ExperienceModule,
     EducationModule,
     SkillsModule,
-    SkillsModule,
+    CertificationsModule,
     UploadModule,
     EmailModule,
     ContactModule,

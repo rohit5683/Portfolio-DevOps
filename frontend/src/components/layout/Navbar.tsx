@@ -22,6 +22,7 @@ const Navbar = () => {
     { path: "/projects", label: "Projects", icon: "🚀" },
     { path: "/experience", label: "Experience", icon: "💼" },
     { path: "/education", label: "Education", icon: "🎓" },
+    { path: "/certifications", label: "Certifications", icon: "📜" },
   ];
 
   const isActive = (path: string) => {

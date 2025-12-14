@@ -12,6 +12,7 @@ const ExperienceEdit = () => {
     startDate: "",
     endDate: "",
     description: "",
+    roleDescription: "",
     companyLogo: "",
     techStack: "",
     achievements: "",
@@ -19,6 +20,8 @@ const ExperienceEdit = () => {
   });
   const [achievementInput, setAchievementInput] = useState("");
   const [achievementsList, setAchievementsList] = useState<string[]>([]);
+  const [challengeInput, setChallengeInput] = useState("");
+  const [challengesList, setChallengesList] = useState<string[]>([]);
 
   useEffect(() => {
     fetchExperience();
@@ -49,6 +52,17 @@ const ExperienceEdit = () => {
     setAchievementsList(achievementsList.filter((_, i) => i !== index));
   };
 
+  const handleAddChallenge = () => {
+    if (challengeInput.trim()) {
+      setChallengesList([...challengesList, challengeInput.trim()]);
+      setChallengeInput("");
+    }
+  };
+
+  const handleRemoveChallenge = (index: number) => {
+    setChallengesList(challengesList.filter((_, i) => i !== index));
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -59,6 +73,7 @@ const ExperienceEdit = () => {
         .map((t) => t.trim())
         .filter((t) => t),
       achievements: achievementsList,
+      challenges: challengesList,
     };
 
     await api.post("/experience", expData);
@@ -68,12 +83,14 @@ const ExperienceEdit = () => {
       startDate: "",
       endDate: "",
       description: "",
+      roleDescription: "",
       companyLogo: "",
       techStack: "",
       achievements: "",
       location: "",
     });
     setAchievementsList([]);
+    setChallengesList([]);
     fetchExperience();
   };
 
@@ -210,13 +227,27 @@ const ExperienceEdit = () => {
                 Description
               </label>
               <textarea
-                placeholder="Describe your responsibilities and achievements..."
+                placeholder="Brief overview of the role..."
                 value={newExp.description}
                 onChange={(e) =>
                   setNewExp({ ...newExp, description: e.target.value })
                 }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-32"
+                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-24"
                 required
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-300 text-sm font-semibold mb-2">
+                Detailed Role Description
+              </label>
+              <textarea
+                placeholder="Comprehensive description of responsibilities and impact..."
+                value={newExp.roleDescription}
+                onChange={(e) =>
+                  setNewExp({ ...newExp, roleDescription: e.target.value })
+                }
+                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-48"
               />
             </div>
 
@@ -259,6 +290,55 @@ const ExperienceEdit = () => {
                       <button
                         type="button"
                         onClick={() => handleRemoveAchievement(index)}
+                        className="text-red-400 hover:text-red-300 font-bold"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Challenges Section */}
+            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+              <label className="block text-gray-300 text-sm font-semibold mb-2">
+                Key Challenges
+              </label>
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="text"
+                  placeholder="Add a challenge..."
+                  value={challengeInput}
+                  onChange={(e) => setChallengeInput(e.target.value)}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" &&
+                    (e.preventDefault(), handleAddChallenge())
+                  }
+                  className="flex-1 p-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddChallenge}
+                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors text-sm font-semibold"
+                >
+                  Add
+                </button>
+              </div>
+              {challengesList.length > 0 && (
+                <div className="space-y-2">
+                  {challengesList.map((challenge, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 bg-white/5 p-2 rounded border border-white/10"
+                    >
+                      <span className="text-orange-400">⚠</span>
+                      <span className="flex-1 text-gray-300 text-sm">
+                        {challenge}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveChallenge(index)}
                         className="text-red-400 hover:text-red-300 font-bold"
                       >
                         ×

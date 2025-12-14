@@ -357,9 +357,6 @@ const EducationEdit = () => {
                       <option value="postgraduate" className="text-black">
                         Postgraduate
                       </option>
-                      <option value="certification" className="text-black">
-                        Certification
-                      </option>
                     </select>
                   </div>
                   <div>

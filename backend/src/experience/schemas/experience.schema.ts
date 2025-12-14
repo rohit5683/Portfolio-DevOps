@@ -29,6 +29,12 @@ export class Experience {
   @Prop([String])
   achievements: string[]; // Key accomplishments
 
+  @Prop([String])
+  challenges: string[]; // Key challenges faced
+
+  @Prop()
+  roleDescription: string; // Detailed description of the role
+
   @Prop()
   location: string; // Job location (e.g., "Remote", "New York, NY")
 }

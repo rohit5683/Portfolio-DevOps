@@ -6,6 +6,7 @@ import Skills from "./pages/public/Skills";
 import Projects from "./pages/public/Projects";
 import Experience from "./pages/public/Experience";
 import Education from "./pages/public/Education";
+import Certifications from "./pages/public/Certifications"; // Added Certifications public page
 import EducationEdit from "./pages/admin/EducationEdit";
 import Contact from "./pages/public/Contact";
 import Login from "./pages/admin/Login";
@@ -14,6 +15,7 @@ import ProfileEdit from "./pages/admin/ProfileEdit";
 import ProjectsEdit from "./pages/admin/ProjectsEdit";
 import ExperienceEdit from "./pages/admin/ExperienceEdit";
 import SkillsEdit from "./pages/admin/SkillsEdit";
+import CertificationsEdit from "./pages/admin/CertificationsEdit"; // Added CertificationsEdit admin page
 import AboutEdit from "./pages/admin/AboutEdit";
 import UserManagement from "./pages/admin/UserManagement";
 import TotpSetup from "./pages/admin/TotpSetup";
@@ -28,6 +30,9 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Skip scroll to top for dashboard to allow scroll restoration
+    if (pathname === "/portal") return;
+
     window.scrollTo({
       top: 0,
       left: 0,
@@ -54,6 +59,7 @@ function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/experience" element={<Experience />} />
               <Route path="/education" element={<Education />} />
+              <Route path="/certifications" element={<Certifications />} />
               <Route path="/contact" element={<Contact />} />
             </Route>
             <Route path="/portal/login" element={<Login />} />
@@ -67,6 +73,7 @@ function App() {
                 <Route path="/portal/experience" element={<ExperienceEdit />} />
                 <Route path="/portal/education" element={<EducationEdit />} />
                 <Route path="/portal/skills" element={<SkillsEdit />} />
+                <Route path="/portal/certifications" element={<CertificationsEdit />} />
                 <Route path="/portal/users" element={<UserManagement />} />
               </Route>
             </Route>

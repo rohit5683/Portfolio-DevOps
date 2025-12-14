@@ -173,7 +173,6 @@ const Education = () => {
     { id: "high-school", label: "High School", icon: "🏫" },
     { id: "undergraduate", label: "Undergraduate", icon: "🎓" },
     { id: "postgraduate", label: "Postgraduate", icon: "👨‍🎓" },
-    { id: "certification", label: "Certifications", icon: "📜" },
   ];
 
   const statusColors = {
@@ -279,8 +278,8 @@ const Education = () => {
       <div className="container mx-auto px-4 py-12">
         <SEO
           title="Education"
-          description="My academic background, degrees, and professional certifications."
-          keywords={["Education", "Certifications", "Degrees", "AWS Certified"]}
+          description="My academic background and degrees."
+          keywords={["Education", "Degrees", "Academic Qualifications"]}
         />
         <div className="max-w-4xl mx-auto">
           <Skeleton width={300} height={48} className="mx-auto mb-6" />
@@ -372,7 +371,7 @@ const Education = () => {
             Education Journey
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            My academic background and certifications across {education.length}{" "}
+            My academic journey across {education.length}{" "}
             institutions
           </p>
         </div>

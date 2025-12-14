@@ -6,6 +6,7 @@ import { ProjectsService } from './projects/projects.service';
 import { ExperienceService } from './experience/experience.service';
 import { EducationService } from './education/education.service';
 import { SkillsService } from './skills/skills.service';
+import { CertificationsService } from './certifications/certifications.service';
 import * as bcrypt from 'bcrypt';
 
 async function bootstrap() {
@@ -17,6 +18,7 @@ async function bootstrap() {
   const experienceService = app.get(ExperienceService);
   const educationService = app.get(EducationService);
   const skillsService = app.get(SkillsService);
+  const certificationsService = app.get(CertificationsService);
 
   // Seed User
   const email = 'admin@example.com';
@@ -185,43 +187,55 @@ async function bootstrap() {
   // Seed Experience
   const experiences = [
     {
-      title: 'Senior DevOps Engineer',
-      company: 'Tech Corp',
-      companyLogo: 'https://via.placeholder.com/100/4F46E5/FFFFFF?text=TC',
-      location: 'Remote',
-      startDate: new Date('2023-01-01'),
+      title: 'DevOps Engineer',
+      company: 'Artiqulus Technologies Private Limited',
+      companyLogo: '',
+      location: 'Pune, Maharashtra, India',
+      startDate: new Date('2025-06-01'),
+      endDate: null,
       techStack: [
-        'AWS',
+        'EC2',
+        'S3',
+        'IAM',
+        'RDS',
+        'VPC',
+        'ELB',
+        'EBS',
+        'Route53',
+        'ACM',
+        'CodePipeline',
+        'CloudWatch',
+        'CloudFront',
+        'ASG',
+        'ECS',
+        'EKS',
         'Docker',
+        'Ansible',
         'Kubernetes',
-        'Jenkins',
+        'Bash Scripting',
         'Terraform',
-        'Python',
+        'Jenkins',
+        'Prometheus & Grafana',
+        'Argo CD',
+        'Nexus',
+        'SonarQube',
+        'Helm',
+        'Maven',
+        'OWASP',
+        'Trivy',
       ],
       achievements: [
-        'Reduced deployment time by 60% through CI/CD pipeline optimization',
-        'Managed infrastructure for 50+ microservices',
-        'Implemented cost-saving measures reducing AWS bills by 30%',
-        'Led migration of legacy applications to containerized architecture',
+        'Automated CI/CD pipelines using Jenkins, Maven, Nexus, and SonarQube, reducing manual deployment time by 60%',
+        'Deployed and managed over 10 containerized applications using Docker and Kubernetes, improving deployment consistency and scalability.',
+      ],
+      challenges: [
+        'Optimizing resource utilization in EKS clusters to reduce costs.',
+        'Migrating legacy pipelines to a modern, container-based approach.',
       ],
       description:
-        'Leading DevOps initiatives, implementing CI/CD pipelines, managing AWS infrastructure, and optimizing costs. Responsible for maintaining high availability and security standards across all production environments.',
-    },
-    {
-      title: 'Junior Cloud Engineer',
-      company: 'Startup Inc',
-      companyLogo: 'https://via.placeholder.com/100/10B981/FFFFFF?text=SI',
-      location: 'New York, NY',
-      startDate: new Date('2021-06-01'),
-      endDate: new Date('2022-12-31'),
-      techStack: ['AWS', 'Linux', 'Docker', 'Git', 'Bash'],
-      achievements: [
-        'Successfully migrated 20+ applications to AWS cloud',
-        'Automated server provisioning reducing setup time by 80%',
-        'Implemented monitoring solutions improving system visibility',
-      ],
-      description:
-        'Assisted in cloud migration projects, managed server infrastructure, and implemented automation scripts. Worked closely with development teams to ensure smooth deployments.',
+        'Hands-on experience in CI/CD, cloud deployment, and infrastructure automation, contributing to the delivery of 5+ real-world DevOps projects.',
+      roleDescription:
+        'As a DevOps Engineer at Artiqulus, I am responsible for designing and implementing scalable cloud infrastructure on AWS. I work closely with development teams to streamline the CI/CD process, ensuring rapid and reliable software delivery. My role involves automating manual tasks, monitoring system health, and ensuring the security and compliance of our production environments.',
     },
   ];
 
@@ -439,6 +453,68 @@ async function bootstrap() {
     await skillsService.create(skill);
   }
   console.log('Skills seeded');
+
+  // Seed Certifications
+  const certifications = [
+    {
+      name: 'AWS Certified Solutions Architect – Professional',
+      issuer: 'Amazon Web Services',
+      date: new Date('2024-01-15'),
+      credentialUrl: 'https://aws.amazon.com/verification',
+      fileUrl:
+        'https://via.placeholder.com/800x600/1a1a2e/ffffff?text=AWS+Certified+Solutions+Architect',
+      description:
+        'Validated advanced technical skills and experience in designing distributed applications and systems on the AWS platform.',
+      type: 'Certification',
+    },
+    {
+      name: 'Certified Kubernetes Administrator (CKA)',
+      issuer: 'The Linux Foundation',
+      date: new Date('2023-11-20'),
+      credentialUrl: 'https://www.cncf.io/certification/cka/',
+      fileUrl:
+        'https://via.placeholder.com/800x600/16213e/ffffff?text=Kubernetes+Administrator+CKA',
+      description:
+        'Demonstrated competence in hands-on command-line manipulation of Kubernetes clusters.',
+      type: 'Certification',
+    },
+    {
+      name: 'DevOps Intern',
+      issuer: 'TechCorp Solutions',
+      date: new Date('2023-05-01'),
+      credentialUrl: '',
+      fileUrl:
+        'https://via.placeholder.com/800x600/0f3460/ffffff?text=DevOps+Internship+Certificate',
+      description:
+        'Completed a 6-month internship focusing on CI/CD pipelines, Docker, and cloud infrastructure.',
+      type: 'Internship',
+    },
+    {
+      name: 'HashiCorp Certified: Terraform Associate',
+      issuer: 'HashiCorp',
+      date: new Date('2023-08-10'),
+      credentialUrl:
+        'https://www.hashicorp.com/certification/terraform-associate',
+      fileUrl:
+        'https://images.unsplash.com/photo-1667372393086-9d4001d51cf1?w=800&q=80', // Placeholder image
+      description:
+        'Verified basic infrastructure automation skills and knowledge of Terraform Cloud and Enterprise.',
+    },
+  ];
+
+  // Delete old certifications and create new ones
+  const existingCertifications = await certificationsService.findAll();
+  if (existingCertifications.length > 0) {
+    for (const cert of existingCertifications) {
+      await certificationsService.remove((cert as any)._id);
+    }
+    console.log('Deleted old certifications');
+  }
+
+  for (const cert of certifications) {
+    await certificationsService.create(cert);
+  }
+  console.log('Certifications seeded');
 
   await app.close();
 }

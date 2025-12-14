@@ -409,7 +409,7 @@ const Home = () => {
         </div>
 
         {/* Quick Links Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           <Tilt
             tiltMaxAngleX={5}
             tiltMaxAngleY={5}
@@ -418,7 +418,7 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/experience")}
-              className="h-full group bg-gradient-to-br from-blue-500/5 to-purple-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_40px_rgba(59,130,246,0.1)] cursor-pointer relative overflow-hidden"
+              className="h-full group bg-gradient-to-br from-blue-500/5 to-purple-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_40px_rgba(59,130,246,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
@@ -429,7 +429,7 @@ const Home = () => {
                   <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
                 </svg>
               </div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex-1 flex flex-col">
                 <div className="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-blue-400">
                   💼
                 </div>
@@ -440,7 +440,7 @@ const Home = () => {
                   Explore my professional journey, roles, and key achievements
                   across different companies.
                 </p>
-                <div className="text-blue-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm">
+                <div className="text-blue-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
                   View Timeline
                   <svg
                     className="w-4 h-4"
@@ -468,7 +468,7 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/education")}
-              className="h-full group bg-gradient-to-br from-purple-500/5 to-pink-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-purple-500/30 transition-all hover:shadow-[0_0_40px_rgba(168,85,247,0.1)] cursor-pointer relative overflow-hidden"
+              className="h-full group bg-gradient-to-br from-purple-500/5 to-pink-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-purple-500/30 transition-all hover:shadow-[0_0_40px_rgba(168,85,247,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
@@ -479,7 +479,7 @@ const Home = () => {
                   <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72l5 2.73 5-2.73v3.72z" />
                 </svg>
               </div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex-1 flex flex-col">
                 <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-purple-400">
                   🎓
                 </div>
@@ -488,7 +488,7 @@ const Home = () => {
                   Check out my academic background, degrees, and professional
                   certifications.
                 </p>
-                <div className="text-purple-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm">
+                <div className="text-purple-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
                   View Credentials
                   <svg
                     className="w-4 h-4"
@@ -516,7 +516,7 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/skills")}
-              className="h-full group bg-gradient-to-br from-green-500/5 to-cyan-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-green-500/30 transition-all hover:shadow-[0_0_40px_rgba(34,197,94,0.1)] cursor-pointer relative overflow-hidden"
+              className="h-full group bg-gradient-to-br from-green-500/5 to-cyan-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-green-500/30 transition-all hover:shadow-[0_0_40px_rgba(34,197,94,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
@@ -527,7 +527,7 @@ const Home = () => {
                   <path d="M7 2v11h3v9l7-12h-4l4-8z" />
                 </svg>
               </div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex-1 flex flex-col">
                 <div className="w-14 h-14 bg-green-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-green-400">
                   ⚡
                 </div>
@@ -535,8 +535,102 @@ const Home = () => {
                 <p className="text-gray-400 mb-6 leading-relaxed text-sm">
                   Dive into my technical arsenal, tools, and proficiency levels.
                 </p>
-                <div className="text-green-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm">
+                <div className="text-green-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
                   View Arsenal
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </Tilt>
+
+          <Tilt
+            tiltMaxAngleX={5}
+            tiltMaxAngleY={5}
+            scale={1.02}
+            className="h-full"
+          >
+            <div
+              onClick={() => navigate("/projects")}
+              className="h-full group bg-gradient-to-br from-orange-500/5 to-red-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-orange-500/30 transition-all hover:shadow-[0_0_40px_rgba(249,115,22,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+                <svg
+                  className="w-32 h-32 text-orange-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                </svg>
+              </div>
+              <div className="relative z-10 flex-1 flex flex-col">
+                <div className="w-14 h-14 bg-orange-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-orange-400">
+                  🚀
+                </div>
+                <h4 className="text-xl font-bold text-white mb-3">Projects</h4>
+                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                  Browse through my portfolio of projects, applications, and solutions.
+                </p>
+                <div className="text-orange-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
+                  View Portfolio
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </Tilt>
+
+          <Tilt
+            tiltMaxAngleX={5}
+            tiltMaxAngleY={5}
+            scale={1.02}
+            className="h-full"
+          >
+            <div
+              onClick={() => navigate("/certifications")}
+              className="h-full group bg-gradient-to-br from-violet-500/5 to-indigo-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-violet-500/30 transition-all hover:shadow-[0_0_40px_rgba(139,92,246,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+                <svg
+                  className="w-32 h-32 text-violet-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+              </div>
+              <div className="relative z-10 flex-1 flex flex-col">
+                <div className="w-14 h-14 bg-violet-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-violet-400">
+                  📜
+                </div>
+                <h4 className="text-xl font-bold text-white mb-3">Certifications</h4>
+                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                  View my professional certifications, courses, and internships.
+                </p>
+                <div className="text-violet-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
+                  View Credentials
                   <svg
                     className="w-4 h-4"
                     fill="none"

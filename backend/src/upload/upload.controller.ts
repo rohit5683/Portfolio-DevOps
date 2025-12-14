@@ -130,4 +130,36 @@ export class UploadController {
       url: `/upload/file/${savedFile._id}/${encodeURIComponent(savedFile.filename)}`,
     };
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Post('certifications')
+  @UseInterceptors(
+    FilesInterceptor('files', 10, {
+      fileFilter: (req, file, callback) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp|pdf)$/)) {
+          return callback(
+            new Error('Only image and PDF files are allowed!'),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+      limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB limit
+      },
+    }),
+  )
+  async uploadCertifications(@UploadedFiles() files: Express.Multer.File[]) {
+    const uploadedFiles = await Promise.all(
+      files.map((file) => this.uploadService.saveFile(file)),
+    );
+
+    const fileUrls = uploadedFiles.map(
+      (file) => `/upload/file/${file._id}/${encodeURIComponent(file.filename)}`,
+    );
+
+    return {
+      message: 'Certification files uploaded successfully',
+      urls: fileUrls,
+    };
+  }
 }

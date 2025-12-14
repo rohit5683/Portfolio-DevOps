@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
@@ -13,6 +13,7 @@ const Dashboard = () => {
     skills: 0,
     experience: 0,
     education: 0,
+    certifications: 0,
     name: "Admin",
     role: "Developer",
   });
@@ -20,7 +21,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileRes, projectsRes, skillsRes, expRes, eduRes] =
+        const [profileRes, projectsRes, skillsRes, expRes, eduRes, certRes] =
           await Promise.all([
             api
               .get("/profile")
@@ -29,6 +30,7 @@ const Dashboard = () => {
             api.get("/skills").catch(() => ({ data: [] })),
             api.get("/experience").catch(() => ({ data: [] })),
             api.get("/education").catch(() => ({ data: [] })),
+            api.get("/certifications").catch(() => ({ data: [] })),
           ]);
 
         setStats({
@@ -38,6 +40,7 @@ const Dashboard = () => {
           skills: skillsRes.data.length,
           experience: expRes.data.length,
           education: eduRes.data.length,
+          certifications: certRes.data.length,
         });
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -47,6 +50,20 @@ const Dashboard = () => {
     };
 
     fetchData();
+  }, []);
+
+  // Scroll restoration
+  useLayoutEffect(() => {
+    const savedScrollY = sessionStorage.getItem("dashboardScrollY");
+    if (savedScrollY) {
+      window.scrollTo(0, parseInt(savedScrollY));
+    } else {
+      window.scrollTo(0, 0);
+    }
+
+    return () => {
+      sessionStorage.setItem("dashboardScrollY", window.scrollY.toString());
+    };
   }, []);
 
   const menuItems = [
@@ -140,7 +157,7 @@ const Dashboard = () => {
     },
     {
       title: "Education",
-      description: "Degrees & certifications",
+      description: "Degrees & qualifications",
       path: "/portal/education",
       count: stats.education,
       color: "from-emerald-500 to-teal-500",
@@ -190,6 +207,28 @@ const Dashboard = () => {
             strokeLinejoin="round"
             strokeWidth={2}
             d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: "Certifications",
+      description: "Credentials & internships",
+      path: "/portal/certifications",
+      count: null,
+      color: "from-violet-500 to-purple-500",
+      icon: (
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
           />
         </svg>
       ),
