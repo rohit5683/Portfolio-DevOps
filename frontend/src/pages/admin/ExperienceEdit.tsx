@@ -22,6 +22,7 @@ const ExperienceEdit = () => {
   const [achievementsList, setAchievementsList] = useState<string[]>([]);
   const [challengeInput, setChallengeInput] = useState("");
   const [challengesList, setChallengesList] = useState<string[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchExperience();
@@ -63,6 +64,43 @@ const ExperienceEdit = () => {
     setChallengesList(challengesList.filter((_, i) => i !== index));
   };
 
+  const handleEdit = (exp: any) => {
+    setEditingId(exp._id);
+    setNewExp({
+      title: exp.title,
+      company: exp.company,
+      startDate: exp.startDate.split("T")[0],
+      endDate: exp.endDate ? exp.endDate.split("T")[0] : "",
+      description: exp.description,
+      roleDescription: exp.roleDescription || "",
+      companyLogo: exp.companyLogo || "",
+      techStack: exp.techStack ? exp.techStack.join(", ") : "",
+      achievements: "",
+      location: exp.location || "",
+    });
+    setAchievementsList(exp.achievements || []);
+    setChallengesList(exp.challenges || []);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setNewExp({
+      title: "",
+      company: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      roleDescription: "",
+      companyLogo: "",
+      techStack: "",
+      achievements: "",
+      location: "",
+    });
+    setAchievementsList([]);
+    setChallengesList([]);
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -76,7 +114,12 @@ const ExperienceEdit = () => {
       challenges: challengesList,
     };
 
-    await api.post("/experience", expData);
+    if (editingId) {
+      await api.put(`/experience/${editingId}`, expData);
+    } else {
+      await api.post("/experience", expData);
+    }
+    setEditingId(null);
     setNewExp({
       title: "",
       company: "",
@@ -110,7 +153,7 @@ const ExperienceEdit = () => {
 
         <div className="mb-8 bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl">
           <h2 className="text-xl font-bold mb-6 text-white">
-            Add New Experience
+            {editingId ? "Edit Experience" : "Add New Experience"}
           </h2>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -349,12 +392,23 @@ const ExperienceEdit = () => {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="bg-green-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg"
-            >
-              Add Experience
-            </button>
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                className="bg-green-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg flex-1 md:flex-none"
+              >
+                {editingId ? "Update Experience" : "Add Experience"}
+              </button>
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="bg-gray-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-gray-700 transition-colors shadow-lg flex-1 md:flex-none"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
         </div>
 
@@ -433,12 +487,20 @@ const ExperienceEdit = () => {
                     </div>
                   )}
                 </div>
-                <button
-                  onClick={() => handleDelete(exp._id)}
-                  className="bg-red-500/20 text-red-300 border border-red-500/50 px-2 py-1 md:px-3 md:py-1 rounded text-xs md:text-sm hover:bg-red-500/30 transition-colors ml-4"
-                >
-                  Delete
-                </button>
+                <div className="flex flex-col md:flex-row gap-2 ml-4">
+                  <button
+                    onClick={() => handleEdit(exp)}
+                    className="bg-blue-500/20 text-blue-300 border border-blue-500/50 px-3 py-1 rounded text-xs md:text-sm hover:bg-blue-500/30 transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(exp._id)}
+                    className="bg-red-500/20 text-red-300 border border-red-500/50 px-3 py-1 rounded text-xs md:text-sm hover:bg-red-500/30 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
