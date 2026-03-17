@@ -4,6 +4,7 @@ import Tilt from "react-parallax-tilt";
 import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
+import { getImageUrl } from "../../utils/imageUtils";
 
 // Portal Gallery Component
 const ImageGallery = ({
@@ -314,8 +315,12 @@ const Projects = () => {
     api
       .get("/projects")
       .then((res) => {
-        setProjects(res.data);
-        setFilteredProjects(res.data);
+        const normalized = (res.data || []).map((p: any) => ({
+          ...p,
+          images: Array.isArray(p?.images) ? p.images.map(getImageUrl) : [],
+        }));
+        setProjects(normalized);
+        setFilteredProjects(normalized);
         setLoading(false);
       })
       .catch((err) => {
