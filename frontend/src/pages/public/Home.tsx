@@ -5,6 +5,238 @@ import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
 
+type AchievementType = "solved" | "learned" | "shipped" | "improved";
+
+type AchievementItem = {
+  id: string;
+  type: AchievementType;
+  title: string;
+  description?: string;
+  date: string; // ISO string
+  tags?: string[];
+  pinned?: boolean;
+};
+
+const achievementTypeMeta: Record<
+  AchievementType,
+  { label: string; icon: string; accent: string }
+> = {
+  solved: { label: "Solved", icon: "✅", accent: "from-emerald-500 to-green-500" },
+  learned: { label: "Learned", icon: "🧠", accent: "from-blue-500 to-cyan-500" },
+  shipped: { label: "Shipped", icon: "🚀", accent: "from-purple-500 to-pink-500" },
+  improved: { label: "Improved", icon: "⚙️", accent: "from-orange-500 to-red-500" },
+};
+
+const formatAchievementDate = (iso: string) => {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", { month: "short", day: "2-digit" });
+};
+
+const ActivityFeed = ({
+  items,
+  onViewAll,
+}: {
+  items: AchievementItem[];
+  onViewAll: () => void;
+}) => {
+  const [showAll, setShowAll] = useState(false);
+  const [filter, setFilter] = useState<AchievementType | "all">("all");
+
+  const sorted = [...items].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  const filtered =
+    filter === "all" ? sorted : sorted.filter((i) => i.type === filter);
+
+  const visible = showAll ? filtered : filtered.slice(0, 4);
+
+  return (
+    <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+      <div className="p-6 md:p-8 border-b border-white/10">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white">
+              Recent Achievements
+            </h3>
+            <p className="text-gray-400 mt-2 text-sm md:text-base max-w-2xl">
+              A quick feed of what I’ve recently solved, learned, shipped, and
+              improved.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={onViewAll}
+            className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
+          >
+            View all
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {(["all", "solved", "learned", "shipped", "improved"] as const).map(
+            (k) => {
+              const active = filter === k;
+              const label = k === "all" ? "All" : achievementTypeMeta[k].label;
+              const icon = k === "all" ? "📰" : achievementTypeMeta[k].icon;
+              return (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setFilter(k)}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
+                    active
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent shadow-lg shadow-blue-500/20"
+                      : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <span className="mr-2">{icon}</span>
+                  {label}
+                </button>
+              );
+            },
+          )}
+        </div>
+      </div>
+
+      <div className="p-6 md:p-8">
+        <div className="relative">
+          <div className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/40 via-purple-500/30 to-transparent"></div>
+
+          <div className="space-y-4">
+            {visible.map((item) => {
+              const meta = achievementTypeMeta[item.type];
+              return (
+                <div
+                  key={item.id}
+                  className={`relative pl-10 pr-4 py-4 rounded-2xl border transition-all ${
+                    item.pinned
+                      ? "bg-gradient-to-br from-white/10 to-yellow-500/5 border-yellow-500/25 shadow-[0_0_30px_rgba(234,179,8,0.08)]"
+                      : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <div
+                    className={`absolute left-[9px] top-6 w-6 h-6 rounded-full bg-gradient-to-r ${meta.accent} flex items-center justify-center shadow-lg`}
+                  >
+                    <span className="text-sm">{meta.icon}</span>
+                  </div>
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {item.pinned && (
+                          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
+                            PINNED
+                          </span>
+                        )}
+                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
+                          {meta.label}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {formatAchievementDate(item.date)}
+                        </span>
+                      </div>
+
+                      <div className="mt-2 text-white font-bold text-base md:text-lg leading-snug">
+                        {item.title}
+                      </div>
+                      {item.description && (
+                        <div className="mt-1 text-gray-300 text-sm leading-relaxed">
+                          {item.description}
+                        </div>
+                      )}
+
+                      {item.tags?.length ? (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {item.tags.slice(0, 6).map((t) => (
+                            <span
+                              key={t}
+                              className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-blue-200 border border-white/10"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {filtered.length === 0 && (
+              <div className="text-center py-10 text-gray-400">
+                No updates in this category yet.
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
+          >
+            {showAll ? "Show less" : "Show more"}
+            <svg
+              className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={onViewAll}
+            className="md:hidden inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all text-sm font-bold shadow-lg shadow-blue-500/20"
+          >
+            View all
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
@@ -83,6 +315,10 @@ const Home = () => {
     if (proficiency >= 75) return "from-blue-400 to-cyan-600";
     return "from-gray-400 to-gray-600";
   };
+
+  const achievements: AchievementItem[] = Array.isArray(profile?.achievements)
+    ? profile.achievements
+    : [];
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-20 overflow-hidden">
@@ -340,6 +576,14 @@ const Home = () => {
                   </div>
                 </Tilt>
               ))}
+        </div>
+
+        {/* Recent Achievements Feed */}
+        <div className="mb-24">
+          <ActivityFeed
+            items={achievements}
+            onViewAll={() => navigate("/projects")}
+          />
         </div>
 
         {/* Tech Stack Section */}

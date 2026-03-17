@@ -67,6 +67,17 @@ export class Profile {
     position: string;
   }>;
 
+  @Prop([{ type: Object }])
+  achievements: Array<{
+    id: string;
+    type: string; // solved | learned | shipped | improved
+    title: string;
+    description?: string;
+    date: string; // ISO string
+    tags?: string[];
+    pinned?: boolean;
+  }>;
+
   @Prop()
   aboutSubtitle: string;
 

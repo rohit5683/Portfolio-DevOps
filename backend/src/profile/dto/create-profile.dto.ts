@@ -28,6 +28,21 @@ export class CreateProfileDto {
     value: number;
     icon: string;
   }>;
+  badges: Array<{
+    text: string;
+    color: string;
+    icon: string;
+    position: string;
+  }>;
+  achievements: Array<{
+    id: string;
+    type: string;
+    title: string;
+    description?: string;
+    date: string;
+    tags?: string[];
+    pinned?: boolean;
+  }>;
   aboutSubtitle: string;
   location: string;
   availability: {

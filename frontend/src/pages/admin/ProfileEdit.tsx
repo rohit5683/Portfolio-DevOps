@@ -12,6 +12,25 @@ const ProfileEdit = () => {
 
   const [skills, setSkills] = useState<any[]>([]);
 
+  const ensureAchievements = () => {
+    if (!profile) return [];
+    if (Array.isArray(profile.achievements)) return profile.achievements;
+    return [];
+  };
+
+  const createAchievement = () => ({
+    id:
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `a-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    type: "solved",
+    title: "New achievement",
+    description: "",
+    date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD (stored as string)
+    tags: [],
+    pinned: false,
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -695,6 +714,226 @@ const ProfileEdit = () => {
                 </svg>
                 Save Changes
               </button>
+            </div>
+          </div>
+
+          {/* Recent Achievements (Home Feed) Card */}
+          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-white">
+                  Recent Achievements (Home Feed)
+                </h2>
+                <p className="text-gray-400 text-sm mt-1">
+                  Add your “news feed” updates like problems solved, things you
+                  learned, improvements, and shipped features.
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const current = ensureAchievements();
+                    const next = [...current, createAchievement()];
+                    setProfile({ ...profile, achievements: next });
+                  }}
+                  className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Add
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSave("Achievements")}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                    />
+                  </svg>
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {ensureAchievements().length === 0 ? (
+                <div className="text-center py-8 text-gray-400 bg-white/5 rounded-lg border border-white/10 border-dashed">
+                  No achievements yet. Click <span className="text-white">Add</span>{" "}
+                  to create your first update.
+                </div>
+              ) : (
+                ensureAchievements().map((a: any, index: number) => (
+                  <div
+                    key={a.id || index}
+                    className="bg-white/5 p-4 rounded-lg border border-white/10 transition-all hover:bg-white/10"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/10 rounded-xl">
+                          <input
+                            type="checkbox"
+                            checked={!!a.pinned}
+                            onChange={(e) => {
+                              const next = [...ensureAchievements()];
+                              next[index] = { ...next[index], pinned: e.target.checked };
+                              setProfile({ ...profile, achievements: next });
+                            }}
+                            className="w-4 h-4"
+                            title="Pin this achievement"
+                          />
+                          <span className="text-xs text-gray-200 font-semibold">
+                            Pinned
+                          </span>
+                        </div>
+
+                        <select
+                          value={a.type || "solved"}
+                          onChange={(e) => {
+                            const next = [...ensureAchievements()];
+                            next[index] = { ...next[index], type: e.target.value };
+                            setProfile({ ...profile, achievements: next });
+                          }}
+                          className="p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                          title="Type"
+                        >
+                          <option value="solved">Solved ✅</option>
+                          <option value="learned">Learned 🧠</option>
+                          <option value="shipped">Shipped 🚀</option>
+                          <option value="improved">Improved ⚙️</option>
+                        </select>
+
+                        <input
+                          type="date"
+                          value={
+                            typeof a.date === "string"
+                              ? a.date.slice(0, 10)
+                              : new Date().toISOString().slice(0, 10)
+                          }
+                          onChange={(e) => {
+                            const next = [...ensureAchievements()];
+                            next[index] = { ...next[index], date: e.target.value };
+                            setProfile({ ...profile, achievements: next });
+                          }}
+                          className="p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                          title="Date"
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-2 justify-end">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (index === 0) return;
+                            const next = [...ensureAchievements()];
+                            [next[index - 1], next[index]] = [next[index], next[index - 1]];
+                            setProfile({ ...profile, achievements: next });
+                          }}
+                          className="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                          disabled={index === 0}
+                          title="Move up"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = ensureAchievements();
+                            if (index >= current.length - 1) return;
+                            const next = [...current];
+                            [next[index], next[index + 1]] = [next[index + 1], next[index]];
+                            setProfile({ ...profile, achievements: next });
+                          }}
+                          className="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                          disabled={index === ensureAchievements().length - 1}
+                          title="Move down"
+                        >
+                          ↓
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (
+                              confirm(
+                                "Are you sure you want to delete this achievement?",
+                              )
+                            ) {
+                              const next = [...ensureAchievements()];
+                              next.splice(index, 1);
+                              setProfile({ ...profile, achievements: next });
+                            }
+                          }}
+                          className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          🗑
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        value={a.title || ""}
+                        onChange={(e) => {
+                          const next = [...ensureAchievements()];
+                          next[index] = { ...next[index], title: e.target.value };
+                          setProfile({ ...profile, achievements: next });
+                        }}
+                        className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                        placeholder="Title (e.g. Fixed Kubernetes rollout issue)"
+                      />
+                      <input
+                        type="text"
+                        value={Array.isArray(a.tags) ? a.tags.join(", ") : a.tags || ""}
+                        onChange={(e) => {
+                          const tags = e.target.value
+                            .split(",")
+                            .map((t) => t.trim())
+                            .filter(Boolean);
+                          const next = [...ensureAchievements()];
+                          next[index] = { ...next[index], tags };
+                          setProfile({ ...profile, achievements: next });
+                        }}
+                        className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                        placeholder="Tags (comma separated) e.g. AWS, CI/CD"
+                      />
+                    </div>
+
+                    <textarea
+                      value={a.description || ""}
+                      onChange={(e) => {
+                        const next = [...ensureAchievements()];
+                        next[index] = { ...next[index], description: e.target.value };
+                        setProfile({ ...profile, achievements: next });
+                      }}
+                      className="w-full mt-3 p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none h-20"
+                      placeholder="Short description (what you did / impact)"
+                    />
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
