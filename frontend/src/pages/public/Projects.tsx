@@ -24,6 +24,104 @@ const getProjectSortDateMs = (project: any): number => {
   return 0;
 };
 
+const SortDropdown = ({
+  value,
+  onChange,
+}: {
+  value: SortOption;
+  onChange: (next: SortOption) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  const options: Array<{ value: SortOption; label: string }> = [
+    { value: "latest", label: "Latest first" },
+    { value: "oldest", label: "Oldest first" },
+    { value: "title-asc", label: "Title (A–Z)" },
+    { value: "title-desc", label: "Title (Z–A)" },
+  ];
+
+  const currentLabel =
+    options.find((o) => o.value === value)?.label ?? "Sort";
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const el = rootRef.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) setOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative max-w-xs w-full">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full px-5 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl flex items-center justify-between"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span className="truncate">{currentLabel}</span>
+        <svg
+          className={`w-5 h-5 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          className="absolute z-50 mt-2 w-full rounded-xl border border-gray-700 bg-gray-950/95 backdrop-blur-md shadow-2xl overflow-hidden"
+          role="listbox"
+          aria-label="Sort projects"
+        >
+          {options.map((opt) => {
+            const active = opt.value === value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+                className={`w-full text-left px-4 py-3 text-sm transition-colors ${
+                  active
+                    ? "bg-blue-500/20 text-white"
+                    : "text-gray-200 hover:bg-white/10"
+                }`}
+                role="option"
+                aria-selected={active}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Portal Gallery Component
 const ImageGallery = ({
   images,
@@ -575,19 +673,7 @@ const Projects = () => {
             </div>
 
             <div className="w-full flex justify-center">
-              <div className="relative max-w-xs w-full">
-                <select
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value as SortOption)}
-                  className="w-full px-5 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
-                  aria-label="Sort projects"
-                >
-                  <option value="latest">Latest first</option>
-                  <option value="oldest">Oldest first</option>
-                  <option value="title-asc">Title (A–Z)</option>
-                  <option value="title-desc">Title (Z–A)</option>
-                </select>
-              </div>
+              <SortDropdown value={sortOption} onChange={setSortOption} />
             </div>
           </div>
         </div>
