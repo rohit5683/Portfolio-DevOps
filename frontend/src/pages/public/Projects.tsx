@@ -6,6 +6,24 @@ import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
 import { getImageUrl } from "../../utils/imageUtils";
 
+type SortOption = "latest" | "oldest" | "title-asc" | "title-desc";
+
+const getProjectSortDateMs = (project: any): number => {
+  // Prefer explicit completionDate if set, otherwise fall back to ObjectId timestamp.
+  if (project?.completionDate) {
+    const ms = new Date(project.completionDate).getTime();
+    if (!Number.isNaN(ms)) return ms;
+  }
+
+  const id = String(project?._id || "");
+  if (/^[a-fA-F0-9]{24}$/.test(id)) {
+    const seconds = parseInt(id.slice(0, 8), 16);
+    if (!Number.isNaN(seconds)) return seconds * 1000;
+  }
+
+  return 0;
+};
+
 // Portal Gallery Component
 const ImageGallery = ({
   images,
@@ -280,6 +298,7 @@ const Projects = () => {
   } | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState<SortOption>("latest");
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const categories = [
@@ -376,8 +395,32 @@ const Projects = () => {
       );
     }
 
-    setFilteredProjects(filtered);
-  }, [selectedCategory, searchQuery, projects]);
+    const sorted = [...filtered];
+    switch (sortOption) {
+      case "latest":
+        sorted.sort((a, b) => getProjectSortDateMs(b) - getProjectSortDateMs(a));
+        break;
+      case "oldest":
+        sorted.sort((a, b) => getProjectSortDateMs(a) - getProjectSortDateMs(b));
+        break;
+      case "title-asc":
+        sorted.sort((a, b) =>
+          String(a?.title || "").localeCompare(String(b?.title || ""), undefined, {
+            sensitivity: "base",
+          }),
+        );
+        break;
+      case "title-desc":
+        sorted.sort((a, b) =>
+          String(b?.title || "").localeCompare(String(a?.title || ""), undefined, {
+            sensitivity: "base",
+          }),
+        );
+        break;
+    }
+
+    setFilteredProjects(sorted);
+  }, [selectedCategory, searchQuery, projects, sortOption]);
 
   const openGallery = (
     e: React.MouseEvent,
@@ -512,22 +555,40 @@ const Projects = () => {
             </div>
           </div>
 
-          {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1 ${
-                  selectedCategory === cat.id
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105"
-                    : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
-                }`}
-              >
-                <span className="mr-2">{cat.icon}</span>
-                {cat.label}
-              </button>
-            ))}
+          {/* Category Filters + Sort */}
+          <div className="flex flex-col gap-6 items-center">
+            <div className="flex flex-wrap justify-center gap-4">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1 ${
+                    selectedCategory === cat.id
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
+                  }`}
+                >
+                  <span className="mr-2">{cat.icon}</span>
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="w-full flex justify-center">
+              <div className="relative max-w-xs w-full">
+                <select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value as SortOption)}
+                  className="w-full px-5 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
+                  aria-label="Sort projects"
+                >
+                  <option value="latest">Latest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="title-asc">Title (A–Z)</option>
+                  <option value="title-desc">Title (Z–A)</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
