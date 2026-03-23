@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
-import RichText from "../../components/common/RichText";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
 const ProfileEdit = () => {
