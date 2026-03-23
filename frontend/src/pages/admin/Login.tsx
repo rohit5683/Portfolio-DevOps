@@ -362,7 +362,7 @@ const Login = () => {
                 placeholder="Enter your email"
                 required
               />
-              <p className="text-gray-400 text-xs mt-2">
+              <p className="text-gray-400 text-[10px] md:text-xs mt-2">
                 We'll send a verification code to reset your password
               </p>
             </div>
@@ -428,13 +428,13 @@ const Login = () => {
                 onChange={(e) =>
                   setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
                 }
-                className="w-full px-4 py-4 rounded-lg bg-white/5 border-2 border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all text-center tracking-[0.5em] text-3xl font-bold"
+                className="w-full px-4 py-3 md:py-4 rounded-lg bg-white/5 border-2 border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all text-center tracking-[0.3em] md:tracking-[0.5em] text-2xl md:text-3xl font-bold"
                 placeholder="••••••"
                 maxLength={6}
                 required
                 autoFocus
               />
-              <p className="text-gray-400 text-xs mt-3 text-center flex items-center justify-center gap-2">
+              <p className="text-gray-400 text-[10px] md:text-xs mt-3 text-center flex items-center justify-center gap-2">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -674,14 +674,14 @@ const Login = () => {
     <div className="relative min-h-screen flex items-center justify-center overflow-x-hidden">
       <AnimatedBackground />
 
-      <div className="relative z-10 w-full max-w-md p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl mx-4">
+      <div className="relative z-10 w-full max-w-md p-5 md:p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl mx-4">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/20 mb-4">
-            <span className="text-4xl">{getIcon()}</span>
+        <div className="text-center mb-5 md:mb-8">
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-blue-500/20 mb-3 md:mb-4">
+            <span className="text-2xl md:text-4xl">{getIcon()}</span>
           </div>
-          <h2 className="text-3xl font-bold text-white">{getTitle()}</h2>
-          <p className="text-gray-400 text-sm mt-2">{getDescription()}</p>
+          <h2 className="text-xl md:text-3xl font-bold text-white">{getTitle()}</h2>
+          <p className="text-gray-400 text-[12px] md:text-sm mt-1 md:mt-2">{getDescription()}</p>
         </div>
 
         {/* Error Message */}
