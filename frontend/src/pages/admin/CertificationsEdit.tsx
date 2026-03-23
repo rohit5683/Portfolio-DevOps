@@ -140,7 +140,7 @@ const CertificationsEdit = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
       <div className="relative z-10 container mx-auto p-6 pt-20">
         <div className="flex justify-between items-center mb-6">

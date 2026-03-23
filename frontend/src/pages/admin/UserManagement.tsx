@@ -274,7 +274,7 @@ const UserManagement = () => {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
 
       <div className="relative z-10 container mx-auto px-4 py-8">

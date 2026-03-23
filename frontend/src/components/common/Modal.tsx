@@ -20,14 +20,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
+      document.body.classList.add('lenis-stopped');
       document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
     }
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
+      document.body.classList.remove('lenis-stopped');
+      document.body.style.overflow = "";
     };
   }, [isOpen, onClose]);
 
@@ -37,6 +37,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div
         ref={modalRef}
+        data-lenis-prevent
         className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl w-[95%] md:w-[80%] max-w-6xl max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-scaleIn relative flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >

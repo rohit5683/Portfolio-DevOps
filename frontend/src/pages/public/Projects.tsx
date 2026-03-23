@@ -5,6 +5,7 @@ import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
 import { getImageUrl } from "../../utils/imageUtils";
+import RichText from "../../components/common/RichText";
 
 type SortOption = "latest" | "oldest" | "title-asc" | "title-desc";
 
@@ -792,9 +793,11 @@ const Projects = () => {
                         )}
                       </div>
 
-                      <p className="text-gray-300 mb-6 leading-relaxed text-sm">
-                        {project.description}
-                      </p>
+                      <RichText 
+                        text={project.description} 
+                        className="mb-6 !mt-0" 
+                        accentColor={project.featured ? "bg-yellow-400/70" : "bg-blue-400/70"}
+                      />
 
                       {/* Tech Stack */}
                       {project.techStack && project.techStack.length > 0 && (

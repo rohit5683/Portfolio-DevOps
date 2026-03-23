@@ -160,7 +160,7 @@ const SkillsEdit = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
       <div className="relative z-10 container mx-auto p-6 pt-20">
         <div className="flex justify-between items-center mb-8">
@@ -180,99 +180,103 @@ const SkillsEdit = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-1">
-                  Skill Name *
-                </label>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="md:col-span-2 space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Skill Name *</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                  placeholder="e.g. React.js"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all font-medium"
                   required
                 />
               </div>
 
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-1">
-                  Icon URL
-                </label>
-                <input
-                  type="text"
-                  name="iconUrl"
-                  value={formData.iconUrl}
-                  onChange={handleInputChange}
-                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
-                  placeholder="https://example.com/icon.png"
-                />
-                <div className="mt-2">
-                  <label className="block text-gray-400 text-xs mb-1">
-                    Or upload icon:
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleIconUpload}
-                    className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer"
-                  />
-                </div>
-                {formData.iconUrl && (
-                  <div className="mt-2">
-                    <img
-                      src={formData.iconUrl}
-                      alt="Icon preview"
-                      className="w-12 h-12 object-contain bg-white/10 rounded-lg p-2"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-1">
-                  Category
-                </label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer"
                 >
                   {categories.map((cat) => (
-                    <option
-                      key={cat.value}
-                      value={cat.value}
-                      className="text-black"
-                    >
+                    <option key={cat.value} value={cat.value} className="bg-gray-900">
                       {cat.icon} {cat.label}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-1">
-                  Proficiency: {formData.proficiency}% (
-                  {getProficiencyLabel(formData.proficiency)})
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1 flex justify-between">
+                  <span>Proficiency</span>
+                  <span className="text-blue-400 font-bold">{formData.proficiency}%</span>
                 </label>
-                <input
-                  type="range"
-                  name="proficiency"
-                  min="0"
-                  max="100"
-                  value={formData.proficiency}
-                  onChange={handleInputChange}
-                  className="w-full"
-                />
+                <div className="flex items-center gap-3 h-10 px-1">
+                  <input
+                    type="range"
+                    name="proficiency"
+                    min="0"
+                    max="100"
+                    value={formData.proficiency}
+                    onChange={handleInputChange}
+                    className="flex-1 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Icon URL</label>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      name="iconUrl"
+                      value={formData.iconUrl}
+                      onChange={handleInputChange}
+                      className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                      placeholder="https://example.com/icon.png"
+                    />
+                  </div>
+                  {formData.iconUrl && (
+                    <div className="flex-shrink-0">
+                      <img
+                        src={formData.iconUrl}
+                        alt="Preview"
+                        className="w-10 h-10 object-contain bg-white/5 rounded-xl border border-white/10 p-1.5"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-1">
-                  Years of Experience
-                </label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Or Upload Icon</label>
+                <div className="relative group">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleIconUpload}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  />
+                  <div className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-gray-400 text-sm group-hover:border-blue-500/50 transition-all flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    <span>Click to upload skill icon</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Years of Experience</label>
                 <input
                   type="number"
                   name="yearsOfExperience"
@@ -280,40 +284,44 @@ const SkillsEdit = () => {
                   max="50"
                   value={formData.yearsOfExperience}
                   onChange={handleInputChange}
-                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all"
                 />
+              </div>
+
+              <div className="md:col-span-2 flex items-center gap-3 h-[46px] px-4 bg-black/40 rounded-xl border border-white/10 group">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  id="featured"
+                  checked={formData.featured}
+                  onChange={handleInputChange}
+                  className="w-5 h-5 rounded border-white/20 bg-white/5 text-blue-600 focus:ring-blue-500/50 transition-all cursor-pointer"
+                />
+                <label
+                  htmlFor="featured"
+                  className="text-xs font-medium text-gray-400 cursor-pointer group-hover:text-gray-300 transition-colors"
+                >
+                  Featured Skill (Homepage Visibility)
+                </label>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                name="featured"
-                id="featured"
-                checked={formData.featured}
-                onChange={handleInputChange}
-                className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <label
-                htmlFor="featured"
-                className="text-gray-300 text-sm font-medium"
-              >
-                Featured (Show on Homepage as Core Technology)
-              </label>
-            </div>
-
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4 border-t border-white/5">
               <button
                 type="submit"
-                className="px-4 py-2 md:px-6 md:py-2 text-sm md:text-base bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
               >
-                {editingId ? "Update Skill" : "Add Skill"}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{editingId ? "Update Skill" : "Create Skill"}</span>
               </button>
+
               {editingId && (
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-2 md:px-6 md:py-2 text-sm md:text-base bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
                 >
                   Cancel
                 </button>

@@ -223,7 +223,7 @@ const ExperienceEdit = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
       <div className="relative z-10 container mx-auto p-6 pt-20">
         <div className="flex justify-between items-center mb-6">
@@ -240,45 +240,74 @@ const ExperienceEdit = () => {
           <h2 className="text-xl font-bold mb-6 text-white">
             {editingId ? "Edit Experience" : "Add New Experience"}
           </h2>
-          <form onSubmit={handleCreate} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
-                  Job Title
-                </label>
+          <form onSubmit={handleCreate} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="md:col-span-2 space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Job Title</label>
                 <input
                   type="text"
-                  placeholder="e.g. DevOps Engineer"
+                  placeholder="e.g. Senior DevOps Engineer"
                   value={newExp.title}
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all font-medium"
                   required
                 />
               </div>
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
-                  Company
-                </label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Company</label>
                 <input
                   type="text"
-                  placeholder="e.g. Tech Corp"
+                  placeholder="e.g. Google"
                   value={newExp.company}
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, company: e.target.value }))
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                   required
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Location</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Remote"
+                  value={newExp.location}
+                  onChange={(e) =>
+                    setNewExp((prev) => ({ ...prev, location: e.target.value }))
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
-                  Company Logo URL
-                </label>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Start Date</label>
+                <input
+                  type="date"
+                  value={newExp.startDate}
+                  onChange={(e) =>
+                    setNewExp((prev) => ({ ...prev, startDate: e.target.value }))
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all"
+                  required
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">End Date</label>
+                <input
+                  type="date"
+                  value={newExp.endDate}
+                  onChange={(e) =>
+                    setNewExp((prev) => ({ ...prev, endDate: e.target.value }))
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all"
+                />
+              </div>
+              <div className="md:col-span-2 space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Company Logo URL</label>
                 <input
                   type="url"
                   placeholder="https://example.com/logo.png"
@@ -286,59 +315,13 @@ const ExperienceEdit = () => {
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, companyLogo: e.target.value }))
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Remote, New York, NY"
-                  value={newExp.location}
-                  onChange={(e) =>
-                    setNewExp((prev) => ({ ...prev, location: e.target.value }))
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
-                  Start Date
-                </label>
-                <input
-                  type="date"
-                  value={newExp.startDate}
-                  onChange={(e) =>
-                    setNewExp((prev) => ({ ...prev, startDate: e.target.value }))
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
-                  End Date (Leave empty if current)
-                </label>
-                <input
-                  type="date"
-                  value={newExp.endDate}
-                  onChange={(e) =>
-                    setNewExp((prev) => ({ ...prev, endDate: e.target.value }))
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
-                Tech Stack (comma separated)
-              </label>
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
               <input
                 type="text"
                 placeholder="e.g. AWS, Docker, Kubernetes, Jenkins"
@@ -346,209 +329,189 @@ const ExperienceEdit = () => {
                 onChange={(e) =>
                   setNewExp((prev) => ({ ...prev, techStack: e.target.value }))
                 }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
               />
             </div>
 
-            <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
-                Description
-              </label>
-              <div className="bg-white/5 rounded-lg border border-white/10">
-                <ErrorBoundary>
-                  <ReactQuill
-                    theme="snow"
-                    value={newExp.description}
-                    onChange={(content) => {
-                      console.log("Description updated:", content);
-                      setNewExp((prev) => ({ ...prev, description: content }));
-                    }}
-                    modules={modules}
-                    formats={formats}
-                    className="text-white [&_.ql-editor]:min-h-[100px] [&_.ql-toolbar]:border-white/10 [&_.ql-container]:border-white/10 [&_.ql-editor]:text-base"
-                  />
-                </ErrorBoundary>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
-                Detailed Role Description
-              </label>
-              <div className="bg-white/5 rounded-lg border border-white/10">
-                <style>
-                  {`
-                    /* Toolbar Icons - Stroke */
-                    .ql-snow.ql-toolbar button svg .ql-stroke,
-                    .ql-snow .ql-toolbar button svg .ql-stroke,
-                    .ql-snow.ql-toolbar button svg line,
-                    .ql-snow.ql-toolbar button svg path,
-                    .ql-snow.ql-toolbar button svg rect,
-                    .ql-snow.ql-toolbar button svg polyline {
-                      stroke: #e5e7eb !important;
-                    }
-                    
-                    /* Toolbar Icons - Fill */
-                    .ql-snow.ql-toolbar button svg .ql-fill,
-                    .ql-snow .ql-toolbar button svg .ql-fill {
-                      fill: #e5e7eb !important;
-                    }
-                    
-                    /* Active State */
-                    .ql-snow.ql-toolbar button.ql-active svg .ql-stroke {
-                      stroke: #60a5fa !important; /* blue-400 */
-                    }
-                    .ql-snow.ql-toolbar button.ql-active svg .ql-fill {
-                      fill: #60a5fa !important;
-                    }
-
-                    /* Picker (Dropdowns) */
-                    .ql-snow .ql-picker { color: #e5e7eb !important; }
-                    .ql-snow .ql-picker-label { color: #e5e7eb !important; }
-                    .ql-snow .ql-picker-label svg .ql-stroke { stroke: #e5e7eb !important; }
-                    .ql-snow .ql-picker-options { background-color: #1f2937 !important; border-color: #374151 !important; }
-                    .ql-snow .ql-picker-item { color: #e5e7eb !important; }
-                    .ql-snow .ql-picker-item:hover { color: #60a5fa !important; }
-
-                    /* Editor Content */
-                    .ql-editor { color: #e5e7eb !important; min-height: 200px; }
-                    .ql-editor.ql-blank::before { color: #9ca3af !important; font-style: normal !important; }
-                    
-                    /* Borders */
-                    .ql-toolbar { border-color: rgba(255, 255, 255, 0.1) !important; }
-                    .ql-container { border-color: rgba(255, 255, 255, 0.1) !important; }
-
-                    /* Lists - Override Tailwind Reset */
-                    .ql-editor ol { list-style-type: decimal !important; padding-left: 1.5em !important; }
-                    .ql-editor ul { list-style-type: disc !important; padding-left: 1.5em !important; }
-                    .ql-editor li { margin-bottom: 0.5em !important; }
-                  `}
-                </style>
-                <ErrorBoundary>
-                  <ReactQuill
-                    theme="snow"
-                    value={newExp.roleDescription}
-                    onChange={(content) =>
-                      setNewExp((prev) => ({ ...prev, roleDescription: content }))
-                    }
-                    modules={modules}
-                    formats={formats}
-                    className="text-white"
-                  />
-                </ErrorBoundary>
-              </div>
-            </div>
-
-            {/* Achievements Section */}
-            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
-                Key Achievements
-              </label>
-              <div className="flex gap-2 mb-3">
-                <input
-                  type="text"
-                  placeholder="Add an achievement..."
-                  value={achievementInput}
-                  onChange={(e) => setAchievementInput(e.target.value)}
-                  onKeyPress={(e) =>
-                    e.key === "Enter" &&
-                    (e.preventDefault(), handleAddAchievement())
-                  }
-                  className="flex-1 p-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddAchievement}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-semibold"
-                >
-                  Add
-                </button>
-              </div>
-              {achievementsList.length > 0 && (
-                <div className="space-y-2">
-                  {achievementsList.map((achievement, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 bg-white/5 p-2 rounded border border-white/10"
-                    >
-                      <span className="text-green-400">✓</span>
-                      <span className="flex-1 text-gray-300 text-sm">
-                        {achievement}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveAchievement(index)}
-                        className="text-red-400 hover:text-red-300 font-bold"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Summary Description</label>
+                <div className="bg-black/40 rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
+                  <ErrorBoundary>
+                    <ReactQuill
+                      theme="snow"
+                      value={newExp.description}
+                      onChange={(content) => {
+                        setNewExp((prev) => ({ ...prev, description: content }));
+                      }}
+                      modules={modules}
+                      formats={formats}
+                      placeholder="Brief summary of your role..."
+                      className="text-white [&_.ql-editor]:min-h-[100px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent [&_.ql-editor]:text-base"
+                    />
+                  </ErrorBoundary>
                 </div>
-              )}
-            </div>
-
-            {/* Challenges Section */}
-            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
-                Key Challenges
-              </label>
-              <div className="flex gap-2 mb-3">
-                <input
-                  type="text"
-                  placeholder="Add a challenge..."
-                  value={challengeInput}
-                  onChange={(e) => setChallengeInput(e.target.value)}
-                  onKeyPress={(e) =>
-                    e.key === "Enter" &&
-                    (e.preventDefault(), handleAddChallenge())
-                  }
-                  className="flex-1 p-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddChallenge}
-                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors text-sm font-semibold"
-                >
-                  Add
-                </button>
               </div>
-              {challengesList.length > 0 && (
-                <div className="space-y-2">
-                  {challengesList.map((challenge, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 bg-white/5 p-2 rounded border border-white/10"
-                    >
-                      <span className="text-orange-400">⚠</span>
-                      <span className="flex-1 text-gray-300 text-sm">
-                        {challenge}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveChallenge(index)}
-                        className="text-red-400 hover:text-red-300 font-bold"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Detailed Achievements</label>
+                <div className="bg-black/40 rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
+                  <style>
+                    {`
+                      .ql-snow.ql-toolbar button svg .ql-stroke, .ql-snow .ql-toolbar button svg .ql-stroke, .ql-snow.ql-toolbar button svg line, .ql-snow.ql-toolbar button svg path, .ql-snow.ql-toolbar button svg rect, .ql-snow.ql-toolbar button svg polyline { stroke: #e5e7eb !important; }
+                      .ql-snow.ql-toolbar button svg .ql-fill, .ql-snow .ql-toolbar button svg .ql-fill { fill: #e5e7eb !important; }
+                      .ql-snow.ql-toolbar button.ql-active svg .ql-stroke { stroke: #60a5fa !important; }
+                      .ql-snow.ql-toolbar button.ql-active svg .ql-fill { fill: #60a5fa !important; }
+                      .ql-snow .ql-picker { color: #e5e7eb !important; }
+                      .ql-snow .ql-picker-label { color: #e5e7eb !important; }
+                      .ql-snow .ql-picker-label svg .ql-stroke { stroke: #e5e7eb !important; }
+                      .ql-snow .ql-picker-options { background-color: #1f2937 !important; border-color: #374151 !important; }
+                      .ql-snow .ql-picker-item { color: #e5e7eb !important; }
+                      .ql-snow .ql-picker-item:hover { color: #60a5fa !important; }
+                      .ql-editor { color: #e5e7eb !important; min-height: 200px; }
+                      .ql-editor.ql-blank::before { color: #9ca3af !important; font-style: normal !important; }
+                      .ql-toolbar { border-color: rgba(255, 255, 255, 0.1) !important; }
+                      .ql-container { border-color: rgba(255, 255, 255, 0.1) !important; }
+                      .ql-editor ol { list-style-type: decimal !important; padding-left: 1.5em !important; }
+                      .ql-editor ul { list-style-type: disc !important; padding-left: 1.5em !important; }
+                      .ql-editor li { margin-bottom: 0.5em !important; }
+                    `}
+                  </style>
+                  <ErrorBoundary>
+                    <ReactQuill
+                      theme="snow"
+                      value={newExp.roleDescription}
+                      onChange={(content) => {
+                        setNewExp((prev) => ({ ...prev, roleDescription: content }));
+                      }}
+                      modules={modules}
+                      formats={formats}
+                      placeholder="Detailed responsibilities and key achievements..."
+                      className="text-white [&_.ql-editor]:min-h-[250px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent [&_.ql-editor]:text-base"
+                    />
+                  </ErrorBoundary>
                 </div>
-              )}
+              </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+              {/* Achievements Section */}
+              <div className="bg-black/20 p-5 rounded-2xl border border-white/5 space-y-4">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                  Key Achievements (Bullet Points)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="e.g. Optimized CI/CD pipeline by 40%"
+                    value={achievementInput}
+                    onChange={(e) => setAchievementInput(e.target.value)}
+                    onKeyPress={(e) =>
+                      e.key === "Enter" &&
+                      (e.preventDefault(), handleAddAchievement())
+                    }
+                    className="flex-1 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddAchievement}
+                    className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl border border-white/10 transition-colors text-sm font-bold"
+                  >
+                    Add
+                  </button>
+                </div>
+                {achievementsList.length > 0 && (
+                  <div className="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                    {achievementsList.map((achievement, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5 group/item"
+                      >
+                        <span className="text-green-400 text-xs">✓</span>
+                        <span className="flex-1 text-gray-300 text-xs line-clamp-2">
+                          {achievement}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveAchievement(index)}
+                          className="text-gray-500 hover:text-red-400 font-bold transition-colors opacity-0 group-hover/item:opacity-100"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Challenges Section */}
+              <div className="bg-black/20 p-5 rounded-2xl border border-white/5 space-y-4">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                  Technical Challenges
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="e.g. Scaling database for 1M+ users"
+                    value={challengeInput}
+                    onChange={(e) => setChallengeInput(e.target.value)}
+                    onKeyPress={(e) =>
+                      e.key === "Enter" &&
+                      (e.preventDefault(), handleAddChallenge())
+                    }
+                    className="flex-1 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddChallenge}
+                    className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl border border-white/10 transition-colors text-sm font-bold"
+                  >
+                    Add
+                  </button>
+                </div>
+                {challengesList.length > 0 && (
+                  <div className="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                    {challengesList.map((challenge, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5 group/item"
+                      >
+                        <span className="text-orange-400 text-xs">⚠</span>
+                        <span className="flex-1 text-gray-300 text-xs line-clamp-2">
+                          {challenge}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveChallenge(index)}
+                          className="text-gray-500 hover:text-red-400 font-bold transition-colors opacity-0 group-hover/item:opacity-100"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex gap-4 pt-4 border-t border-white/5">
               <button
                 type="submit"
-                className="bg-green-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg flex-1 md:flex-none"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
               >
-                {editingId ? "Update Experience" : "Add Experience"}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{editingId ? "Update Experience" : "Create Experience"}</span>
               </button>
+
               {editingId && (
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="bg-gray-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-gray-700 transition-colors shadow-lg flex-1 md:flex-none"
+                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
                 >
                   Cancel
                 </button>

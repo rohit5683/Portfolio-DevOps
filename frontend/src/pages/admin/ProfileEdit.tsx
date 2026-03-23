@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
+import { 
+  Bold, Italic, Strikethrough, Link2, ListOrdered, List, Quote, Code, 
+  Smile
+} from "lucide-react";
+import EmojiPicker from "../../components/common/EmojiPicker";
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -9,6 +14,7 @@ const ProfileEdit = () => {
   const [loading, setLoading] = useState(true);
   const [photoPreview, setPhotoPreview] = useState<string>("");
   const [editingBadgeIndex, setEditingBadgeIndex] = useState<number>(-1);
+  const [editingAchievementIndex, setEditingAchievementIndex] = useState<number>(-1);
 
   const [skills, setSkills] = useState<any[]>([]);
 
@@ -107,7 +113,7 @@ const ProfileEdit = () => {
     return <div className="text-white text-center mt-20">Loading...</div>;
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
       <div className="relative z-10 container mx-auto p-6 pt-20">
         <div className="flex justify-between items-center mb-8">
@@ -121,218 +127,194 @@ const ProfileEdit = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Profile Photo Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">Profile Photo</h2>
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center">
-                {photoPreview ? (
-                  <img
-                    src={photoPreview}
-                    alt="Profile Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-gray-400 text-sm text-center px-2">
-                    No photo
-                  </span>
-                )}
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="block w-full text-sm text-gray-300
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-lg file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-blue-600 file:text-white
-                  hover:file:bg-blue-700 file:cursor-pointer
-                  cursor-pointer"
-              />
-              <p className="text-gray-400 text-xs text-center">Max size: 2MB</p>
-              <button
-                onClick={() => handleSave("Photo")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
-              >
-                Save Photo
-              </button>
-            </div>
-          </div>
+          {/* Identity & Contact Section */}
+          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Left Column: Photo & Basic Stats */}
+              <div className="flex flex-col items-center gap-6 lg:w-1/3 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
+                <div className="relative group">
+                  <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-[1.02]">
+                    {photoPreview ? (
+                      <img
+                        src={photoPreview}
+                        alt="Profile Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-sm text-center px-4">
+                        No photo set
+                      </span>
+                    )}
+                  </div>
+                  <label className="absolute bottom-2 right-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full cursor-pointer shadow-lg transition-all hover:scale-110 active:scale-95 group-hover:ring-4 ring-blue-500/20">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                
+                <div className="text-center space-y-1">
+                  <p className="text-white font-bold text-lg">{profile.name || "Set your name"}</p>
+                  <p className="text-blue-400 text-sm font-medium">{profile.role || "Set your role"}</p>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest mt-2 px-3 py-1 bg-white/5 rounded-full inline-block">Pro Account</p>
+                </div>
 
-          {/* Home Page Information Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">Home Page</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={profile.name || ""}
-                  onChange={(e) =>
-                    setProfile({ ...profile, name: e.target.value })
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="Rohit Vishwakarma"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
-                  Role/Title
-                </label>
-                <input
-                  type="text"
-                  value={profile.role || ""}
-                  onChange={(e) =>
-                    setProfile({ ...profile, role: e.target.value })
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="DevOps Engineer"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
-                  Tagline
-                </label>
-                <input
-                  type="text"
-                  value={profile.tagline || ""}
-                  onChange={(e) =>
-                    setProfile({ ...profile, tagline: e.target.value })
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="Building scalable infrastructure..."
-                />
-              </div>
-              <button
-                onClick={() => handleSave("Home Page")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
-              >
-                Save Home Page
-              </button>
-            </div>
-          </div>
-
-          {/* Contact Information Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">
-              Contact Information
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={profile.contact?.email || ""}
-                  onChange={(e) =>
-                    setProfile({
-                      ...profile,
-                      contact: { ...profile.contact, email: e.target.value },
-                    })
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  value={profile.contact?.phone || ""}
-                  onChange={(e) =>
-                    setProfile({
-                      ...profile,
-                      contact: { ...profile.contact, phone: e.target.value },
-                    })
-                  }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="+91 XXX XXX XXXX"
-                />
-              </div>
-              <button
-                onClick={() => handleSave("Contact Information")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
-              >
-                Save Contact Info
-              </button>
-            </div>
-          </div>
-
-          {/* Dynamic Roles Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">
-              Dynamic Roles (Typing Animation)
-            </h2>
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  id="newRole"
-                  className="flex-1 p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="Add new role (e.g. Cloud Architect)"
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      const input = e.target as HTMLInputElement;
-                      if (input.value.trim()) {
-                        setProfile({
-                          ...profile,
-                          roles: [...(profile.roles || []), input.value.trim()],
-                        });
-                        input.value = "";
-                      }
-                    }
-                  }}
-                />
                 <button
-                  onClick={() => {
-                    const input = document.getElementById(
-                      "newRole",
-                    ) as HTMLInputElement;
-                    if (input.value.trim()) {
-                      setProfile({
-                        ...profile,
-                        roles: [...(profile.roles || []), input.value.trim()],
-                      });
-                      input.value = "";
-                    }
-                  }}
-                  className="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 text-sm md:text-base rounded-lg transition-colors"
+                  onClick={() => handleSave("Identity & Contact")}
+                  className="w-full mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
                 >
-                  Add
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                  </svg>
+                  Save Profile
                 </button>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {profile.roles?.map((role: string, index: number) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full border border-blue-500/30"
-                  >
-                    <span>{role}</span>
-                    <button
-                      onClick={() => {
-                        const newRoles = [...profile.roles];
-                        newRoles.splice(index, 1);
-                        setProfile({ ...profile, roles: newRoles });
-                      }}
-                      className="hover:text-red-400 transition-colors"
-                    >
-                      ×
-                    </button>
+
+              {/* Right Column: Detailed Forms */}
+              <div className="flex-1 space-y-6">
+                {/* Basic Info Grid */}
+                <div>
+                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                    Basic Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Full Name</label>
+                      <input
+                        type="text"
+                        value={profile.name || ""}
+                        onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="Rohit Vishwakarma"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Professional Title</label>
+                      <input
+                        type="text"
+                        value={profile.role || ""}
+                        onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="DevOps Engineer"
+                      />
+                    </div>
+                    <div className="md:col-span-2 space-y-1.5">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Tagline</label>
+                      <input
+                        type="text"
+                        value={profile.tagline || ""}
+                        onChange={(e) => setProfile({ ...profile, tagline: e.target.value })}
+                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="Building scalable infrastructure and CI/CD pipelines..."
+                      />
+                    </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Contact Info Grid */}
+                <div>
+                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                    Contact Details
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Email Address</label>
+                      <input
+                        type="email"
+                        value={profile.contact?.email || ""}
+                        onChange={(e) => setProfile({ ...profile, contact: { ...profile.contact, email: e.target.value } })}
+                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Phone Number</label>
+                      <input
+                        type="text"
+                        value={profile.contact?.phone || ""}
+                        onChange={(e) => setProfile({ ...profile, contact: { ...profile.contact, phone: e.target.value } })}
+                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="+91 XXX XXX XXXX"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dynamic Roles Section */}
+                <div>
+                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                    Dynamic Roles
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        id="newRole"
+                        className="flex-1 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="Add new role (e.g. Cloud Architect)"
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            const input = e.target as HTMLInputElement;
+                            if (input.value.trim()) {
+                              setProfile({
+                                ...profile,
+                                roles: [...(profile.roles || []), input.value.trim()],
+                              });
+                              input.value = "";
+                            }
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const input = document.getElementById("newRole") as HTMLInputElement;
+                          if (input.value.trim()) {
+                            setProfile({
+                              ...profile,
+                              roles: [...(profile.roles || []), input.value.trim()],
+                            });
+                            input.value = "";
+                          }
+                        }}
+                        className="bg-white/10 hover:bg-white/20 text-white px-4 rounded-xl border border-white/10 transition-all text-sm font-bold active:scale-95"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.roles?.map((role: string, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 bg-blue-500/10 text-blue-300 px-3 py-1 rounded-full border border-blue-500/20 text-xs font-medium group/role hover:border-blue-500/40 transition-all"
+                        >
+                          <span>{role}</span>
+                          <button
+                            onClick={() => {
+                              const newRoles = [...profile.roles];
+                              newRoles.splice(index, 1);
+                              setProfile({ ...profile, roles: newRoles });
+                            }}
+                            className="hover:text-red-400 transition-colors opacity-60 group-hover/role:opacity-100"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={() => handleSave("Roles")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
-              >
-                Save Roles
-              </button>
             </div>
           </div>
 
@@ -734,8 +716,10 @@ const ProfileEdit = () => {
                   type="button"
                   onClick={() => {
                     const current = ensureAchievements();
-                    const next = [...current, createAchievement()];
+                    const newAchievement = createAchievement();
+                    const next = [...current, newAchievement];
                     setProfile({ ...profile, achievements: next });
+                    setEditingAchievementIndex(next.length - 1);
                   }}
                   className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center gap-2"
                 >
@@ -784,155 +768,337 @@ const ProfileEdit = () => {
                   to create your first update.
                 </div>
               ) : (
-                ensureAchievements().map((a: any, index: number) => (
-                  <div
-                    key={a.id || index}
-                    className="bg-white/5 p-4 rounded-lg border border-white/10 transition-all hover:bg-white/10"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/10 rounded-xl">
-                          <input
-                            type="checkbox"
-                            checked={!!a.pinned}
-                            onChange={(e) => {
-                              const next = [...ensureAchievements()];
-                              next[index] = { ...next[index], pinned: e.target.checked };
-                              setProfile({ ...profile, achievements: next });
-                            }}
-                            className="w-4 h-4"
-                            title="Pin this achievement"
-                          />
-                          <span className="text-xs text-gray-200 font-semibold">
-                            Pinned
-                          </span>
+                ensureAchievements().map((a: any, index: number) => {
+                  const isEditing = editingAchievementIndex === index;
+                  const getMeta = (type?: string) => {
+                    switch (type) {
+                      case "learned": return { icon: "🧠", color: "text-purple-400" };
+                      case "shipped": return { icon: "🚀", color: "text-blue-400" };
+                      case "improved": return { icon: "⚙️", color: "text-orange-400" };
+                      default: return { icon: "✅", color: "text-green-400" };
+                    }
+                  };
+                  const meta = getMeta(a.type);
+
+                  return (
+                    <div
+                      key={a.id || index}
+                      className="bg-white/5 p-4 rounded-lg border border-white/10 transition-all hover:bg-white/10"
+                    >
+                      {isEditing ? (
+                        /* Edit Mode */
+                        <div className="space-y-4 animate-fadeIn">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3 pb-3 border-b border-white/5">
+                            <div className="flex items-center gap-3 flex-wrap">
+                              <h3 className="text-sm font-bold text-white">Editing Achievement #{index + 1}</h3>
+                              <div className="flex items-center gap-2 px-3 py-1 bg-white/10 border border-white/10 rounded-xl">
+                                <input
+                                  type="checkbox"
+                                  checked={!!a.pinned}
+                                  onChange={(e) => {
+                                    const next = [...ensureAchievements()];
+                                    next[index] = { ...next[index], pinned: e.target.checked };
+                                    setProfile({ ...profile, achievements: next });
+                                  }}
+                                  className="w-4 h-4 cursor-pointer"
+                                />
+                                <span className="text-[10px] text-gray-200 font-semibold">Pinned</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => setEditingAchievementIndex(-1)}
+                                className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors shadow-lg"
+                              >
+                                Done
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Type</label>
+                              <select
+                                value={a.type || "solved"}
+                                onChange={(e) => {
+                                  const next = [...ensureAchievements()];
+                                  next[index] = { ...next[index], type: e.target.value };
+                                  setProfile({ ...profile, achievements: next });
+                                }}
+                                className="p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                              >
+                                <option value="solved">Solved ✅</option>
+                                <option value="learned">Learned 🧠</option>
+                                <option value="shipped">Shipped 🚀</option>
+                                <option value="improved">Improved ⚙️</option>
+                              </select>
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Date</label>
+                              <input
+                                type="date"
+                                value={typeof a.date === "string" ? a.date.slice(0, 10) : new Date().toISOString().slice(0, 10)}
+                                onChange={(e) => {
+                                  const next = [...ensureAchievements()];
+                                  next[index] = { ...next[index], date: e.target.value };
+                                  setProfile({ ...profile, achievements: next });
+                                }}
+                                className="p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                              />
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Tags (CSV)</label>
+                              <input
+                                type="text"
+                                value={Array.isArray(a.tags) ? a.tags.join(", ") : a.tags || ""}
+                                onChange={(e) => {
+                                  const tags = e.target.value.split(",").map((t) => t.trim()).filter(Boolean);
+                                  const next = [...ensureAchievements()];
+                                  next[index] = { ...next[index], tags };
+                                  setProfile({ ...profile, achievements: next });
+                                }}
+                                className="p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                                placeholder="AWS, CI/CD..."
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Title</label>
+                            <input
+                              type="text"
+                              value={a.title || ""}
+                              onChange={(e) => {
+                                const next = [...ensureAchievements()];
+                                next[index] = { ...next[index], title: e.target.value };
+                                setProfile({ ...profile, achievements: next });
+                              }}
+                              className="w-full p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none font-semibold"
+                              placeholder="Key achievement title..."
+                            />
+                          </div>
+
+                          <div className="flex flex-col gap-1.5 group/editor">
+                            <label className="text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
+                              Description
+                            </label>
+                            <div className="flex flex-col rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
+                              {/* Top Toolbar: Formatting */}
+                              <div className="flex flex-wrap items-center gap-0.5 p-1.5 border-b border-white/5 bg-white/5">
+                                {[
+                                  { icon: <Bold className="w-4 h-4" />, action: "**", title: "Bold" },
+                                  { icon: <Italic className="w-4 h-4" />, action: "*", title: "Italic" },
+                                  { icon: <Strikethrough className="w-4 h-4" />, action: "~~", title: "Strikethrough" },
+                                  { icon: <div className="w-px h-4 bg-white/10 mx-1" />, separator: true },
+                                  { icon: <Link2 className="w-4 h-4" />, action: "[", title: "Link" },
+                                  { icon: <ListOrdered className="w-4 h-4" />, action: "1. ", title: "Ordered List" },
+                                  { icon: <List className="w-4 h-4" />, action: "• ", title: "Bullet List" },
+                                  { icon: <Quote className="w-4 h-4" />, action: "> ", title: "Quote" },
+                                  { icon: <Code className="w-4 h-4" />, action: "`", title: "Inline Code" },
+                                ].map((btn, i) => 
+                                  btn.separator ? (
+                                    <div key={i}>{btn.icon}</div>
+                                  ) : (
+                                    <button
+                                      key={i}
+                                      type="button"
+                                      title={btn.title}
+                                        onClick={() => {
+                                          if (btn.separator) return;
+                                          const marker = btn.action as string;
+                                          const needsNewline = marker === '• ' || marker === '1. ' || marker === '> ';
+                                          
+                                          setProfile((prev: any) => {
+                                            if (!prev) return prev;
+                                            const next = Array.isArray(prev.achievements) ? [...prev.achievements] : [];
+                                            if (!next[index]) return prev;
+                                            
+                                            const current = next[index].description || "";
+                                            const newText = current + (current && !current.endsWith('\n') && needsNewline ? '\n' : '') + marker;
+                                            
+                                            next[index] = { ...next[index], description: newText };
+                                            return { ...prev, achievements: next };
+                                          });
+                                        }}
+                                      className="p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
+                                    >
+                                      {btn.icon}
+                                    </button>
+                                  )
+                                )}
+                              </div>
+
+                              {/* Textarea */}
+                              <textarea
+                                data-lenis-prevent
+                                value={a.description || ""}
+                                onChange={(e) => {
+                                  const next = [...ensureAchievements()];
+                                  next[index] = { ...next[index], description: e.target.value };
+                                  setProfile({ ...profile, achievements: next });
+                                }}
+                                className="w-full p-4 bg-transparent text-white text-sm focus:outline-none h-40 leading-relaxed font-sans placeholder:text-gray-600"
+                                placeholder="Message #achievements"
+                              />
+
+                              {/* Bottom Tray: Extras */}
+                              <div className="flex items-center justify-between p-2 border-t border-white/5 bg-white/5 relative">
+                                  <div className="flex items-center gap-1">
+                                    <div className="relative group/emoji">
+                                      <button 
+                                        type="button" 
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          const picker = document.getElementById(`emoji-picker-${index}`);
+                                          if (picker) picker.classList.toggle('hidden');
+                                        }}
+                                        className="p-1.5 hover:bg-white/10 rounded-lg text-gray-500 hover:text-yellow-400 transition-colors"
+                                      >
+                                        <Smile className="w-4 h-4" />
+                                      </button>
+                                      <div id={`emoji-picker-${index}`} className="hidden absolute bottom-full left-0 mb-2">
+                                        <EmojiPicker 
+                                          onEmojiSelect={(emoji: string) => {
+                                            setProfile((prev: any) => {
+                                              if (!prev) return prev;
+                                              const next = Array.isArray(prev.achievements) ? [...prev.achievements] : [];
+                                              if (!next[index]) return prev;
+                                              
+                                              next[index] = { ...next[index], description: (next[index].description || "") + emoji };
+                                              return { ...prev, achievements: next };
+                                            });
+                                            document.getElementById(`emoji-picker-${index}`)?.classList.add('hidden');
+                                          }}
+                                          onClose={() => document.getElementById(`emoji-picker-${index}`)?.classList.add('hidden')}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                            <p className="mt-1.5 text-[9px] text-gray-600 italic px-1 flex items-center gap-1.5">
+                              <span className="w-1 h-1 rounded-full bg-blue-500/50" />
+                              <span>Markdown supported: **bold**, *italic*, ~~strike~~, `inline code`</span>
+                            </p>
+                          </div>
+
+                          <div className="flex justify-between items-center pt-2">
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (index === 0) return;
+                                  const next = [...ensureAchievements()];
+                                  [next[index - 1], next[index]] = [next[index], next[index - 1]];
+                                  setProfile({ ...profile, achievements: next });
+                                  setEditingAchievementIndex(index - 1);
+                                }}
+                                className="p-1.5 text-gray-400 hover:text-white bg-white/5 rounded border border-white/5 disabled:opacity-30"
+                                disabled={index === 0}
+                                title="Move up"
+                              >
+                                ↑
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const cur = ensureAchievements();
+                                  if (index >= cur.length - 1) return;
+                                  const next = [...cur];
+                                  [next[index], next[index + 1]] = [next[index + 1], next[index]];
+                                  setProfile({ ...profile, achievements: next });
+                                  setEditingAchievementIndex(index + 1);
+                                }}
+                                className="p-1.5 text-gray-400 hover:text-white bg-white/5 rounded border border-white/5 disabled:opacity-30"
+                                disabled={index === ensureAchievements().length - 1}
+                                title="Move down"
+                              >
+                                ↓
+                              </button>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (confirm("Delete this achievement?")) {
+                                  const next = [...ensureAchievements()];
+                                  next.splice(index, 1);
+                                  setProfile({ ...profile, achievements: next });
+                                  setEditingAchievementIndex(-1);
+                                }
+                              }}
+                              className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold rounded-lg border border-red-500/20 transition-all"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
-
-                        <select
-                          value={a.type || "solved"}
-                          onChange={(e) => {
-                            const next = [...ensureAchievements()];
-                            next[index] = { ...next[index], type: e.target.value };
-                            setProfile({ ...profile, achievements: next });
-                          }}
-                          className="p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
-                          title="Type"
-                        >
-                          <option value="solved">Solved ✅</option>
-                          <option value="learned">Learned 🧠</option>
-                          <option value="shipped">Shipped 🚀</option>
-                          <option value="improved">Improved ⚙️</option>
-                        </select>
-
-                        <input
-                          type="date"
-                          value={
-                            typeof a.date === "string"
-                              ? a.date.slice(0, 10)
-                              : new Date().toISOString().slice(0, 10)
-                          }
-                          onChange={(e) => {
-                            const next = [...ensureAchievements()];
-                            next[index] = { ...next[index], date: e.target.value };
-                            setProfile({ ...profile, achievements: next });
-                          }}
-                          className="p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
-                          title="Date"
-                        />
-                      </div>
-
-                      <div className="flex items-center gap-2 justify-end">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (index === 0) return;
-                            const next = [...ensureAchievements()];
-                            [next[index - 1], next[index]] = [next[index], next[index - 1]];
-                            setProfile({ ...profile, achievements: next });
-                          }}
-                          className="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                          disabled={index === 0}
-                          title="Move up"
-                        >
-                          ↑
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const current = ensureAchievements();
-                            if (index >= current.length - 1) return;
-                            const next = [...current];
-                            [next[index], next[index + 1]] = [next[index + 1], next[index]];
-                            setProfile({ ...profile, achievements: next });
-                          }}
-                          className="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                          disabled={index === ensureAchievements().length - 1}
-                          title="Move down"
-                        >
-                          ↓
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (
-                              confirm(
-                                "Are you sure you want to delete this achievement?",
-                              )
-                            ) {
-                              const next = [...ensureAchievements()];
-                              next.splice(index, 1);
-                              setProfile({ ...profile, achievements: next });
-                            }
-                          }}
-                          className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
-                          title="Delete"
-                        >
-                          🗑
-                        </button>
-                      </div>
+                      ) : (
+                        /* View Mode */
+                        <div className="flex items-center justify-between group/view">
+                          <div className="flex items-center gap-4 min-w-0">
+                            <span className="text-xl bg-white/10 w-10 h-10 flex items-center justify-center rounded-xl border border-white/10 shadow-inner">
+                              {meta.icon}
+                            </span>
+                            <div className="flex flex-col min-w-0">
+                              <div className="flex items-center gap-2 mb-0.5">
+                                {a.pinned && (
+                                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 uppercase tracking-wider">
+                                    Pinned
+                                  </span>
+                                )}
+                                <h3 className="text-white font-bold text-sm truncate">
+                                  {a.title || "Untitled Achievement"}
+                                </h3>
+                              </div>
+                              <div className="flex items-center gap-2 text-[10px] text-gray-500">
+                                <span className={meta.color + " font-bold uppercase tracking-widest"}>{a.type}</span>
+                                <span>•</span>
+                                <span>{a.date ? new Date(a.date).toLocaleDateString() : "No date"}</span>
+                                {a.tags?.length > 0 && (
+                                  <>
+                                    <span>•</span>
+                                    <span className="truncate max-w-[150px]">{a.tags.join(", ")}</span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 opacity-0 group-hover/view:opacity-100 transition-opacity">
+                            <button
+                              type="button"
+                              onClick={() => setEditingAchievementIndex(index)}
+                              className="p-2 text-blue-400 hover:text-blue-300 bg-blue-400/10 rounded-lg transition-colors"
+                              title="Edit"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (confirm("Delete this achievement?")) {
+                                  const next = [...ensureAchievements()];
+                                  next.splice(index, 1);
+                                  setProfile({ ...profile, achievements: next });
+                                }
+                              }}
+                              className="p-2 text-red-400 hover:text-red-300 bg-red-400/10 rounded-lg transition-colors"
+                              title="Delete"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <input
-                        type="text"
-                        value={a.title || ""}
-                        onChange={(e) => {
-                          const next = [...ensureAchievements()];
-                          next[index] = { ...next[index], title: e.target.value };
-                          setProfile({ ...profile, achievements: next });
-                        }}
-                        className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
-                        placeholder="Title (e.g. Fixed Kubernetes rollout issue)"
-                      />
-                      <input
-                        type="text"
-                        value={Array.isArray(a.tags) ? a.tags.join(", ") : a.tags || ""}
-                        onChange={(e) => {
-                          const tags = e.target.value
-                            .split(",")
-                            .map((t) => t.trim())
-                            .filter(Boolean);
-                          const next = [...ensureAchievements()];
-                          next[index] = { ...next[index], tags };
-                          setProfile({ ...profile, achievements: next });
-                        }}
-                        className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
-                        placeholder="Tags (comma separated) e.g. AWS, CI/CD"
-                      />
-                    </div>
-
-                    <textarea
-                      value={a.description || ""}
-                      onChange={(e) => {
-                        const next = [...ensureAchievements()];
-                        next[index] = { ...next[index], description: e.target.value };
-                        setProfile({ ...profile, achievements: next });
-                      }}
-                      className="w-full mt-3 p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none h-20"
-                      placeholder="Short description (what you did / impact)"
-                    />
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>

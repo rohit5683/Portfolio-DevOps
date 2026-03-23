@@ -4,6 +4,12 @@ import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import UploadProgress from "../../components/common/UploadProgress";
 import { getImageUrl } from "../../utils/imageUtils";
+import { 
+  Bold, Italic, Strikethrough, Link2, ListOrdered, List, Quote, Code, 
+  Smile, ExternalLink, Github
+} from "lucide-react";
+import EmojiPicker from "../../components/common/EmojiPicker";
+import RichText from "../../components/common/RichText";
 
 const ProjectsEdit = () => {
   const navigate = useNavigate();
@@ -164,7 +170,7 @@ const ProjectsEdit = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
 
       {uploading && (
@@ -195,103 +201,191 @@ const ProjectsEdit = () => {
             {editingId ? "Edit Project" : "Add New Project"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Project Title"
-                value={newProject.title}
-                onChange={(e) =>
-                  setNewProject({ ...newProject, title: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-                required
-              />
-              <select
-                value={newProject.category}
-                onChange={(e) =>
-                  setNewProject({ ...newProject, category: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-              >
-                <option value="web" className="text-black">
-                  Web Apps
-                </option>
-                <option value="devops" className="text-black">
-                  DevOps
-                </option>
-                <option value="cloud" className="text-black">
-                  Cloud
-                </option>
-                <option value="mobile" className="text-black">
-                  Mobile
-                </option>
-              </select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <select
-                value={newProject.status}
-                onChange={(e) =>
-                  setNewProject({ ...newProject, status: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-              >
-                <option value="completed" className="text-black">
-                  Completed
-                </option>
-                <option value="in-progress" className="text-black">
-                  In Progress
-                </option>
-                <option value="archived" className="text-black">
-                  Archived
-                </option>
-              </select>
-              <div className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="md:col-span-2 space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Project Title</label>
                 <input
-                  type="checkbox"
-                  id="featured"
-                  checked={newProject.featured}
+                  type="text"
+                  placeholder="e.g. Aura Dashboard"
+                  value={newProject.title}
                   onChange={(e) =>
-                    setNewProject({ ...newProject, featured: e.target.checked })
+                    setNewProject({ ...newProject, title: e.target.value })
                   }
-                  className="w-5 h-5 rounded"
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all font-medium"
+                  required
                 />
-                <label htmlFor="featured" className="text-white cursor-pointer">
-                  Featured Project
-                </label>
               </div>
-              <input
-                type="date"
-                value={newProject.completionDate}
-                onChange={(e) =>
-                  setNewProject({
-                    ...newProject,
-                    completionDate: e.target.value,
-                  })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                placeholder="Completion Date"
-              />
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
+                <select
+                  value={newProject.category}
+                  onChange={(e) =>
+                    setNewProject({ ...newProject, category: e.target.value })
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer"
+                >
+                  <option value="web" className="text-black">Web Apps</option>
+                  <option value="devops" className="text-black">DevOps</option>
+                  <option value="cloud" className="text-black">Cloud</option>
+                  <option value="mobile" className="text-black">Mobile</option>
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Status</label>
+                <select
+                  value={newProject.status}
+                  onChange={(e) =>
+                    setNewProject({ ...newProject, status: e.target.value })
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer"
+                >
+                  <option value="completed" className="text-black">Completed</option>
+                  <option value="in-progress" className="text-black">In Progress</option>
+                  <option value="archived" className="text-black">Archived</option>
+                </select>
+              </div>
             </div>
 
-            <input
-              type="text"
-              placeholder="Tech Stack (comma separated, e.g. React, Node, AWS)"
-              value={newProject.techStack}
-              onChange={(e) =>
-                setNewProject({ ...newProject, techStack: e.target.value })
-              }
-              className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-            />
-            <textarea
-              placeholder="Description"
-              value={newProject.description}
-              onChange={(e) =>
-                setNewProject({ ...newProject, description: e.target.value })
-              }
-              className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-32"
-              required
-            />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Completion Date</label>
+                <input
+                  type="date"
+                  value={newProject.completionDate}
+                  onChange={(e) =>
+                    setNewProject({
+                      ...newProject,
+                      completionDate: e.target.value,
+                    })
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer"
+                />
+              </div>
+              <div className="flex items-end pb-1.5">
+                <div 
+                  className="flex items-center gap-2 px-4 py-2.5 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors group/feat"
+                  onClick={() => setNewProject({ ...newProject, featured: !newProject.featured })}
+                >
+                  <input
+                    type="checkbox"
+                    id="featured"
+                    checked={newProject.featured}
+                    onChange={(e) =>
+                      setNewProject({ ...newProject, featured: e.target.checked })
+                    }
+                    className="w-4 h-4 rounded border-white/20 bg-transparent text-blue-500 focus:ring-offset-0 focus:ring-0 cursor-pointer"
+                  />
+                  <label htmlFor="featured" className="text-xs text-gray-400 cursor-pointer group-hover/feat:text-white transition-colors">
+                    Featured Project
+                  </label>
+                </div>
+              </div>
+              <div className="md:col-span-2 space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
+                <input
+                  type="text"
+                  placeholder="e.g. React, Node, Docker, AWS"
+                  value={newProject.techStack}
+                  onChange={(e) =>
+                    setNewProject({ ...newProject, techStack: e.target.value })
+                  }
+                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5 group/editor">
+              <label className="text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
+                Description
+              </label>
+              <div className="flex flex-col rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
+                {/* Top Toolbar: Formatting */}
+                <div className="flex flex-wrap items-center gap-0.5 p-1.5 border-b border-white/5 bg-white/5">
+                  {[
+                    { icon: <Bold className="w-4 h-4" />, action: "**", title: "Bold" },
+                    { icon: <Italic className="w-4 h-4" />, action: "*", title: "Italic" },
+                    { icon: <Strikethrough className="w-4 h-4" />, action: "~~", title: "Strikethrough" },
+                    { icon: <div className="w-px h-4 bg-white/10 mx-1" />, separator: true },
+                    { icon: <Link2 className="w-4 h-4" />, action: "[", title: "Link" },
+                    { icon: <ListOrdered className="w-4 h-4" />, action: "1. ", title: "Ordered List" },
+                    { icon: <List className="w-4 h-4" />, action: "• ", title: "Bullet List" },
+                    { icon: <Quote className="w-4 h-4" />, action: "> ", title: "Quote" },
+                    { icon: <Code className="w-4 h-4" />, action: "`", title: "Inline Code" },
+                  ].map((btn, i) => 
+                    btn.separator ? (
+                      <div key={i}>{btn.icon}</div>
+                    ) : (
+                      <button
+                        key={i}
+                        type="button"
+                        title={btn.title}
+                        onClick={() => {
+                          if (btn.separator) return;
+                          const marker = btn.action as string;
+                          const needsNewline = marker === '• ' || marker === '1. ' || marker === '> ';
+                          
+                          setNewProject(prev => {
+                            const current = prev.description || "";
+                            return { 
+                              ...prev, 
+                              description: current + (current && !current.endsWith('\n') && needsNewline ? '\n' : '') + marker 
+                            };
+                          });
+                        }}
+                        className="p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
+                      >
+                        {btn.icon}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                {/* Textarea */}
+                <textarea
+                  data-lenis-prevent
+                  value={newProject.description || ""}
+                  onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
+                  className="w-full p-4 bg-transparent text-white text-sm focus:outline-none h-48 leading-relaxed font-sans placeholder:text-gray-600"
+                  placeholder="Describe your project..."
+                  required
+                />
+
+                {/* Bottom Tray: Extras */}
+                <div className="flex items-center justify-between p-2 border-t border-white/5 bg-white/5 relative">
+                  <div className="flex items-center gap-1">
+                    <div className="relative group/emoji">
+                      <button 
+                        type="button" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const picker = document.getElementById('project-emoji-picker');
+                          if (picker) picker.classList.toggle('hidden');
+                        }}
+                        className="p-1.5 hover:bg-white/10 rounded-lg text-gray-500 hover:text-yellow-400 transition-colors"
+                      >
+                        <Smile className="w-4 h-4" />
+                      </button>
+                      <div id="project-emoji-picker" className="hidden absolute bottom-full left-0 mb-2">
+                        <EmojiPicker 
+                          onEmojiSelect={(emoji: string) => {
+                            setNewProject(prev => ({ 
+                              ...prev, 
+                              description: (prev.description || "") + emoji 
+                            }));
+                            document.getElementById('project-emoji-picker')?.classList.add('hidden');
+                          }}
+                          onClose={() => document.getElementById('project-emoji-picker')?.classList.add('hidden')}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p className="mt-1.5 text-[9px] text-gray-600 italic px-1 flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-blue-500/50" />
+                <span>Markdown supported: **bold**, *italic*, ~~strike~~, `inline code`</span>
+              </p>
+            </div>
 
             {/* Image Upload Section */}
             <div className="space-y-4 bg-white/5 p-4 rounded-lg border border-white/10">
@@ -331,6 +425,7 @@ const ProjectsEdit = () => {
                   🔗 Paste Image URLs (comma separated)
                 </label>
                 <textarea
+                  data-lenis-prevent
                   placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
                   value={newProject.images}
                   onChange={(e) =>
@@ -346,45 +441,69 @@ const ProjectsEdit = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Live Demo Link (optional)"
-                value={newProject.link}
-                onChange={(e) =>
-                  setNewProject({ ...newProject, link: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-              />
-              <input
-                type="text"
-                placeholder="GitHub Repository Link (optional)"
-                value={newProject.githubLink}
-                onChange={(e) =>
-                  setNewProject({ ...newProject, githubLink: e.target.value })
-                }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Live Demo Link</label>
+                <div className="relative group/link">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within/link:text-blue-500 transition-colors">
+                    <ExternalLink className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="https://your-site.com"
+                    value={newProject.link}
+                    onChange={(e) =>
+                      setNewProject({ ...newProject, link: e.target.value })
+                    }
+                    className="w-full pl-10 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">GitHub Repository</label>
+                <div className="relative group/link">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within/link:text-blue-500 transition-colors">
+                    <Github className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="https://github.com/user/repo"
+                    value={newProject.githubLink}
+                    onChange={(e) =>
+                      setNewProject({ ...newProject, githubLink: e.target.value })
+                    }
+                    className="w-full pl-10 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-4 pt-4">
               <button
                 type="submit"
                 disabled={uploading}
-                className="flex-1 bg-green-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50"
               >
-                {uploading
-                  ? "Uploading..."
-                  : editingId
-                    ? "Update Project"
-                    : "Add Project"}
+                {uploading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    <span>Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>{editingId ? "Update Project" : "Create Project"}</span>
+                  </>
+                )}
               </button>
 
               {editingId && (
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-4 py-2 md:px-6 md:py-3 text-sm md:text-base bg-gray-600 hover:bg-gray-500 text-white font-bold rounded-lg transition-colors"
+                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
                 >
                   Cancel
                 </button>
@@ -402,7 +521,9 @@ const ProjectsEdit = () => {
               <h3 className="text-xl font-bold text-white mb-2">
                 {project.title}
               </h3>
-              <p className="text-gray-300 mb-3">{project.description}</p>
+              <div className="text-gray-300 mb-3 text-sm line-clamp-3 overflow-hidden">
+                <RichText text={project.description || ""} />
+              </div>
 
               {/* Image Preview */}
               {project.images && project.images.length > 0 && (

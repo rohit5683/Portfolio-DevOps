@@ -44,11 +44,15 @@ function ScrollToTop() {
 }
 
 import { HelmetProvider } from "react-helmet-async";
+import CustomCursor from "./components/common/CustomCursor";
+import SmoothScroll from "./components/common/SmoothScroll";
 
 function App() {
   return (
     <HelmetProvider>
-      <AuthProvider>
+      <SmoothScroll>
+        <CustomCursor />
+        <AuthProvider>
         <Router>
           <ScrollToTop />
           <Routes>
@@ -80,6 +84,7 @@ function App() {
           </Routes>
         </Router>
       </AuthProvider>
+      </SmoothScroll>
     </HelmetProvider>
   );
 }

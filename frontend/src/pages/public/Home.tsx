@@ -4,6 +4,8 @@ import api from "../../services/api";
 import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
+import RichText from "../../components/common/RichText";
+import Modal from "../../components/common/Modal";
 
 type AchievementType = "solved" | "learned" | "shipped" | "improved";
 
@@ -33,14 +35,81 @@ const formatAchievementDate = (iso: string) => {
   return d.toLocaleDateString("en-US", { month: "short", day: "2-digit" });
 };
 
+const AchievementCard = ({ 
+  item, 
+  meta 
+}: { 
+  item: AchievementItem; 
+  meta: typeof achievementTypeMeta[keyof typeof achievementTypeMeta] 
+}) => (
+  <div
+    className={`group relative pr-4 py-5 pl-5 rounded-2xl border transition-all duration-300 ${
+      item.pinned
+        ? "bg-gradient-to-br from-white/10 to-yellow-500/5 border-yellow-500/25 shadow-[0_0_40px_rgba(234,179,8,0.1)] scale-[1.01]"
+        : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]"
+    }`}
+  >
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-3 flex-wrap">
+        <div
+          className={`w-7 h-7 rounded-full bg-gradient-to-r ${meta.accent} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0`}
+        >
+          <span className="text-sm">{meta.icon}</span>
+        </div>
+        
+        <div className="flex items-center gap-2 flex-wrap">
+          {item.pinned && (
+            <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
+              PINNED
+            </span>
+          )}
+          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
+            {meta.label}
+          </span>
+          <span className="text-xs text-gray-400">
+            {formatAchievementDate(item.date)}
+          </span>
+        </div>
+      </div>
+
+      <div className="min-w-0">
+        <div className="text-white font-bold text-base md:text-lg leading-snug">
+          {item.title}
+        </div>
+        {item.description && (
+          <RichText 
+            text={item.description} 
+            accentColor={meta.accent.includes("blue") ? "bg-blue-400/70" : meta.accent.includes("purple") ? "bg-purple-400/70" : meta.accent.includes("green") ? "bg-green-400/70" : "bg-orange-400/70"}
+          />
+        )}
+        
+        {item.tags?.length ? (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {item.tags.slice(0, 6).map((t) => (
+              <span
+                key={t}
+                className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-blue-200 border border-white/10"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  </div>
+);
+
 const ActivityFeed = ({
   items,
   onViewAll,
+  showAllInitially = false,
 }: {
   items: AchievementItem[];
-  onViewAll: () => void;
+  onViewAll?: () => void;
+  showAllInitially?: boolean;
 }) => {
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(showAllInitially);
   const [filter, setFilter] = useState<AchievementType | "all">("all");
 
   const sorted = [...items].sort((a, b) => {
@@ -68,26 +137,28 @@ const ActivityFeed = ({
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={onViewAll}
-            className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
-          >
-            View all
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {onViewAll && (
+            <button
+              type="button"
+              onClick={onViewAll}
+              className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
-          </button>
+              View all
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </button>
+          )}
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2">
@@ -118,68 +189,10 @@ const ActivityFeed = ({
 
       <div className="p-6 md:p-8">
         <div className="relative">
-          <div className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/40 via-purple-500/30 to-transparent"></div>
-
           <div className="space-y-4">
-            {visible.map((item) => {
-              const meta = achievementTypeMeta[item.type];
-              return (
-                <div
-                  key={item.id}
-                  className={`relative pl-10 pr-4 py-4 rounded-2xl border transition-all ${
-                    item.pinned
-                      ? "bg-gradient-to-br from-white/10 to-yellow-500/5 border-yellow-500/25 shadow-[0_0_30px_rgba(234,179,8,0.08)]"
-                      : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
-                  }`}
-                >
-                  <div
-                    className={`absolute left-[9px] top-6 w-6 h-6 rounded-full bg-gradient-to-r ${meta.accent} flex items-center justify-center shadow-lg`}
-                  >
-                    <span className="text-sm">{meta.icon}</span>
-                  </div>
-
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {item.pinned && (
-                          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
-                            PINNED
-                          </span>
-                        )}
-                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
-                          {meta.label}
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {formatAchievementDate(item.date)}
-                        </span>
-                      </div>
-
-                      <div className="mt-2 text-white font-bold text-base md:text-lg leading-snug">
-                        {item.title}
-                      </div>
-                      {item.description && (
-                        <div className="mt-1 text-gray-300 text-sm leading-relaxed">
-                          {item.description}
-                        </div>
-                      )}
-
-                      {item.tags?.length ? (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {item.tags.slice(0, 6).map((t) => (
-                            <span
-                              key={t}
-                              className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-blue-200 border border-white/10"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {visible.map((item) => (
+              <AchievementCard key={item.id} item={item} meta={achievementTypeMeta[item.type]} />
+            ))}
 
             {filtered.length === 0 && (
               <div className="text-center py-10 text-gray-400">
@@ -190,47 +203,51 @@ const ActivityFeed = ({
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <button
-            type="button"
-            onClick={() => setShowAll((v) => !v)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
-          >
-            {showAll ? "Show less" : "Show more"}
-            <svg
-              className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {!showAllInitially && (
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
+              {showAll ? "Show less" : "Show more"}
+              <svg
+                className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          )}
 
-          <button
-            type="button"
-            onClick={onViewAll}
-            className="md:hidden inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all text-sm font-bold shadow-lg shadow-blue-500/20"
-          >
-            View all
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {onViewAll && (
+            <button
+              type="button"
+              onClick={onViewAll}
+              className="md:hidden inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all text-sm font-bold shadow-lg shadow-blue-500/20"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
-          </button>
+              View all
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -245,6 +262,7 @@ const Home = () => {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isAchievementsModalOpen, setIsAchievementsModalOpen] = useState(false);
 
   // Fetch profile and skills data
   useEffect(() => {
@@ -582,7 +600,7 @@ const Home = () => {
         <div className="mb-24">
           <ActivityFeed
             items={achievements}
-            onViewAll={() => navigate("/projects")}
+            onViewAll={() => setIsAchievementsModalOpen(true)}
           />
         </div>
 
@@ -894,6 +912,16 @@ const Home = () => {
           </Tilt>
         </div>
       </div>
+
+      <Modal
+        isOpen={isAchievementsModalOpen}
+        onClose={() => setIsAchievementsModalOpen(false)}
+        title="Achievement History"
+      >
+        <div className="mt-4">
+          <ActivityFeed items={achievements} showAllInitially={true} />
+        </div>
+      </Modal>
 
       <style>{`
         @keyframes fade-in-up {
