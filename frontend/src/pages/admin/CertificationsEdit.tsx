@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import { getImageUrl } from "../../utils/imageUtils";
+import RichTextEditor from "../../components/admin/RichTextEditor";
 
 const CertificationsEdit = () => {
   const navigate = useNavigate();
@@ -247,13 +248,11 @@ const CertificationsEdit = () => {
               <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                 Description
               </label>
-              <textarea
-                placeholder="Brief description..."
+              <RichTextEditor
                 value={newCert.description}
-                onChange={(e) =>
-                  setNewCert({ ...newCert, description: e.target.value })
-                }
-                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600 h-24"
+                onChange={(content: string) => setNewCert({ ...newCert, description: content })}
+                placeholder="Brief description..."
+                className="h-24 md:h-32"
               />
             </div>
             

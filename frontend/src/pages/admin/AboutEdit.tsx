@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
+import RichTextEditor from "../../components/admin/RichTextEditor";
 
 const AboutEdit = () => {
   const navigate = useNavigate();
@@ -153,12 +154,11 @@ const AboutEdit = () => {
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Full About Narrative</label>
-                      <textarea
-                        data-lenis-prevent
+                      <RichTextEditor
                         value={profile.about || ""}
-                        onChange={(e) => setProfile({ ...profile, about: e.target.value })}
-                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all h-36 md:h-44 resize-none leading-relaxed"
+                        onChange={(content) => setProfile({ ...profile, about: content })}
                         placeholder="Tell your professional story, your journey, and what drives you..."
+                        className="h-44 md:h-56"
                       />
                     </div>
                   </div>

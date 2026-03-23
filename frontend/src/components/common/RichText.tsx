@@ -1,4 +1,5 @@
 import React from "react";
+import DOMPurify from "dompurify";
 
 interface RichTextProps {
   text: string;
@@ -7,10 +8,9 @@ interface RichTextProps {
 }
 
 /**
- * A lightweight renderer that parses plain text for:
- * 1. Newlines (renders as separate paragraphs or list items)
- * 2. Bullet points (lines starting with -, •, *, or 1.)
- * 3. Emojis (preserved naturally)
+ * A sophisticated renderer that supports both HTML (sanitized) and Markdown.
+ * If the content appears to be HTML (starts with <), it uses dangerouslySetInnerHTML with DOMPurify.
+ * Otherwise, it falls back to the lightweight Markdown parser.
  */
 const RichText: React.FC<RichTextProps> = ({ 
   text, 
@@ -19,9 +19,21 @@ const RichText: React.FC<RichTextProps> = ({
 }) => {
   if (!text) return null;
 
+  // Simple heuristic: if it contains HTML-like tags, treat as HTML
+  const isHtml = text.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(text);
+
+  if (isHtml) {
+    return (
+      <div 
+        className={`rich-text-content ${className}`}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
+      />
+    );
+  }
+
+  // Fallback to Markdown Parser
   const lines = text.split("\n").filter((l) => l.trim() !== "");
 
-  // Partition consecutive runs into bullet groups and paragraph groups
   type Segment =
     | { kind: "bullets"; items: string[] }
     | { kind: "para"; text: string };
@@ -37,7 +49,6 @@ const RichText: React.FC<RichTextProps> = ({
   };
 
   for (const line of lines) {
-    // Matches common bullet prefixes or numbered lists
     const bulletMatch = line.match(/^(?:[-•*]|\d+\.)\s+(.+)$/);
     if (bulletMatch) {
       if (!currentBullets) currentBullets = [];
@@ -50,8 +61,6 @@ const RichText: React.FC<RichTextProps> = ({
   flushBullets();
 
   const renderLine = (text: string) => {
-    // Basic regex for:
-    // **bold**, *italics*, ~~strikethrough~~, `code`
     const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|~~.*?~~|`.*?`)/g);
     return parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {

@@ -2,65 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import RichTextEditor from "../../components/admin/RichTextEditor";
 
-const modules = {
-  toolbar: [
-    [{ header: [1, 2, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-    [{ align: [] }],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
-
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "align",
-  "link",
-  "image",
-];
-
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean; error: Error | null }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("ReactQuill Error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
-          <h3 className="font-bold mb-2">Editor Error</h3>
-          <p className="text-sm font-mono">{this.state.error?.message}</p>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
 
 const ExperienceEdit = () => {
   const navigate = useNavigate();
@@ -336,40 +279,26 @@ const ExperienceEdit = () => {
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Summary Description</label>
-                <div className="bg-black/40 rounded-lg md:rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
-                  <ErrorBoundary>
-                    <ReactQuill
-                      theme="snow"
-                      value={newExp.description}
-                      onChange={(content) => {
-                        setNewExp((prev) => ({ ...prev, description: content }));
-                      }}
-                      modules={modules}
-                      formats={formats}
-                      placeholder="Brief summary..."
-                      className="text-white [&_.ql-editor]:min-h-[80px] md:[&_.ql-editor]:min-h-[100px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent text-sm md:text-base"
-                    />
-                  </ErrorBoundary>
-                </div>
+                <RichTextEditor
+                  value={newExp.description}
+                  onChange={(content: string) =>
+                    setNewExp((prev) => ({ ...prev, description: content }))
+                  }
+                  placeholder="Summarize your impact..."
+                  className="h-24 md:h-32"
+                />
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Detailed Achievements</label>
-                <div className="bg-black/40 rounded-lg md:rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
-                  <ErrorBoundary>
-                    <ReactQuill
-                      theme="snow"
-                      value={newExp.roleDescription}
-                      onChange={(content) => {
-                        setNewExp((prev) => ({ ...prev, roleDescription: content }));
-                      }}
-                      modules={modules}
-                      formats={formats}
-                      placeholder="Detailed responsibilities..."
-                      className="text-white [&_.ql-editor]:min-h-[200px] md:[&_.ql-editor]:min-h-[250px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent text-sm md:text-base"
-                    />
-                  </ErrorBoundary>
-                </div>
+                <RichTextEditor
+                  value={newExp.roleDescription}
+                  onChange={(content: string) =>
+                    setNewExp((prev) => ({ ...prev, roleDescription: content }))
+                  }
+                  placeholder="Detailed responsibilities..."
+                  className="h-44 md:h-56"
+                />
               </div>
             </div>
 

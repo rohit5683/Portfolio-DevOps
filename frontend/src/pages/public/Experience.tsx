@@ -4,8 +4,7 @@ import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
 import Modal from "../../components/common/Modal";
-import DOMPurify from "dompurify";
-
+import RichText from "../../components/common/RichText";
 const SpotlightCard = ({ 
   children, 
   className = "", 
@@ -631,11 +630,10 @@ const Experience = () => {
                   </div>
                   Role Overview
                 </h4>
-                <div className="text-gray-300 leading-relaxed text-sm/7 font-light rich-text-content">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(selectedExperience.description),
-                    }}
+                <div className="text-gray-300">
+                  <RichText 
+                    text={selectedExperience.description} 
+                    className="text-sm/7 font-light"
                   />
                 </div>
               </div>
@@ -651,11 +649,10 @@ const Experience = () => {
                     </div>
                     Description
                   </h4>
-                  <div className="text-gray-300 leading-relaxed text-sm/7 font-light rich-text-content">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(selectedExperience.roleDescription),
-                      }}
+                  <div className="text-gray-300">
+                    <RichText 
+                      text={selectedExperience.roleDescription} 
+                      className="text-sm/7 font-light"
                     />
                   </div>
                 </div>

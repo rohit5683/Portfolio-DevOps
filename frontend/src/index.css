@@ -122,3 +122,62 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+/* ── Aura Rich Text Editor (Quill Dark Theme) ── */
+.aura-rte .ql-toolbar {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  padding: 6px 8px;
+}
+
+.aura-rte .ql-container {
+  background: rgba(0, 0, 0, 0.4);
+  border: none !important;
+  font-family: inherit;
+}
+
+.aura-rte .ql-editor {
+  color: #ffffff !important;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  padding: 10px 14px;
+  min-height: 80px;
+}
+
+.aura-rte .ql-editor.ql-blank::before {
+  color: rgba(156, 163, 175, 0.5) !important;
+  font-style: italic;
+}
+
+/* Toolbar icons → white */
+.aura-rte .ql-toolbar .ql-stroke {
+  stroke: #9ca3af;
+}
+.aura-rte .ql-toolbar .ql-fill {
+  fill: #9ca3af;
+}
+.aura-rte .ql-toolbar .ql-picker-label {
+  color: #9ca3af;
+}
+.aura-rte .ql-toolbar button:hover .ql-stroke,
+.aura-rte .ql-toolbar .ql-active .ql-stroke {
+  stroke: #ffffff;
+}
+.aura-rte .ql-toolbar button:hover .ql-fill,
+.aura-rte .ql-toolbar .ql-active .ql-fill {
+  fill: #ffffff;
+}
+.aura-rte .ql-toolbar button:hover .ql-picker-label,
+.aura-rte .ql-toolbar .ql-active .ql-picker-label {
+  color: #ffffff;
+}
+
+/* Dropdown panels */
+.aura-rte .ql-picker-options {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}

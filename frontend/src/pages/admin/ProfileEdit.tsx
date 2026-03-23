@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
-import { 
-  Bold, Italic, Strikethrough, Link2, ListOrdered, List, Quote, Code, 
-  Smile
-} from "lucide-react";
-import EmojiPicker from "../../components/common/EmojiPicker";
+import RichText from "../../components/common/RichText";
+import RichTextEditor from "../../components/admin/RichTextEditor";
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -869,108 +866,18 @@ const ProfileEdit = () => {
                             />
                           </div>
 
-                          <div className="flex flex-col gap-1.5 group/editor">
-                            <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
-                              Description
-                            </label>
-                            <div className="flex flex-col rounded-lg md:rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
-                              {/* Top Toolbar: Formatting */}
-                              <div className="flex flex-wrap items-center gap-0.5 p-1 md:p-1.5 border-b border-white/5 bg-white/5">
-                                {[
-                                  { icon: <Bold className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "**", title: "Bold" },
-                                  { icon: <Italic className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "*", title: "Italic" },
-                                  { icon: <Strikethrough className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "~~", title: "Strikethrough" },
-                                  { icon: <div className="w-px h-3.5 md:h-4 bg-white/10 mx-0.5 md:mx-1" />, separator: true },
-                                  { icon: <Link2 className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "[", title: "Link" },
-                                  { icon: <ListOrdered className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "1. ", title: "Ordered List" },
-                                  { icon: <List className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "• ", title: "Bullet List" },
-                                  { icon: <Quote className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "> ", title: "Quote" },
-                                  { icon: <Code className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "`", title: "Inline Code" },
-                                ].map((btn, i) => 
-                                  btn.separator ? (
-                                    <div key={i}>{btn.icon}</div>
-                                  ) : (
-                                    <button
-                                      key={i}
-                                      type="button"
-                                      title={btn.title}
-                                        onClick={() => {
-                                          if (btn.separator) return;
-                                          const marker = btn.action as string;
-                                          const needsNewline = marker === '• ' || marker === '1. ' || marker === '> ';
-                                          
-                                          setProfile((prev: any) => {
-                                            if (!prev) return prev;
-                                            const next = Array.isArray(prev.achievements) ? [...prev.achievements] : [];
-                                            if (!next[index]) return prev;
-                                            
-                                            const current = next[index].description || "";
-                                            const newText = current + (current && !current.endsWith('\n') && needsNewline ? '\n' : '') + marker;
-                                            
-                                            next[index] = { ...next[index], description: newText };
-                                            return { ...prev, achievements: next };
-                                          });
-                                        }}
-                                      className="p-1 md:p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
-                                    >
-                                      {btn.icon}
-                                    </button>
-                                  )
-                                )}
-                              </div>
-
-                              {/* Textarea */}
-                              <textarea
-                                data-lenis-prevent
-                                value={a.description || ""}
-                                onChange={(e) => {
-                                  const next = [...ensureAchievements()];
-                                  next[index] = { ...next[index], description: e.target.value };
-                                  setProfile({ ...profile, achievements: next });
-                                }}
-                                className="w-full p-3 md:p-4 bg-transparent text-white text-xs md:text-sm focus:outline-none h-32 md:h-40 leading-relaxed font-sans placeholder:text-gray-600"
-                                placeholder="Message #achievements"
-                              />
-
-                              {/* Bottom Tray: Extras */}
-                              <div className="flex items-center justify-between p-2 border-t border-white/5 bg-white/5 relative">
-                                  <div className="flex items-center gap-1">
-                                    <div className="relative group/emoji">
-                                      <button 
-                                        type="button" 
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          const picker = document.getElementById(`emoji-picker-${index}`);
-                                          if (picker) picker.classList.toggle('hidden');
-                                        }}
-                                        className="p-1.5 hover:bg-white/10 rounded-lg text-gray-500 hover:text-yellow-400 transition-colors"
-                                      >
-                                        <Smile className="w-4 h-4" />
-                                      </button>
-                                      <div id={`emoji-picker-${index}`} className="hidden absolute bottom-full left-0 mb-2">
-                                        <EmojiPicker 
-                                          onEmojiSelect={(emoji: string) => {
-                                            setProfile((prev: any) => {
-                                              if (!prev) return prev;
-                                              const next = Array.isArray(prev.achievements) ? [...prev.achievements] : [];
-                                              if (!next[index]) return prev;
-                                              
-                                              next[index] = { ...next[index], description: (next[index].description || "") + emoji };
-                                              return { ...prev, achievements: next };
-                                            });
-                                            document.getElementById(`emoji-picker-${index}`)?.classList.add('hidden');
-                                          }}
-                                          onClose={() => document.getElementById(`emoji-picker-${index}`)?.classList.add('hidden')}
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                              </div>
-                            </div>
-                            <p className="mt-1.5 text-[9px] text-gray-600 italic px-1 flex items-center gap-1.5">
-                              <span className="w-1 h-1 rounded-full bg-blue-500/50" />
-                              <span>Markdown supported: **bold**, *italic*, ~~strike~~, `inline code`</span>
-                            </p>
+                          <div className="flex flex-col gap-1.5">
+                            <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Description</label>
+                            <RichTextEditor
+                              value={a.description || ""}
+                              onChange={(content: string) => {
+                                const next = [...ensureAchievements()];
+                                next[index] = { ...next[index], description: content };
+                                setProfile({ ...profile, achievements: next });
+                              }}
+                              placeholder="Describe your achievement..."
+                              className="h-32 md:h-40"
+                            />
                           </div>
 
                           <div className="flex justify-between items-center pt-2">

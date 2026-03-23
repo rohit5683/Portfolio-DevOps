@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import UploadProgress from "../../components/common/UploadProgress";
+import RichTextEditor from "../../components/admin/RichTextEditor";
+import RichText from "../../components/common/RichText";
 
 const EducationEdit = () => {
   const navigate = useNavigate();
@@ -374,13 +376,11 @@ const EducationEdit = () => {
 
             <div className="space-y-1.5">
               <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Program Details & Highlights</label>
-              <textarea
-                name="description"
+              <RichTextEditor
                 value={formData.description}
-                onChange={handleInputChange}
-                rows={4}
+                onChange={(content: string) => setFormData({ ...formData, description: content })}
                 placeholder="Describe your courses..."
-                className="w-full p-2.5 md:p-3 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all resize-none text-sm md:text-base"
+                className="h-32 md:h-40"
               />
             </div>
 
@@ -496,9 +496,9 @@ const EducationEdit = () => {
                     </div>
 
                     {edu.description && (
-                      <p className="mt-4 text-sm text-gray-400 line-clamp-2 border-t border-white/5 pt-3 italic">
-                        {edu.description}
-                      </p>
+                      <div className="mt-4 border-t border-white/5 pt-3">
+                        <RichText text={edu.description} className="text-sm italic !text-gray-400" />
+                      </div>
                     )}
                   </div>
                 </div>
