@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import UploadProgress from "../../components/common/UploadProgress";
-import { getImageUrl } from "../../utils/imageUtils";
 
 const EducationEdit = () => {
   const navigate = useNavigate();
@@ -54,11 +53,6 @@ const EducationEdit = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setUploadedFiles(Array.from(e.target.files));
-    }
-  };
 
   const uploadFiles = async (): Promise<string[]> => {
     if (uploadedFiles.length === 0) return [];
