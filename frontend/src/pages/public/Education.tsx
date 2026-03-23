@@ -57,7 +57,7 @@ const DocumentPreview = ({
     >
       {/* Close Button */}
       <button
-        className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-50 p-2 hover:bg-white/10 rounded-full"
+        className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-50 p-2 hover:bg-white/10 rounded-full"
         onClick={handleClose}
       >
         <svg
@@ -128,12 +128,12 @@ const DocumentPreview = ({
         )}
 
         {/* Footer Actions */}
-        <div className="absolute bottom-6 right-6 flex gap-3">
+        <div className="absolute bottom-4 right-4 flex gap-3">
           <a
             href={getImageUrl(documentUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all font-medium shadow-lg hover:shadow-blue-500/30 flex items-center gap-2 transform hover:-translate-y-0.5"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg md:rounded-xl transition-all text-sm md:text-base font-medium shadow-lg hover:shadow-blue-500/30 flex items-center gap-2 transform hover:-translate-y-0.5"
             onClick={(e) => e.stopPropagation()}
           >
             <svg
@@ -275,19 +275,19 @@ const Education = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
         <SEO
           title="Education"
           description="My academic background and degrees."
           keywords={["Education", "Degrees", "Academic Qualifications"]}
         />
-        <div className="max-w-4xl mx-auto">
-          <Skeleton width={300} height={48} className="mx-auto mb-6" />
-          <Skeleton width={500} height={24} className="mx-auto" />
+        <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16">
+          <Skeleton width={300} height={40} className="mx-auto mb-4 md:mb-6" />
+          <Skeleton width={250} height={20} className="mx-auto" />
         </div>
 
         {/* Search and Filter Skeletons */}
-        <div className="max-w-5xl mx-auto mb-16 space-y-8">
+        <div className="max-w-5xl mx-auto mb-10 md:mb-16 space-y-4 md:space-y-8">
           <Skeleton
             width="100%"
             height={56}
@@ -307,7 +307,7 @@ const Education = () => {
           </div>
         </div>
 
-        <div className="max-w-5xl mx-auto relative px-4">
+        <div className="max-w-5xl mx-auto relative px-3.5 md:px-4">
           {/* Vertical Timeline Line Skeleton */}
           <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-white/10 rounded-full"></div>
 
@@ -365,29 +365,29 @@ const Education = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-12 min-h-screen">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
+      <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
+        <div className="text-center mb-10 md:mb-16">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
             Education Journey
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
             My academic journey across {education.length}{" "}
             institutions
           </p>
         </div>
 
         {/* Search and Filter Controls */}
-        <div className="max-w-5xl mx-auto mb-16 space-y-8">
+        <div className="max-w-5xl mx-auto mb-10 md:mb-16 space-y-4 md:space-y-8">
           {/* Search Bar */}
           <div className="relative max-w-lg mx-auto group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-50 group-hover:opacity-100 transition duration-300 blur"></div>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search institutions, degrees..."
+                placeholder="Search education..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
+                className="w-full px-4 py-3 md:px-6 md:py-4 bg-gray-900 border border-gray-700 rounded-lg md:rounded-xl text-white text-xs md:text-base placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
               />
               <svg
                 className="absolute right-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-500"
@@ -406,17 +406,17 @@ const Education = () => {
           </div>
 
           {/* Level Filters */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4">
             {levels.map((level) => (
-              <button
-                key={level.id}
-                onClick={() => setSelectedLevel(level.id)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1 ${
-                  selectedLevel === level.id
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105"
-                    : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
-                }`}
-              >
+                <button
+                  key={level.id}
+                  onClick={() => setSelectedLevel(level.id)}
+                  className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-bold transition-all duration-300 transform hover:-translate-y-1 ${
+                    selectedLevel === level.id
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
+                  }`}
+                >
                 <span className="mr-2">{level.icon}</span>
                 {level.label}
               </button>
@@ -424,11 +424,11 @@ const Education = () => {
           </div>
         </div>
 
-        <div className="max-w-5xl mx-auto relative px-4">
+        <div className="max-w-5xl mx-auto relative px-3.5 md:px-4">
           {/* Vertical Timeline Line */}
           <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-pink-500/50 rounded-full"></div>
 
-          <div className="space-y-16">
+          <div className="space-y-12 md:space-y-16">
             {filteredEducation.map((edu, index) => {
               const statusStyle =
                 statusColors[edu.status as keyof typeof statusColors] ||
@@ -460,7 +460,7 @@ const Education = () => {
                         className="h-full"
                       >
                         <div
-                          className={`relative bg-white/5 backdrop-blur-xl p-6 rounded-2xl border transition-all duration-300 group cursor-pointer overflow-hidden border-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]`}
+                          className={`relative bg-white/5 backdrop-blur-xl p-5 md:p-6 rounded-xl md:rounded-2xl border transition-all duration-300 group cursor-pointer overflow-hidden border-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]`}
                           onClick={() =>
                             setSelectedEducation(
                               selectedEducation?._id === edu._id ? null : edu,
@@ -469,32 +469,32 @@ const Education = () => {
                         >
                           {/* Status Badge */}
                           <div
-                            className={`absolute top-4 right-4 px-2 py-0.5 ${statusStyle.bg} ${statusStyle.text} text-[10px] font-semibold rounded-full border ${statusStyle.border} backdrop-blur-md`}
+                            className={`absolute top-3 right-3 md:top-4 md:right-4 px-2 py-0.5 ${statusStyle.bg} ${statusStyle.text} text-[9px] md:text-[10px] font-bold rounded-full border ${statusStyle.border} backdrop-blur-md`}
                           >
                             {statusStyle.label}
                           </div>
 
                           <div className="flex items-start gap-3 mb-3">
                             {edu.logoUrl ? (
-                              <div className="w-12 h-12 rounded-xl bg-white/10 p-1.5 border border-white/10 flex-shrink-0">
+                              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-white/10 p-1.5 border border-white/10 flex-shrink-0">
                                 <img
                                   src={getImageUrl(edu.logoUrl)}
                                   alt={edu.schoolCollege || edu.school}
                                   className="w-full h-full object-contain"
                                   onError={(e) => {
                                     e.currentTarget.style.display = "none";
-                                    e.currentTarget.parentElement!.innerHTML = `<div class="w-full h-full flex items-center justify-center text-xl font-bold text-blue-400">🎓</div>`;
+                                    e.currentTarget.parentElement!.innerHTML = `<div class="w-full h-full flex items-center justify-center text-lg font-bold text-blue-400">🎓</div>`;
                                   }}
                                 />
                               </div>
                             ) : (
-                              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center text-xl flex-shrink-0">
+                              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center text-lg flex-shrink-0">
                                 🎓
                               </div>
                             )}
 
-                            <div className="flex-1 min-w-0 pr-12">
-                              <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
+                            <div className="flex-1 min-w-0 pr-10 md:pr-12">
+                              <h3 className="text-base md:text-lg font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
                                 {edu.schoolCollege || edu.school}
                               </h3>
                               <p className="text-xs text-gray-400 mt-1 leading-relaxed">
@@ -531,7 +531,7 @@ const Education = () => {
                             )}
                           </div>
 
-                          <h4 className="text-base text-white font-semibold mb-2 group-hover:text-purple-400 transition-colors">
+                          <h4 className="text-sm md:text-base text-white font-semibold mb-1.5 md:mb-2 group-hover:text-purple-400 transition-colors">
                             {edu.degree}
                           </h4>
                           <p className="text-xs text-gray-400 mb-3">

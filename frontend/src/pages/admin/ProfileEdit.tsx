@@ -115,25 +115,25 @@ const ProfileEdit = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
-      <div className="relative z-10 container mx-auto p-6 pt-20">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Edit Profile</h1>
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-white">Edit Profile</h1>
           <button
             onClick={() => navigate("/portal")}
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-all active:scale-95"
           >
             Back to Dashboard
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {/* Identity & Contact Section */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <div className="flex flex-col lg:flex-row gap-8">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
               {/* Left Column: Photo & Basic Stats */}
-              <div className="flex flex-col items-center gap-6 lg:w-1/3 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
+              <div className="flex flex-col items-center gap-4 md:gap-6 lg:w-1/3 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
                 <div className="relative group">
-                  <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-[1.02]">
+                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-[1.02]">
                     {photoPreview ? (
                       <img
                         src={photoPreview}
@@ -141,13 +141,13 @@ const ProfileEdit = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-gray-400 text-sm text-center px-4">
+                      <span className="text-gray-400 text-xs md:text-sm text-center px-4">
                         No photo set
                       </span>
                     )}
                   </div>
-                  <label className="absolute bottom-2 right-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full cursor-pointer shadow-lg transition-all hover:scale-110 active:scale-95 group-hover:ring-4 ring-blue-500/20">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <label className="absolute bottom-1 right-1 md:bottom-2 md:right-2 p-1.5 md:p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full cursor-pointer shadow-lg transition-all hover:scale-110 active:scale-95 group-hover:ring-4 ring-blue-500/20">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -161,14 +161,14 @@ const ProfileEdit = () => {
                 </div>
                 
                 <div className="text-center space-y-1">
-                  <p className="text-white font-bold text-lg">{profile.name || "Set your name"}</p>
-                  <p className="text-blue-400 text-sm font-medium">{profile.role || "Set your role"}</p>
-                  <p className="text-gray-400 text-[10px] uppercase tracking-widest mt-2 px-3 py-1 bg-white/5 rounded-full inline-block">Pro Account</p>
+                  <p className="text-white font-bold text-base md:text-lg">{profile.name || "Set your name"}</p>
+                  <p className="text-blue-400 text-xs md:text-sm font-medium">{profile.role || "Set your role"}</p>
+                  <p className="text-gray-400 text-[9px] md:text-[10px] uppercase tracking-widest mt-2 px-3 py-1 bg-white/5 rounded-full inline-block">Pro Account</p>
                 </div>
 
                 <button
                   onClick={() => handleSave("Identity & Contact")}
-                  className="w-full mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
+                  className="w-full mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] text-sm"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
@@ -178,41 +178,41 @@ const ProfileEdit = () => {
               </div>
 
               {/* Right Column: Detailed Forms */}
-              <div className="flex-1 space-y-6">
+              <div className="flex-1 space-y-4 md:space-y-6">
                 {/* Basic Info Grid */}
                 <div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                  <h3 className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2">
+                    <span className="w-3 md:w-4 h-[1px] bg-gray-800"></span>
                     Basic Information
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Full Name</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Full Name</label>
                       <input
                         type="text"
                         value={profile.name || ""}
                         onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                         placeholder="Rohit Vishwakarma"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Professional Title</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Professional Title</label>
                       <input
                         type="text"
                         value={profile.role || ""}
                         onChange={(e) => setProfile({ ...profile, role: e.target.value })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                         placeholder="DevOps Engineer"
                       />
                     </div>
                     <div className="md:col-span-2 space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Tagline</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Tagline</label>
                       <input
                         type="text"
                         value={profile.tagline || ""}
                         onChange={(e) => setProfile({ ...profile, tagline: e.target.value })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                         placeholder="Building scalable infrastructure and CI/CD pipelines..."
                       />
                     </div>
@@ -221,28 +221,28 @@ const ProfileEdit = () => {
 
                 {/* Contact Info Grid */}
                 <div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                  <h3 className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2">
+                    <span className="w-3 md:w-4 h-[1px] bg-gray-800"></span>
                     Contact Details
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Email Address</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Email Address</label>
                       <input
                         type="email"
                         value={profile.contact?.email || ""}
                         onChange={(e) => setProfile({ ...profile, contact: { ...profile.contact, email: e.target.value } })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                         placeholder="your.email@example.com"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Phone Number</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Phone Number</label>
                       <input
                         type="text"
                         value={profile.contact?.phone || ""}
                         onChange={(e) => setProfile({ ...profile, contact: { ...profile.contact, phone: e.target.value } })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                         placeholder="+91 XXX XXX XXXX"
                       />
                     </div>
@@ -251,8 +251,8 @@ const ProfileEdit = () => {
 
                 {/* Dynamic Roles Section */}
                 <div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                  <h3 className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2">
+                    <span className="w-3 md:w-4 h-[1px] bg-gray-800"></span>
                     Dynamic Roles
                   </h3>
                   <div className="space-y-3">
@@ -260,8 +260,8 @@ const ProfileEdit = () => {
                       <input
                         type="text"
                         id="newRole"
-                        className="flex-1 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
-                        placeholder="Add new role (e.g. Cloud Architect)"
+                        className="flex-1 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        placeholder="Add new role"
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
                             const input = e.target as HTMLInputElement;
@@ -287,7 +287,7 @@ const ProfileEdit = () => {
                             input.value = "";
                           }
                         }}
-                        className="bg-white/10 hover:bg-white/20 text-white px-4 rounded-xl border border-white/10 transition-all text-sm font-bold active:scale-95"
+                        className="bg-white/10 hover:bg-white/20 text-white px-3 md:px-4 rounded-lg md:rounded-xl border border-white/10 transition-all text-xs md:text-sm font-bold active:scale-95"
                       >
                         Add
                       </button>
@@ -319,15 +319,18 @@ const ProfileEdit = () => {
           </div>
 
           {/* Homepage Statistics Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-4">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <h2 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-2 border-b border-white/5 pb-2 md:pb-3">
+              <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
               Homepage Statistics
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-4">
               {profile.stats?.map((stat: any, index: number) => (
                 <div
                   key={index}
-                  className="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-4 items-start"
+                  className="bg-white/5 p-3 md:p-4 rounded-lg border border-white/10 flex gap-3 md:gap-4 items-start"
                 >
                   <div className="flex-1 space-y-2">
                     <input
@@ -338,7 +341,7 @@ const ProfileEdit = () => {
                         newStats[index].label = e.target.value;
                         setProfile({ ...profile, stats: newStats });
                       }}
-                      className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm"
+                      className="w-full p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm"
                       placeholder="Label"
                     />
                     <input
@@ -349,7 +352,7 @@ const ProfileEdit = () => {
                         newStats[index].value = e.target.value;
                         setProfile({ ...profile, stats: newStats });
                       }}
-                      className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm"
+                      className="w-full p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm"
                       placeholder="Value"
                     />
                     <input
@@ -360,7 +363,7 @@ const ProfileEdit = () => {
                         newStats[index].icon = e.target.value;
                         setProfile({ ...profile, stats: newStats });
                       }}
-                      className="w-full p-2 rounded bg-black/20 border border-white/10 text-white text-sm"
+                      className="w-full p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm"
                       placeholder="Icon (emoji)"
                     />
                   </div>
@@ -389,7 +392,7 @@ const ProfileEdit = () => {
                 </div>
               ))}
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4">
               <button
                 onClick={() =>
                   setProfile({
@@ -400,22 +403,25 @@ const ProfileEdit = () => {
                     ],
                   })
                 }
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
+                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 text-xs md:text-sm rounded-lg md:rounded-xl border border-white/10 transition-all flex items-center justify-center gap-2"
               >
-                Add Statistic
+                Add Stat
               </button>
               <button
                 onClick={() => handleSave("Statistics")}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 text-xs md:text-sm rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2"
               >
-                Save Statistics
+                Save Stats
               </button>
             </div>
           </div>
 
           {/* Profile Badges Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-4">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <h2 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-2 border-b border-white/5 pb-2 md:pb-3">
+              <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
               Profile Badges
             </h2>
             <p className="text-gray-400 text-sm mb-4">
@@ -447,16 +453,16 @@ const ProfileEdit = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white/5 p-4 rounded-lg border border-white/10 transition-all hover:bg-white/10"
+                    className="bg-white/5 p-3 md:p-4 rounded-lg border border-white/10 transition-all hover:bg-white/10"
                   >
                     {isEditing ? (
                       // Edit Mode
                       <div className="flex flex-col gap-3 animate-fadeIn">
                         <div className="flex justify-between items-center">
-                          <h3 className="text-sm font-semibold text-white">
+                          <h3 className="text-xs md:text-sm font-semibold text-white">
                             Editing Badge #{index + 1}
                           </h3>
-                          <div className="px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-xl text-xs font-bold shadow-sm">
+                          <div className="px-2.5 py-1 md:px-3 md:py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-lg md:rounded-xl text-[10px] md:text-xs font-bold shadow-sm">
                             <span
                               className={`${getColorClass(badge.color)} mr-2`}
                             >
@@ -476,8 +482,8 @@ const ProfileEdit = () => {
                                 newBadges[index].text = e.target.value;
                                 setProfile({ ...profile, badges: newBadges });
                               }}
-                              className="flex-1 p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
-                              placeholder="Badge Text"
+                              className="flex-1 p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
+                              placeholder="Text"
                             />
                             <input
                               type="text"
@@ -487,7 +493,7 @@ const ProfileEdit = () => {
                                 newBadges[index].icon = e.target.value;
                                 setProfile({ ...profile, badges: newBadges });
                               }}
-                              className="w-16 p-2 rounded bg-black/20 border border-white/10 text-white text-sm text-center focus:border-blue-500 outline-none"
+                              className="w-14 md:w-16 p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm text-center focus:border-blue-500 outline-none"
                               placeholder="Icon"
                             />
                           </div>
@@ -499,7 +505,7 @@ const ProfileEdit = () => {
                                 newBadges[index].color = e.target.value;
                                 setProfile({ ...profile, badges: newBadges });
                               }}
-                              className="flex-1 p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                              className="flex-1 p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
                             >
                               <option value="green">Green</option>
                               <option value="blue">Blue</option>
@@ -514,7 +520,7 @@ const ProfileEdit = () => {
                                 newBadges[index].position = e.target.value;
                                 setProfile({ ...profile, badges: newBadges });
                               }}
-                              className="flex-1 p-2 rounded bg-black/20 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                              className="flex-1 p-2 rounded-md md:rounded bg-black/20 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
                             >
                               <option value="top-right">Top Right</option>
                               <option value="bottom-left">Bottom Left</option>
@@ -526,7 +532,7 @@ const ProfileEdit = () => {
                         <div className="flex justify-end mt-2">
                           <button
                             onClick={() => setEditingBadgeIndex(-1)}
-                            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg transition-colors font-bold"
                           >
                             Done
                           </button>
@@ -535,8 +541,8 @@ const ProfileEdit = () => {
                     ) : (
                       // View Mode (History List Item)
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-xl text-xs font-bold shadow-sm">
+                        <div className="flex items-center gap-3 md:gap-4">
+                          <div className="px-2.5 py-1 md:px-3 md:py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-lg md:rounded-xl text-[10px] md:text-xs font-bold shadow-sm whitespace-nowrap">
                             <span
                               className={`${getColorClass(badge.color)} mr-2`}
                             >
@@ -545,13 +551,13 @@ const ProfileEdit = () => {
                             {badge.text || "Badge Text"}
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-xs text-gray-400">
-                              Position:{" "}
+                            <span className="text-[9px] md:text-xs text-gray-500">
+                              Pos:{" "}
                               <span className="text-gray-300">
                                 {badge.position}
                               </span>
                             </span>
-                            <span className="text-xs text-gray-400">
+                            <span className="text-[9px] md:text-xs text-gray-500">
                               Color:{" "}
                               <span className="text-gray-300 capitalize">
                                 {badge.color}
@@ -562,11 +568,11 @@ const ProfileEdit = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setEditingBadgeIndex(index)}
-                            className="p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-colors"
+                            className="p-1.5 md:p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-colors"
                             title="Edit Badge"
                           >
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4 md:w-5 md:h-5"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -591,11 +597,11 @@ const ProfileEdit = () => {
                                 setProfile({ ...profile, badges: newBadges });
                               }
                             }}
-                            className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                            className="p-1.5 md:p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
                             title="Delete Badge"
                           >
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4 md:w-5 md:h-5"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -616,8 +622,8 @@ const ProfileEdit = () => {
               })}
 
               {(!profile.badges || profile.badges.length === 0) && (
-                <div className="text-center py-8 text-gray-400 bg-white/5 rounded-lg border border-white/10 border-dashed flex flex-col items-center gap-4">
-                  <p>
+                <div className="text-center py-6 md:py-8 text-gray-400 bg-white/5 rounded-lg md:rounded-xl border border-white/10 border-dashed flex flex-col items-center gap-3 md:gap-4 px-4">
+                  <p className="text-xs md:text-sm">
                     No custom badges added yet. The Home page is currently
                     showing default badges.
                   </p>
@@ -639,15 +645,15 @@ const ProfileEdit = () => {
                       ];
                       setProfile({ ...profile, badges: defaultBadges });
                     }}
-                    className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm font-semibold border border-white/10"
+                    className="px-3 py-1.5 md:px-4 md:py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-xs md:text-sm font-semibold border border-white/10"
                   >
-                    Load Default Badges to Edit
+                    Load Defaults
                   </button>
                 </div>
               )}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4">
               <button
                 onClick={() => {
                   const newBadge = {
@@ -660,10 +666,10 @@ const ProfileEdit = () => {
                   setProfile({ ...profile, badges: newBadges });
                   setEditingBadgeIndex(newBadges.length - 1); // Automatically enter edit mode
                 }}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 text-xs md:text-sm rounded-lg md:rounded-xl border border-white/10 transition-all flex items-center justify-center gap-2"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -679,10 +685,10 @@ const ProfileEdit = () => {
               </button>
               <button
                 onClick={() => handleSave("Badges")}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 text-xs md:text-sm rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -694,21 +700,23 @@ const ProfileEdit = () => {
                     d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                   />
                 </svg>
-                Save Changes
+                Save Badges
               </button>
             </div>
           </div>
 
           {/* Recent Achievements (Home Feed) Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
               <div>
-                <h2 className="text-xl font-bold text-white">
-                  Recent Achievements (Home Feed)
+                <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                  <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Recent Achievements
                 </h2>
-                <p className="text-gray-400 text-sm mt-1">
-                  Add your “news feed” updates like problems solved, things you
-                  learned, improvements, and shipped features.
+                <p className="text-gray-400 text-xs mt-1">
+                  Add feed updates like solved problems and shipped features.
                 </p>
               </div>
               <div className="flex gap-2">
@@ -721,40 +729,20 @@ const ProfileEdit = () => {
                     setProfile({ ...profile, achievements: next });
                     setEditingAchievementIndex(next.length - 1);
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center gap-2"
+                  className="bg-white/5 hover:bg-white/10 text-white px-2.5 py-1.5 md:px-3 md:py-1.5 text-xs rounded-lg transition-all border border-white/10 flex items-center gap-1.5 font-bold"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
+                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                   Add
                 </button>
                 <button
                   type="button"
                   onClick={() => handleSave("Achievements")}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center gap-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 md:px-3 md:py-1.5 text-xs rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5 font-bold"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                    />
+                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                   </svg>
                   Save
                 </button>
@@ -763,7 +751,7 @@ const ProfileEdit = () => {
 
             <div className="space-y-3">
               {ensureAchievements().length === 0 ? (
-                <div className="text-center py-8 text-gray-400 bg-white/5 rounded-lg border border-white/10 border-dashed">
+                <div className="text-center py-6 md:py-8 text-gray-400 bg-white/5 rounded-lg border border-white/10 border-dashed text-xs md:text-sm px-4">
                   No achievements yet. Click <span className="text-white">Add</span>{" "}
                   to create your first update.
                 </div>
@@ -783,15 +771,15 @@ const ProfileEdit = () => {
                   return (
                     <div
                       key={a.id || index}
-                      className="bg-white/5 p-4 rounded-lg border border-white/10 transition-all hover:bg-white/10"
+                      className="bg-white/5 p-3 md:p-4 rounded-lg md:rounded-xl border border-white/10 transition-all hover:bg-white/10"
                     >
                       {isEditing ? (
                         /* Edit Mode */
-                        <div className="space-y-4 animate-fadeIn">
+                        <div className="space-y-3 md:space-y-4 animate-fadeIn">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3 pb-3 border-b border-white/5">
                             <div className="flex items-center gap-3 flex-wrap">
-                              <h3 className="text-sm font-bold text-white">Editing Achievement #{index + 1}</h3>
-                              <div className="flex items-center gap-2 px-3 py-1 bg-white/10 border border-white/10 rounded-xl">
+                              <h3 className="text-xs md:text-sm font-bold text-white">Editing Achievement #{index + 1}</h3>
+                              <div className="flex items-center gap-2 px-2.5 py-1 bg-white/10 border border-white/10 rounded-lg md:rounded-xl">
                                 <input
                                   type="checkbox"
                                   checked={!!a.pinned}
@@ -817,8 +805,8 @@ const ProfileEdit = () => {
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Type</label>
+                             <div className="flex flex-col gap-1.5">
+                              <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Type</label>
                               <select
                                 value={a.type || "solved"}
                                 onChange={(e) => {
@@ -826,7 +814,7 @@ const ProfileEdit = () => {
                                   next[index] = { ...next[index], type: e.target.value };
                                   setProfile({ ...profile, achievements: next });
                                 }}
-                                className="p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                                className="p-1.5 md:p-2 rounded-md md:rounded bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
                               >
                                 <option value="solved">Solved ✅</option>
                                 <option value="learned">Learned 🧠</option>
@@ -836,7 +824,7 @@ const ProfileEdit = () => {
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Date</label>
+                              <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Date</label>
                               <input
                                 type="date"
                                 value={typeof a.date === "string" ? a.date.slice(0, 10) : new Date().toISOString().slice(0, 10)}
@@ -845,12 +833,12 @@ const ProfileEdit = () => {
                                   next[index] = { ...next[index], date: e.target.value };
                                   setProfile({ ...profile, achievements: next });
                                 }}
-                                className="p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                                className="p-1.5 md:p-2 rounded-md md:rounded bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
                               />
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Tags (CSV)</label>
+                              <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Tags (CSV)</label>
                               <input
                                 type="text"
                                 value={Array.isArray(a.tags) ? a.tags.join(", ") : a.tags || ""}
@@ -860,14 +848,14 @@ const ProfileEdit = () => {
                                   next[index] = { ...next[index], tags };
                                   setProfile({ ...profile, achievements: next });
                                 }}
-                                className="p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none"
+                                className="p-1.5 md:p-2 rounded-md md:rounded bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
                                 placeholder="AWS, CI/CD..."
                               />
                             </div>
                           </div>
 
                           <div className="flex flex-col gap-1.5">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Title</label>
+                            <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Title</label>
                             <input
                               type="text"
                               value={a.title || ""}
@@ -876,28 +864,28 @@ const ProfileEdit = () => {
                                 next[index] = { ...next[index], title: e.target.value };
                                 setProfile({ ...profile, achievements: next });
                               }}
-                              className="w-full p-2 rounded bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500 outline-none font-semibold"
+                              className="w-full p-1.5 md:p-2 rounded-md md:rounded bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none font-semibold"
                               placeholder="Key achievement title..."
                             />
                           </div>
 
                           <div className="flex flex-col gap-1.5 group/editor">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
+                            <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
                               Description
                             </label>
-                            <div className="flex flex-col rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
+                            <div className="flex flex-col rounded-lg md:rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
                               {/* Top Toolbar: Formatting */}
-                              <div className="flex flex-wrap items-center gap-0.5 p-1.5 border-b border-white/5 bg-white/5">
+                              <div className="flex flex-wrap items-center gap-0.5 p-1 md:p-1.5 border-b border-white/5 bg-white/5">
                                 {[
-                                  { icon: <Bold className="w-4 h-4" />, action: "**", title: "Bold" },
-                                  { icon: <Italic className="w-4 h-4" />, action: "*", title: "Italic" },
-                                  { icon: <Strikethrough className="w-4 h-4" />, action: "~~", title: "Strikethrough" },
-                                  { icon: <div className="w-px h-4 bg-white/10 mx-1" />, separator: true },
-                                  { icon: <Link2 className="w-4 h-4" />, action: "[", title: "Link" },
-                                  { icon: <ListOrdered className="w-4 h-4" />, action: "1. ", title: "Ordered List" },
-                                  { icon: <List className="w-4 h-4" />, action: "• ", title: "Bullet List" },
-                                  { icon: <Quote className="w-4 h-4" />, action: "> ", title: "Quote" },
-                                  { icon: <Code className="w-4 h-4" />, action: "`", title: "Inline Code" },
+                                  { icon: <Bold className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "**", title: "Bold" },
+                                  { icon: <Italic className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "*", title: "Italic" },
+                                  { icon: <Strikethrough className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "~~", title: "Strikethrough" },
+                                  { icon: <div className="w-px h-3.5 md:h-4 bg-white/10 mx-0.5 md:mx-1" />, separator: true },
+                                  { icon: <Link2 className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "[", title: "Link" },
+                                  { icon: <ListOrdered className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "1. ", title: "Ordered List" },
+                                  { icon: <List className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "• ", title: "Bullet List" },
+                                  { icon: <Quote className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "> ", title: "Quote" },
+                                  { icon: <Code className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "`", title: "Inline Code" },
                                 ].map((btn, i) => 
                                   btn.separator ? (
                                     <div key={i}>{btn.icon}</div>
@@ -923,7 +911,7 @@ const ProfileEdit = () => {
                                             return { ...prev, achievements: next };
                                           });
                                         }}
-                                      className="p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
+                                      className="p-1 md:p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
                                     >
                                       {btn.icon}
                                     </button>
@@ -940,7 +928,7 @@ const ProfileEdit = () => {
                                   next[index] = { ...next[index], description: e.target.value };
                                   setProfile({ ...profile, achievements: next });
                                 }}
-                                className="w-full p-4 bg-transparent text-white text-sm focus:outline-none h-40 leading-relaxed font-sans placeholder:text-gray-600"
+                                className="w-full p-3 md:p-4 bg-transparent text-white text-xs md:text-sm focus:outline-none h-32 md:h-40 leading-relaxed font-sans placeholder:text-gray-600"
                                 placeholder="Message #achievements"
                               />
 
@@ -1029,7 +1017,7 @@ const ProfileEdit = () => {
                                   setEditingAchievementIndex(-1);
                                 }
                               }}
-                              className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold rounded-lg border border-red-500/20 transition-all"
+                              className="px-2.5 py-1.5 md:px-3 md:py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-[10px] md:text-xs font-bold rounded-lg border border-red-500/20 transition-all"
                             >
                               Delete
                             </button>
@@ -1038,29 +1026,29 @@ const ProfileEdit = () => {
                       ) : (
                         /* View Mode */
                         <div className="flex items-center justify-between group/view">
-                          <div className="flex items-center gap-4 min-w-0">
-                            <span className="text-xl bg-white/10 w-10 h-10 flex items-center justify-center rounded-xl border border-white/10 shadow-inner">
+                          <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                            <span className="text-lg md:text-xl bg-white/10 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-lg md:rounded-xl border border-white/10 shadow-inner">
                               {meta.icon}
                             </span>
                             <div className="flex flex-col min-w-0">
-                              <div className="flex items-center gap-2 mb-0.5">
+                              <div className="flex items-center gap-1.5 md:gap-2 mb-0.5">
                                 {a.pinned && (
-                                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 uppercase tracking-wider">
-                                    Pinned
+                                  <span className="text-[7px] md:text-[8px] font-bold px-1 py-0.5 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 uppercase tracking-wider">
+                                    Pin
                                   </span>
                                 )}
-                                <h3 className="text-white font-bold text-sm truncate">
+                                <h3 className="text-white font-bold text-xs md:text-sm truncate">
                                   {a.title || "Untitled Achievement"}
                                 </h3>
                               </div>
-                              <div className="flex items-center gap-2 text-[10px] text-gray-500">
+                              <div className="flex items-center gap-1.5 md:gap-2 text-[9px] md:text-[10px] text-gray-500">
                                 <span className={meta.color + " font-bold uppercase tracking-widest"}>{a.type}</span>
                                 <span>•</span>
                                 <span>{a.date ? new Date(a.date).toLocaleDateString() : "No date"}</span>
                                 {a.tags?.length > 0 && (
                                   <>
                                     <span>•</span>
-                                    <span className="truncate max-w-[150px]">{a.tags.join(", ")}</span>
+                                    <span className="truncate max-w-[100px] md:max-w-[150px]">{a.tags.join(", ")}</span>
                                   </>
                                 )}
                               </div>
@@ -1103,16 +1091,18 @@ const ProfileEdit = () => {
             </div>
           </div>
 
-          {/* Core Technologies (Featured Skills) Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+          {/* Core Technologies Card */}
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                  <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
                   Core Technologies
                 </h2>
-                <p className="text-gray-400 text-sm">
-                  Select skills to display in the "Core Technologies" section on
-                  the home page.
+                <p className="text-gray-400 text-xs mt-1">
+                  Select skills to showcase on the home page.
                 </p>
               </div>
               <button
@@ -1143,22 +1133,22 @@ const ProfileEdit = () => {
                   onClick={() =>
                     handleToggleFeatured(skill._id, skill.featured)
                   }
-                  className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center gap-3 ${
+                  className={`p-2.5 md:p-3 rounded-lg border cursor-pointer transition-all flex items-center gap-3 ${
                     skill.featured
-                      ? "bg-blue-500/20 border-blue-500/50 hover:bg-blue-500/30"
-                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                      ? "bg-blue-500/20 border-blue-500/50 hover:bg-blue-500/30 text-white"
+                      : "bg-white/5 border-white/10 hover:bg-white/10 text-gray-400"
                   }`}
                 >
                   <div
-                    className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                    className={`w-4 h-4 md:w-5 md:h-5 rounded border flex items-center justify-center transition-colors shrink-0 ${
                       skill.featured
                         ? "bg-blue-500 border-blue-500"
-                        : "border-gray-500"
+                        : "border-white/20"
                     }`}
                   >
                     {skill.featured && (
                       <svg
-                        className="w-3 h-3 text-white"
+                        className="w-2.5 h-2.5 md:w-3 h-3 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1177,11 +1167,11 @@ const ProfileEdit = () => {
                       <img
                         src={skill.iconUrl}
                         alt=""
-                        className="w-6 h-6 object-contain"
+                        className="w-5 h-5 md:w-6 md:h-6 object-contain"
                       />
                     )}
                     <span
-                      className={`text-sm font-medium truncate ${skill.featured ? "text-white" : "text-gray-400"}`}
+                      className="text-xs md:text-sm font-medium truncate"
                     >
                       {skill.name}
                     </span>
@@ -1192,11 +1182,16 @@ const ProfileEdit = () => {
           </div>
 
           {/* Social Links Card */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-4">Social Links</h2>
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl">
+            <h2 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-2 border-b border-white/5 pb-2 md:pb-3">
+              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+              Social Links
+            </h2>
             <div className="space-y-4">
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                <label className="block mb-1.5 text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   LinkedIn URL
                 </label>
                 <input
@@ -1208,12 +1203,12 @@ const ProfileEdit = () => {
                       contact: { ...profile.contact, linkedin: e.target.value },
                     })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="https://linkedin.com/in/yourprofile"
+                  className="w-full p-2.5 md:p-3 rounded-lg bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                  placeholder="https://linkedin.com/in/..."
                 />
               </div>
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                <label className="block mb-1.5 text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   GitHub URL
                 </label>
                 <input
@@ -1225,12 +1220,12 @@ const ProfileEdit = () => {
                       contact: { ...profile.contact, github: e.target.value },
                     })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="https://github.com/yourusername"
+                  className="w-full p-2.5 md:p-3 rounded-lg bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                  placeholder="https://github.com/..."
                 />
               </div>
               <div>
-                <label className="block mb-2 text-gray-300 text-sm font-semibold">
+                <label className="block mb-1.5 text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   Twitter URL
                 </label>
                 <input
@@ -1242,13 +1237,13 @@ const ProfileEdit = () => {
                       contact: { ...profile.contact, twitter: e.target.value },
                     })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="https://twitter.com/yourusername"
+                  className="w-full p-2.5 md:p-3 rounded-lg bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                  placeholder="https://twitter.com/..."
                 />
               </div>
               <button
                 onClick={() => handleSave("Social Links")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 md:py-2 md:px-4 text-sm md:text-base rounded-lg transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 text-xs md:text-sm rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 active:scale-[0.98]"
               >
                 Save Social Links
               </button>

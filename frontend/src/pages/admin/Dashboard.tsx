@@ -261,18 +261,18 @@ const Dashboard = () => {
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
 
-      <div className="relative z-10 container mx-auto p-6 pt-20">
+      <div className="relative z-10 container mx-auto p-4 md:p-6 pt-16 md:pt-20">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">
+            <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
               Welcome back,{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 {stats.name.split(" ")[0]}
               </span>{" "}
               👋
             </h1>
-            <p className="text-gray-400">
+            <p className="text-sm md:text-base text-gray-400">
               Here's what's happening with your portfolio today.
             </p>
           </div>
@@ -320,7 +320,7 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
           {[
             {
               label: "Total Projects",
@@ -345,10 +345,10 @@ const Dashboard = () => {
           ].map((stat, idx) => (
             <div
               key={idx}
-              className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-all"
+              className="bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-white/20 transition-all"
             >
-              <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
-              <p className={`text-3xl font-bold ${stat.color}`}>
+              <p className="text-gray-400 text-xs md:text-sm mb-1">{stat.label}</p>
+              <p className={`text-2xl md:text-3xl font-bold ${stat.color}`}>
                 {loading ? "-" : stat.value}
               </p>
             </div>
@@ -372,42 +372,41 @@ const Dashboard = () => {
           </svg>
           Quick Actions
         </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {menuItems.map((item, idx) => (
             <div
               key={idx}
               onClick={() => navigate(item.path)}
-              className="group relative bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:border-white/20 hover:bg-white/15 transition-all cursor-pointer overflow-hidden"
+              className="group relative bg-white/10 backdrop-blur-md p-5 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-white/20 hover:bg-white/15 transition-all cursor-pointer overflow-hidden"
             >
               <div
                 className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} opacity-10 blur-2xl rounded-full -mr-16 -mt-16 transition-opacity group-hover:opacity-20`}
               ></div>
-
+ 
               <div className="relative z-10">
                 <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform`}
+                  className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform`}
                 >
                   {item.icon}
                 </div>
-
+ 
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
+                  <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
                     {item.title}
                   </h3>
                   {item.count !== null && (
-                    <span className="px-3 py-1 bg-black/30 rounded-full text-xs text-gray-300 border border-white/10">
+                    <span className="px-2.5 py-0.5 md:px-3 md:py-1 bg-black/30 rounded-full text-[10px] md:text-xs text-gray-300 border border-white/10">
                       {item.count} Items
                     </span>
                   )}
                 </div>
-
-                <p className="text-gray-400 text-sm mb-6">{item.description}</p>
-
-                <div className="flex items-center text-sm font-medium text-white/50 group-hover:text-white transition-colors">
+ 
+                <p className="text-gray-400 text-xs md:text-sm mb-6">{item.description}</p>
+ 
+                <div className="flex items-center text-xs md:text-sm font-medium text-white/50 group-hover:text-white transition-colors">
                   <span>Manage {item.title}</span>
                   <svg
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                    className="w-3.5 h-3.5 md:w-4 md:h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

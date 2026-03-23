@@ -162,45 +162,45 @@ const SkillsEdit = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
-      <div className="relative z-10 container mx-auto p-6 pt-20">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Manage Skills</h1>
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-white">Manage Skills</h1>
           <button
             onClick={() => navigate("/portal")}
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors"
           >
             Back to Dashboard
           </button>
         </div>
 
         {/* Add/Edit Form */}
-        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">
+        <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-xl border border-white/20 mb-6 md:mb-8 shadow-xl">
+          <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 border-b border-white/5 pb-3">
             {editingId ? "Edit Skill" : "Add New Skill"}
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
               <div className="md:col-span-2 space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Skill Name *</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Skill Name *</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="e.g. React.js"
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all font-medium"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all font-medium text-sm md:text-base"
                   required
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer text-sm md:text-base"
                 >
                   {categories.map((cat) => (
                     <option key={cat.value} value={cat.value} className="bg-gray-900">
@@ -211,11 +211,11 @@ const SkillsEdit = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1 flex justify-between">
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1 flex justify-between">
                   <span>Proficiency</span>
                   <span className="text-blue-400 font-bold">{formData.proficiency}%</span>
                 </label>
-                <div className="flex items-center gap-3 h-10 px-1">
+                <div className="flex items-center gap-3 h-9 md:h-10 px-1">
                   <input
                     type="range"
                     name="proficiency"
@@ -223,15 +223,15 @@ const SkillsEdit = () => {
                     max="100"
                     value={formData.proficiency}
                     onChange={handleInputChange}
-                    className="flex-1 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                    className="flex-1 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Icon URL</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Icon URL</label>
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <input
@@ -239,16 +239,16 @@ const SkillsEdit = () => {
                       name="iconUrl"
                       value={formData.iconUrl}
                       onChange={handleInputChange}
-                      className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                      className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                       placeholder="https://example.com/icon.png"
                     />
                   </div>
                   {formData.iconUrl && (
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                       <img
                         src={formData.iconUrl}
                         alt="Preview"
-                        className="w-10 h-10 object-contain bg-white/5 rounded-xl border border-white/10 p-1.5"
+                        className="w-9 h-9 md:w-10 md:h-10 object-contain bg-white/5 rounded-lg md:rounded-xl border border-white/10 p-1.5"
                       />
                     </div>
                   )}
@@ -256,7 +256,7 @@ const SkillsEdit = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Or Upload Icon</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Or Upload Icon</label>
                 <div className="relative group">
                   <input
                     type="file"
@@ -264,19 +264,19 @@ const SkillsEdit = () => {
                     onChange={handleIconUpload}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
-                  <div className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-gray-400 text-sm group-hover:border-blue-500/50 transition-all flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-gray-400 text-xs md:text-sm group-hover:border-blue-500/50 transition-all flex items-center gap-2">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                     </svg>
-                    <span>Click to upload skill icon</span>
+                    <span className="truncate">Click to upload icon</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 items-end">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Years of Experience</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Years of Experience</label>
                 <input
                   type="number"
                   name="yearsOfExperience"
@@ -284,44 +284,44 @@ const SkillsEdit = () => {
                   max="50"
                   value={formData.yearsOfExperience}
                   onChange={handleInputChange}
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all text-sm"
                 />
               </div>
 
-              <div className="md:col-span-2 flex items-center gap-3 h-[46px] px-4 bg-black/40 rounded-xl border border-white/10 group">
+              <div className="md:col-span-2 flex items-center gap-3 h-9 md:h-11 px-4 bg-black/40 rounded-lg md:rounded-xl border border-white/10 group cursor-pointer">
                 <input
                   type="checkbox"
                   name="featured"
                   id="featured"
                   checked={formData.featured}
                   onChange={handleInputChange}
-                  className="w-5 h-5 rounded border-white/20 bg-white/5 text-blue-600 focus:ring-blue-500/50 transition-all cursor-pointer"
+                  className="w-4 h-4 md:w-5 md:h-5 rounded border-white/20 bg-white/5 text-blue-600 focus:ring-blue-500/50 transition-all cursor-pointer"
                 />
                 <label
                   htmlFor="featured"
-                  className="text-xs font-medium text-gray-400 cursor-pointer group-hover:text-gray-300 transition-colors"
+                  className="text-[10px] md:text-xs font-medium text-gray-400 cursor-pointer group-hover:text-gray-300 transition-colors"
                 >
                   Featured Skill (Homepage Visibility)
                 </label>
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4 border-t border-white/5">
+            <div className="flex gap-3 md:gap-4 pt-3 md:pt-4 border-t border-white/5 text-sm md:text-base">
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-3 px-4 md:px-6 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span>{editingId ? "Update Skill" : "Create Skill"}</span>
+                <span>{editingId ? "Update" : "Save Skill"}</span>
               </button>
 
               {editingId && (
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
+                  className="px-4 md:px-6 py-2 md:py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-lg md:rounded-xl border border-white/10 transition-all active:scale-[0.98]"
                 >
                   Cancel
                 </button>
@@ -331,13 +331,13 @@ const SkillsEdit = () => {
         </div>
 
         {/* Skills List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {skills.map((skill) => {
             const category = categories.find((c) => c.value === skill.category);
             return (
               <div
                 key={skill._id}
-                className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 hover:border-blue-500/30 transition-all relative"
+                className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 hover:border-blue-500/30 transition-all relative"
               >
                 {skill.featured && (
                   <div
@@ -347,35 +347,35 @@ const SkillsEdit = () => {
                     ⭐
                   </div>
                 )}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-start justify-between mb-3 md:mb-4">
+                  <div className="flex items-center gap-2.5 md:gap-3">
                     {skill.iconUrl && (
                       <img
                         src={skill.iconUrl}
                         alt={skill.name}
-                        className="w-10 h-10 object-contain"
+                        className="w-8 h-8 md:w-10 md:h-10 object-contain shrink-0"
                       />
                     )}
-                    <div>
-                      <h3 className="text-lg font-bold text-white">
+                    <div className="min-w-0">
+                      <h3 className="text-base md:text-lg font-bold text-white truncate">
                         {skill.name}
                       </h3>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-[10px] md:text-xs text-gray-400">
                         {category?.icon} {category?.label}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-gray-400">Proficiency</span>
-                    <span className="text-xs font-bold text-white">
+                <div className="mb-3 md:mb-4">
+                  <div className="flex justify-between items-center mb-1.5 md:mb-2 text-[10px] md:text-xs">
+                    <span className="text-gray-400">Proficiency</span>
+                    <span className="font-bold text-white">
                       {skill.proficiency}% -{" "}
                       {getProficiencyLabel(skill.proficiency)}
                     </span>
                   </div>
-                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-1.5 md:h-2 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className={`h-full bg-gradient-to-r ${getProficiencyColor(skill.proficiency)} rounded-full`}
                       style={{ width: `${skill.proficiency}%` }}

@@ -137,27 +137,27 @@ const Skills = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12 min-h-screen">
-        <div className="text-center mb-16">
-          <Skeleton width={300} height={48} className="mx-auto mb-6" />
-          <Skeleton width={500} height={24} className="mx-auto" />
+      <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
+        <div className="text-center mb-10 md:mb-16">
+          <Skeleton width={300} height={40} className="mx-auto mb-4 md:mb-6" />
+          <Skeleton width={250} height={20} className="mx-auto" />
         </div>
 
         {/* Search and Filter Skeletons */}
-        <div className="max-w-7xl mx-auto mb-12 space-y-8">
+        <div className="max-w-7xl mx-auto mb-10 md:mb-12 space-y-4 md:space-y-8">
           <Skeleton
             width="100%"
-            height={56}
-            className="max-w-lg mx-auto rounded-xl"
+            height={48}
+            className="max-w-lg mx-auto rounded-lg md:rounded-xl"
           />
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4">
             {Array(5)
               .fill(0)
               .map((_, i) => (
                 <Skeleton
                   key={i}
-                  width={100}
-                  height={48}
+                  width={90}
+                  height={40}
                   className="rounded-full"
                 />
               ))}
@@ -166,19 +166,19 @@ const Skills = () => {
 
         {/* Skills Grid Skeleton */}
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
             {Array(8)
               .fill(0)
               .map((_, i) => (
                 <div
                   key={i}
-                  className="h-full bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10"
+                  className="h-full bg-white/5 backdrop-blur-xl p-5 md:p-6 rounded-xl md:rounded-2xl border border-white/10"
                 >
-                  <div className="flex items-center gap-4 mb-6">
-                    <Skeleton width={64} height={64} className="rounded-2xl" />
+                  <div className="flex items-center gap-4 mb-4 md:mb-6">
+                    <Skeleton width={56} height={56} className="rounded-xl md:rounded-2xl" />
                     <div className="flex-1">
-                      <Skeleton width={100} height={24} className="mb-2" />
-                      <Skeleton width={60} height={16} />
+                      <Skeleton width={100} height={20} className="mb-2" />
+                      <Skeleton width={60} height={14} />
                     </div>
                   </div>
 
@@ -207,7 +207,7 @@ const Skills = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
       <SEO
         title="Skills"
         description="Detailed breakdown of my technical skills in Cloud, DevOps, Programming, and Tools."
@@ -220,18 +220,18 @@ const Skills = () => {
           "Go",
         ]}
       />
-      <div className="max-w-6xl mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
+      <div className="max-w-6xl mx-auto text-center mb-10 md:mb-16">
+        <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
           Technical Arsenal
         </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+        <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
           A curated collection of tools and technologies I use to build
           scalable, resilient, and automated systems.
         </p>
       </div>
 
       {/* Search and Filter Controls */}
-      <div className="max-w-7xl mx-auto mb-12 space-y-8">
+      <div className="max-w-7xl mx-auto mb-10 md:mb-12 space-y-4 md:space-y-8">
         {/* Search Bar */}
         <div className="relative max-w-lg mx-auto group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-50 group-hover:opacity-100 transition duration-300 blur"></div>
@@ -241,7 +241,7 @@ const Skills = () => {
               placeholder="Search technologies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-6 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
+              className="w-full px-4 py-3 md:px-6 md:py-4 bg-gray-900 border border-gray-700 rounded-lg md:rounded-xl text-white text-xs md:text-base placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
             />
             <svg
               className="absolute right-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-500"
@@ -260,18 +260,18 @@ const Skills = () => {
         </div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-4">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1 ${
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-bold transition-all duration-300 transform hover:-translate-y-1 ${
                 selectedCategory === cat.id
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105"
                   : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
               }`}
             >
-              <span className="mr-2">{cat.icon}</span>
+              <span className="mr-1.5 md:mr-2">{cat.icon}</span>
               {cat.label}
             </button>
           ))}
@@ -280,7 +280,7 @@ const Skills = () => {
 
       {/* Skills Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
           {filteredSkills.map((skill, index) => (
             <div
               key={skill._id || skill.name}
@@ -296,7 +296,7 @@ const Skills = () => {
                 className="h-full"
               >
                 <div
-                  className={`h-full bg-white/5 backdrop-blur-xl p-6 rounded-2xl border transition-all duration-300 group relative overflow-hidden ${
+                  className={`h-full bg-white/5 backdrop-blur-xl p-5 md:p-6 rounded-xl md:rounded-2xl border transition-all duration-300 group relative overflow-hidden ${
                     skill.featured
                       ? "border-yellow-500/30 shadow-[0_0_30px_rgba(234,179,8,0.1)] bg-gradient-to-br from-white/10 to-yellow-500/5"
                       : "border-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]"
@@ -312,9 +312,9 @@ const Skills = () => {
                   )}
 
                   {/* Skill Header */}
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-center gap-4 mb-4 md:mb-6">
                     <div
-                      className={`w-16 h-16 rounded-2xl flex items-center justify-center p-3 shadow-inner ${
+                      className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center p-3 shadow-inner ${
                         skill.featured ? "bg-yellow-500/10" : "bg-white/5"
                       }`}
                     >
@@ -332,11 +332,11 @@ const Skills = () => {
                       )}
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-base md:text-xl font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
                         {skill.name}
                       </h3>
                       <span
-                        className={`text-xs font-bold tracking-wider uppercase bg-gradient-to-r ${getProficiencyColor(skill.proficiency)} bg-clip-text text-transparent`}
+                        className={`text-[10px] md:text-xs font-bold tracking-wider uppercase bg-gradient-to-r ${getProficiencyColor(skill.proficiency)} bg-clip-text text-transparent`}
                       >
                         {getProficiencyLabel(skill.proficiency)}
                       </span>
@@ -344,14 +344,14 @@ const Skills = () => {
                   </div>
 
                   {/* Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs">
+                  <div className="space-y-1.5 md:space-y-2">
+                    <div className="flex justify-between text-[10px] md:text-xs">
                       <span className="text-gray-400">Proficiency</span>
                       <span className="text-white font-mono">
                         {skill.proficiency}%
                       </span>
                     </div>
-                    <div className="h-2 bg-gray-700/50 rounded-full overflow-hidden relative">
+                    <div className="h-1.5 md:h-2 bg-gray-700/50 rounded-full overflow-hidden relative">
                       <div
                         className={`h-full bg-gradient-to-r ${getProficiencyColor(skill.proficiency)} rounded-full relative overflow-hidden`}
                         style={{ width: `${skill.proficiency}%` }}
@@ -362,7 +362,7 @@ const Skills = () => {
                   </div>
 
                   {/* Footer Info */}
-                  <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center text-xs text-gray-400">
+                  <div className="mt-4 md:mt-6 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] md:text-xs text-gray-400">
                     <div className="flex items-center gap-1">
                       <span>
                         {categories.find((c) => c.id === skill.category)?.icon}

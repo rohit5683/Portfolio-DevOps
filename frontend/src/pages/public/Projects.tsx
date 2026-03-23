@@ -69,13 +69,13 @@ const SortDropdown = ({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full px-5 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl flex items-center justify-between"
+        className="w-full px-4 py-2 md:px-5 md:py-3 bg-gray-900 border border-gray-700 rounded-lg md:rounded-xl text-white text-xs md:text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl flex items-center justify-between"
         aria-haspopup="listbox"
         aria-expanded={open}
       >
         <span className="truncate">{currentLabel}</span>
         <svg
-          className={`w-5 h-5 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`w-4 h-4 md:w-5 md:h-5 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -538,7 +538,7 @@ const Projects = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12 min-h-screen">
+      <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
         <SEO
           title="Projects"
           description="Explore my DevOps projects including cloud infrastructure setups, CI/CD pipelines, and automation scripts."
@@ -614,29 +614,29 @@ const Projects = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-12 min-h-screen">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
+      <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
+        <div className="text-center mb-10 md:mb-16">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
             My Projects
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
             A curated collection of my work showcasing various technologies and
             solutions
           </p>
         </div>
 
         {/* Search and Filter Controls */}
-        <div className="max-w-7xl mx-auto mb-12 space-y-8">
+        <div className="max-w-7xl mx-auto mb-10 md:mb-12 space-y-4 md:space-y-8">
           {/* Search Bar */}
           <div className="relative max-w-lg mx-auto group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-50 group-hover:opacity-100 transition duration-300 blur"></div>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search projects, technologies..."
+                placeholder="Search projects..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
+                className="w-full px-4 py-3 md:px-6 md:py-4 bg-gray-900 border border-gray-700 rounded-lg md:rounded-xl text-white text-xs md:text-base placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-xl"
               />
               <svg
                 className="absolute right-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-500"
@@ -655,13 +655,13 @@ const Projects = () => {
           </div>
 
           {/* Category Filters + Sort */}
-          <div className="flex flex-col gap-6 items-center">
-            <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-col gap-4 md:gap-6 items-center">
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1 ${
+                  className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-bold transition-all duration-300 transform hover:-translate-y-1 ${
                     selectedCategory === cat.id
                       ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
@@ -680,7 +680,7 @@ const Projects = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto">
           {filteredProjects.map((project, index) => {
             const statusStyle =
               statusColors[project.status as keyof typeof statusColors] ||
@@ -725,14 +725,14 @@ const Projects = () => {
 
                     {/* Status Badge */}
                     <div
-                      className={`absolute top-4 right-4 z-10 px-3 py-1 ${statusStyle.bg} ${statusStyle.text} text-xs font-semibold rounded-full border ${statusStyle.border} backdrop-blur-md`}
+                      className={`absolute top-3 right-3 md:top-4 md:right-4 z-10 px-2 py-0.5 md:px-3 md:py-1 ${statusStyle.bg} ${statusStyle.text} text-[10px] md:text-xs font-bold rounded-full border ${statusStyle.border} backdrop-blur-md`}
                     >
                       {statusStyle.label}
                     </div>
 
                     {/* Image Gallery */}
                     {project.images && project.images.length > 0 && (
-                      <div className="relative h-64 bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden group-hover:h-72 transition-all duration-500">
+                      <div className="relative h-48 md:h-64 bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden group-hover:h-52 md:group-hover:h-72 transition-all duration-500">
                         <div className="flex gap-2 h-full p-2 overflow-x-auto scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
                           {project.images.map((img: string, idx: number) => (
                             <button
@@ -776,9 +776,9 @@ const Projects = () => {
                     )}
 
                     {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col relative">
-                      <div className="flex items-start justify-between mb-3">
-                        <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors flex-1">
+                    <div className="p-5 md:p-6 flex-1 flex flex-col relative">
+                      <div className="flex items-start justify-between mb-2 md:mb-3">
+                        <h3 className="text-lg md:text-2xl font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
                           {project.title}
                         </h3>
                         {project.completionDate && (
@@ -793,11 +793,13 @@ const Projects = () => {
                         )}
                       </div>
 
-                      <RichText 
-                        text={project.description} 
-                        className="mb-6 !mt-0" 
-                        accentColor={project.featured ? "bg-yellow-400/70" : "bg-blue-400/70"}
-                      />
+                      <div className="text-[10px] md:text-base">
+                        <RichText 
+                          text={project.description} 
+                          className="mb-6 !mt-0" 
+                          accentColor={project.featured ? "bg-yellow-400/70" : "bg-blue-400/70"}
+                        />
+                      </div>
 
                       {/* Tech Stack */}
                       {project.techStack && project.techStack.length > 0 && (
@@ -806,7 +808,7 @@ const Projects = () => {
                             (tech: string, idx: number) => (
                               <span
                                 key={idx}
-                                className="px-3 py-1 bg-white/5 text-blue-300 text-xs font-medium rounded-full border border-white/10 hover:border-blue-500/40 hover:bg-blue-500/10 transition-colors"
+                                className="px-3 py-1 bg-white/5 text-blue-300 text-[10px] md:text-xs font-medium rounded-full border border-white/10 hover:border-blue-500/40 hover:bg-blue-500/10 transition-colors"
                               >
                                 {tech}
                               </span>

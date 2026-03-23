@@ -34,45 +34,45 @@ const AboutEdit = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
-      <div className="relative z-10 container mx-auto p-6 pt-20">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Edit About Section</h1>
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-white">Edit About Section</h1>
           <button
             onClick={() => navigate("/portal")}
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors"
           >
             Back to Dashboard
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {/* About Overview Section */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2 border-b border-white/5 pb-3">
+              <svg className="w-4 h-4 md:w-5 md:h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               About Overview
             </h2>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
               {/* Left Column: Quick Info & Status */}
-              <div className="space-y-6 lg:border-r border-white/10 lg:pr-8">
+              <div className="space-y-4 md:space-y-6 lg:border-r border-white/10 lg:pr-8">
                 <div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                  <h3 className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2">
+                    <span className="w-3 md:w-4 h-[1px] bg-gray-800"></span>
                     Availability
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3 md:space-y-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Current Status</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Current Status</label>
                       <select
                         value={profile.availability?.status || "available"}
                         onChange={(e) => setProfile({
                           ...profile,
                           availability: { ...profile.availability, status: e.target.value }
                         })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                       >
                         <option value="available" className="text-black">Available</option>
                         <option value="busy" className="text-black">Busy</option>
@@ -80,7 +80,7 @@ const AboutEdit = () => {
                       </select>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Status Message</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Status Message</label>
                       <input
                         type="text"
                         value={profile.availability?.message || ""}
@@ -88,7 +88,7 @@ const AboutEdit = () => {
                           ...profile,
                           availability: { ...profile.availability, message: e.target.value }
                         })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                         placeholder="e.g., Open to new opportunities"
                       />
                     </div>
@@ -96,17 +96,17 @@ const AboutEdit = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                  <h3 className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2">
+                    <span className="w-3 md:w-4 h-[1px] bg-gray-800"></span>
                     Location
                   </h3>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Base Location</label>
+                    <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Base Location</label>
                     <input
                       type="text"
                       value={profile.location || ""}
                       onChange={(e) => setProfile({ ...profile, location: e.target.value })}
-                      className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                      className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                       placeholder="e.g., San Francisco, CA"
                     />
                   </div>
@@ -114,7 +114,7 @@ const AboutEdit = () => {
 
                 <button
                   onClick={() => handleSave("About Overview")}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-2.5 px-4 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] text-sm"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
@@ -124,40 +124,40 @@ const AboutEdit = () => {
               </div>
 
               {/* Right Column: Detailed Narrative */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 space-y-4 md:space-y-6">
                 <div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-gray-800"></span>
+                  <h3 className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2">
+                    <span className="w-3 md:w-4 h-[1px] bg-gray-800"></span>
                     Identity & Narrative
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3 md:space-y-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Main Headline</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Main Headline</label>
                       <input
                         type="text"
                         value={profile.headline || ""}
                         onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all font-medium"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all font-medium"
                         placeholder="e.g., AWS Certified Senior DevOps Engineer"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Subtitle / Quick Bio</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Subtitle / Quick Bio</label>
                       <textarea
                         data-lenis-prevent
                         value={profile.aboutSubtitle || ""}
                         onChange={(e) => setProfile({ ...profile, aboutSubtitle: e.target.value })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all h-20 resize-none"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all h-20 resize-none"
                         placeholder="A brief, high-impact summary of your expertise..."
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Full About Narrative</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Full About Narrative</label>
                       <textarea
                         data-lenis-prevent
                         value={profile.about || ""}
                         onChange={(e) => setProfile({ ...profile, about: e.target.value })}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all h-44 resize-none leading-relaxed"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all h-36 md:h-44 resize-none leading-relaxed"
                         placeholder="Tell your professional story, your journey, and what drives you..."
                       />
                     </div>
@@ -168,19 +168,19 @@ const AboutEdit = () => {
           </div>
 
           {/* About Page Highlights */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2 border-b border-white/5 pb-3">
+              <svg className="w-4 h-4 md:w-5 md:h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Key Highlights
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
               {profile.highlights?.map((highlight: any, index: number) => (
                 <div
                   key={index}
-                  className="bg-black/40 p-5 rounded-2xl border border-white/10 relative group/item transition-all hover:border-blue-500/30"
+                  className="bg-black/40 p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/10 relative group/item transition-all hover:border-blue-500/30"
                 >
                   <button
                     onClick={() => {
@@ -188,14 +188,14 @@ const AboutEdit = () => {
                       newHighlights.splice(index, 1);
                       setProfile({ ...profile, highlights: newHighlights });
                     }}
-                    className="absolute -top-2 -right-2 w-7 h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20"
+                    className="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-100 md:opacity-0 group-hover/item:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20 text-sm"
                   >
                     ×
                   </button>
                   
-                  <div className="flex gap-4">
+                  <div className="flex gap-3 md:gap-4">
                     <div className="space-y-1.5 flex-shrink-0">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1 text-center block">Icon</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1 text-center block">Icon</label>
                       <input
                         type="text"
                         value={highlight.icon}
@@ -204,13 +204,13 @@ const AboutEdit = () => {
                           newHighlights[index].icon = e.target.value;
                           setProfile({ ...profile, highlights: newHighlights });
                         }}
-                        className="w-14 h-14 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-center text-2xl outline-none focus:border-blue-500/50"
+                        className="w-12 h-12 md:w-14 md:h-14 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-center text-xl md:text-2xl outline-none focus:border-blue-500/50"
                         placeholder="🏆"
                       />
                     </div>
-                    <div className="flex-1 space-y-3">
+                    <div className="flex-1 space-y-2 md:space-y-3">
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Title</label>
+                        <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Title</label>
                         <input
                           type="text"
                           value={highlight.title}
@@ -219,12 +219,12 @@ const AboutEdit = () => {
                             newHighlights[index].title = e.target.value;
                             setProfile({ ...profile, highlights: newHighlights });
                           }}
-                          className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm outline-none focus:border-blue-500/50"
+                          className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm outline-none focus:border-blue-500/50"
                           placeholder="e.g., 50+ Projects Completed"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Description</label>
+                        <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Description</label>
                         <input
                           type="text"
                           value={highlight.description}
@@ -233,7 +233,7 @@ const AboutEdit = () => {
                             newHighlights[index].description = e.target.value;
                             setProfile({ ...profile, highlights: newHighlights });
                           }}
-                          className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm outline-none focus:border-blue-500/50"
+                          className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm outline-none focus:border-blue-500/50"
                           placeholder="e.g., Successfully delivered high-impact tech solutions"
                         />
                       </div>
@@ -243,7 +243,7 @@ const AboutEdit = () => {
               ))}
             </div>
             
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4">
               <button
                 onClick={() =>
                   setProfile({
@@ -254,7 +254,7 @@ const AboutEdit = () => {
                     ],
                   })
                 }
-                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3 px-4 rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2"
+                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-lg md:rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2 text-sm"
               >
                 <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -263,7 +263,7 @@ const AboutEdit = () => {
               </button>
               <button
                 onClick={() => handleSave("Highlights")}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 text-sm"
               >
                 Save Highlights
               </button>
@@ -271,19 +271,19 @@ const AboutEdit = () => {
           </div>
 
           {/* About Page Animated Stats */}
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl lg:col-span-2">
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-xl lg:col-span-2">
+            <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2 border-b border-white/5 pb-3">
+              <svg className="w-4 h-4 md:w-5 md:h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               Animated Statistics
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
               {profile.animatedStats?.map((stat: any, index: number) => (
                 <div
                   key={index}
-                  className="bg-black/40 p-5 rounded-2xl border border-white/10 relative group/stat transition-all hover:border-purple-500/30"
+                  className="bg-black/40 p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/10 relative group/stat transition-all hover:border-purple-500/30"
                 >
                   <button
                     onClick={() => {
@@ -291,14 +291,14 @@ const AboutEdit = () => {
                       newStats.splice(index, 1);
                       setProfile({ ...profile, animatedStats: newStats });
                     }}
-                    className="absolute -top-2 -right-2 w-7 h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-0 group-hover/stat:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20"
+                    className="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-100 md:opacity-0 group-hover/stat:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20 text-sm"
                   >
                     ×
                   </button>
 
-                  <div className="grid grid-cols-4 gap-4">
+                  <div className="grid grid-cols-4 gap-3 md:gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1 block text-center">Icon</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1 block text-center">Icon</label>
                       <input
                         type="text"
                         value={stat.icon}
@@ -307,12 +307,12 @@ const AboutEdit = () => {
                           newStats[index].icon = e.target.value;
                           setProfile({ ...profile, animatedStats: newStats });
                         }}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xl text-center outline-none focus:border-purple-500/50"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-lg md:text-xl text-center outline-none focus:border-purple-500/50"
                         placeholder="📊"
                       />
                     </div>
                     <div className="col-span-2 space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Label</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Label</label>
                       <input
                         type="text"
                         value={stat.label}
@@ -321,12 +321,12 @@ const AboutEdit = () => {
                           newStats[index].label = e.target.value;
                           setProfile({ ...profile, animatedStats: newStats });
                         }}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm outline-none focus:border-purple-500/50"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm outline-none focus:border-purple-500/50"
                         placeholder="e.g., Code Commits"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase px-1">Value</label>
+                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Value</label>
                       <input
                         type="number"
                         value={stat.value}
@@ -335,7 +335,7 @@ const AboutEdit = () => {
                           newStats[index].value = parseInt(e.target.value) || 0;
                           setProfile({ ...profile, animatedStats: newStats });
                         }}
-                        className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm text-center outline-none focus:border-purple-500/50"
+                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm text-center outline-none focus:border-purple-500/50"
                         placeholder="0"
                       />
                     </div>
@@ -344,7 +344,7 @@ const AboutEdit = () => {
               ))}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4">
               <button
                 onClick={() =>
                   setProfile({
@@ -355,16 +355,16 @@ const AboutEdit = () => {
                     ],
                   })
                 }
-                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3 px-4 rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2"
+                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-lg md:rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2 text-sm"
               >
                 <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                Add Statistic
+                Add Stat
               </button>
               <button
                 onClick={() => handleSave("Animated Stats")}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 text-sm"
               >
                 Save All Stats
               </button>

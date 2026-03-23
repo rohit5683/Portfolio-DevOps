@@ -43,7 +43,7 @@ const AchievementCard = ({
   meta: typeof achievementTypeMeta[keyof typeof achievementTypeMeta] 
 }) => (
   <div
-    className={`group relative pr-4 py-5 pl-5 rounded-2xl border transition-all duration-300 ${
+    className={`group relative p-4 md:py-5 md:pl-5 md:pr-4 rounded-xl md:rounded-2xl border transition-all duration-300 ${
       item.pinned
         ? "bg-gradient-to-br from-white/10 to-yellow-500/5 border-yellow-500/25 shadow-[0_0_40px_rgba(234,179,8,0.1)] scale-[1.01]"
         : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]"
@@ -52,35 +52,37 @@ const AchievementCard = ({
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-3 flex-wrap">
         <div
-          className={`w-7 h-7 rounded-full bg-gradient-to-r ${meta.accent} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0`}
+          className={`w-6 h-6 rounded-full bg-gradient-to-r ${meta.accent} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0`}
         >
           <span className="text-sm">{meta.icon}</span>
         </div>
         
         <div className="flex items-center gap-2 flex-wrap">
           {item.pinned && (
-            <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
-              PINNED
+            <span className="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
+              PIN
             </span>
           )}
-          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
+          <span className="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
             {meta.label}
           </span>
-          <span className="text-xs text-gray-400">
+          <span className="text-[9px] md:text-xs text-gray-400">
             {formatAchievementDate(item.date)}
           </span>
         </div>
       </div>
 
       <div className="min-w-0">
-        <div className="text-white font-bold text-base md:text-lg leading-snug">
+        <div className="text-white font-bold text-[14px] md:text-lg leading-snug">
           {item.title}
         </div>
         {item.description && (
-          <RichText 
-            text={item.description} 
-            accentColor={meta.accent.includes("blue") ? "bg-blue-400/70" : meta.accent.includes("purple") ? "bg-purple-400/70" : meta.accent.includes("green") ? "bg-green-400/70" : "bg-orange-400/70"}
-          />
+          <div className="text-[11px] md:text-sm">
+            <RichText 
+              text={item.description} 
+              accentColor={meta.accent.includes("blue") ? "bg-blue-400/70" : meta.accent.includes("purple") ? "bg-purple-400/70" : meta.accent.includes("green") ? "bg-green-400/70" : "bg-orange-400/70"}
+            />
+          </div>
         )}
         
         {item.tags?.length ? (
@@ -88,7 +90,7 @@ const AchievementCard = ({
             {item.tags.slice(0, 6).map((t) => (
               <span
                 key={t}
-                className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-blue-200 border border-white/10"
+                className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-blue-200 border border-white/10"
               >
                 {t}
               </span>
@@ -124,16 +126,15 @@ const ActivityFeed = ({
   const visible = showAll ? filtered : filtered.slice(0, 4);
 
   return (
-    <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.08)]">
-      <div className="p-6 md:p-8 border-b border-white/10">
+    <div className="bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-white/10 overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+      <div className="p-4 md:p-8 border-b border-white/10">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-2xl md:text-3xl font-bold text-white">
+            <h3 className="text-lg md:text-3xl font-bold text-white">
               Recent Achievements
             </h3>
-            <p className="text-gray-400 mt-2 text-sm md:text-base max-w-2xl">
-              A quick feed of what I’ve recently solved, learned, shipped, and
-              improved.
+            <p className="text-gray-400 mt-1 md:mt-2 text-[11px] md:text-base max-w-2xl leading-relaxed">
+              Recent problems solved, lessons learned, and features shipped.
             </p>
           </div>
 
@@ -161,7 +162,7 @@ const ActivityFeed = ({
           )}
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-4 md:mt-6 flex flex-wrap gap-1.5 md:gap-2">
           {(["all", "solved", "learned", "shipped", "improved"] as const).map(
             (k) => {
               const active = filter === k;
@@ -172,7 +173,7 @@ const ActivityFeed = ({
                   key={k}
                   type="button"
                   onClick={() => setFilter(k)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
+                  className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-[10px] md:text-sm font-bold transition-all border ${
                     active
                       ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent shadow-lg shadow-blue-500/20"
                       : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/20"
@@ -187,9 +188,9 @@ const ActivityFeed = ({
         </div>
       </div>
 
-      <div className="p-6 md:p-8">
+      <div className="p-4 md:p-8">
         <div className="relative">
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {visible.map((item) => (
               <AchievementCard key={item.id} item={item} meta={achievementTypeMeta[item.type]} />
             ))}
@@ -207,7 +208,7 @@ const ActivityFeed = ({
             <button
               type="button"
               onClick={() => setShowAll((v) => !v)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-sm font-semibold"
+              className="inline-flex items-center gap-1.5 px-2 py-1 md:px-4 md:py-2 rounded-lg md:rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 transition-all text-[9px] md:text-sm font-bold"
             >
               {showAll ? "Show less" : "Show more"}
               <svg
@@ -230,7 +231,7 @@ const ActivityFeed = ({
             <button
               type="button"
               onClick={onViewAll}
-              className="md:hidden inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all text-sm font-bold shadow-lg shadow-blue-500/20"
+              className="md:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all text-[10px] font-bold shadow-lg shadow-blue-500/20"
             >
               View all
               <svg
@@ -339,7 +340,7 @@ const Home = () => {
     : [];
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20 overflow-hidden">
+    <div className="container mx-auto px-3.5 py-8 md:py-20 overflow-hidden">
       <SEO
         title="Home"
         description="Rohit Vishwakarma - DevOps Engineer specializing in AWS, Kubernetes, and Infrastructure Automation. View my portfolio and projects."
@@ -351,23 +352,23 @@ const Home = () => {
       />
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center mb-16 md:mb-24">
           {/* Left Column - Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1 relative z-10">
-            <div className="inline-block mb-6 px-6 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full backdrop-blur-md animate-fade-in-up">
-              <span className="text-blue-400 text-xs md:text-sm font-bold tracking-wide uppercase">
+            <div className="inline-block mb-4 md:mb-6 px-4 py-1.5 md:px-6 md:py-2 bg-blue-500/10 border border-blue-500/30 rounded-full backdrop-blur-md animate-fade-in-up">
+              <span className="text-blue-400 text-[10px] md:text-sm font-bold tracking-wide uppercase">
                 🚀 Automating Infrastructure at Scale
               </span>
             </div>
 
             <h1
-              className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight animate-fade-in-up"
+              className="text-3xl md:text-6xl font-bold mb-4 md:mb-6 text-white leading-tight animate-fade-in-up"
               style={{ animationDelay: "0.1s" }}
             >
               Hi, I'm <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
                 {loading ? (
-                  <Skeleton width={300} height={60} className="mt-2" />
+                  <Skeleton width={200} height={40} className="mt-2" />
                 ) : (
                   profile?.name || "Rohit Vishwakarma"
                 )}
@@ -375,23 +376,23 @@ const Home = () => {
             </h1>
 
             <div
-              className="h-16 mb-8 animate-fade-in-up"
+              className="h-12 md:h-16 mb-5 md:mb-8 animate-fade-in-up"
               style={{ animationDelay: "0.2s" }}
             >
-              <h2 className="text-xl md:text-3xl font-semibold text-gray-300">
+              <h2 className="text-base md:text-3xl font-semibold text-gray-300">
                 I am a <span className="text-blue-400">{displayedText}</span>
                 <span className="animate-pulse text-blue-400">|</span>
               </h2>
             </div>
 
             <div
-              className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-fade-in-up"
+              className="text-[13px] md:text-lg text-gray-400 mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-fade-in-up"
               style={{ animationDelay: "0.3s" }}
             >
               {loading ? (
                 <div className="space-y-2">
-                  <Skeleton width="100%" height={20} />
-                  <Skeleton width="80%" height={20} />
+                  <Skeleton width="100%" height={16} />
+                  <Skeleton width="80%" height={16} />
                 </div>
               ) : (
                 profile?.tagline ||
@@ -400,16 +401,16 @@ const Home = () => {
             </div>
 
             <div
-              className="flex flex-wrap gap-4 justify-center lg:justify-start animate-fade-in-up"
+              className="flex gap-1.5 md:gap-4 justify-center lg:justify-start animate-fade-in-up"
               style={{ animationDelay: "0.4s" }}
             >
               <button
                 onClick={() => navigate("/projects")}
-                className="group px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-2 transform hover:-translate-y-1 text-sm md:text-base"
+                className="group px-2.5 py-1.5 md:px-8 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg md:rounded-xl font-bold transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-1.5 transform hover:-translate-y-1 text-[10px] md:text-base whitespace-nowrap"
               >
                 View Projects
                 <svg
-                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  className="w-3.5 h-3.5 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -424,21 +425,21 @@ const Home = () => {
               </button>
               <button
                 onClick={() => navigate("/contact")}
-                className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold backdrop-blur-md border border-white/10 hover:border-white/20 transition-all transform hover:-translate-y-1 text-sm md:text-base"
+                className="px-2.5 py-1.5 md:px-8 md:py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg md:rounded-xl font-bold backdrop-blur-md border border-white/10 hover:border-white/20 transition-all transform hover:-translate-y-1 text-[10px] md:text-base whitespace-nowrap"
               >
                 Contact Me
               </button>
               {loading ? (
-                <Skeleton width={140} height={48} variant="rounded" />
+                <Skeleton width={120} height={44} variant="rounded" />
               ) : (
                 <a
                   href={profile?.contact?.linkedin || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-3 bg-[#0077b5]/20 hover:bg-[#0077b5]/30 text-blue-400 rounded-xl font-bold backdrop-blur-md border border-[#0077b5]/30 hover:border-[#0077b5]/50 transition-all flex items-center gap-2 transform hover:-translate-y-1 text-sm md:text-base"
+                  className="px-2.5 py-1.5 md:px-8 md:py-3 bg-[#0077b5]/20 hover:bg-[#0077b5]/30 text-blue-400 rounded-lg md:rounded-xl font-bold backdrop-blur-md border border-[#0077b5]/30 hover:border-[#0077b5]/50 transition-all flex items-center gap-1.5 transform hover:-translate-y-1 text-[10px] md:text-base whitespace-nowrap"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="w-3.5 h-3.5 md:w-5 md:h-5"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -466,7 +467,7 @@ const Home = () => {
                 <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 opacity-10 animate-spin-slow blur-2xl"></div>
 
                 {/* Profile picture */}
-                <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl backdrop-blur-sm bg-gradient-to-br from-blue-500/10 to-purple-500/10 group">
+                <div className="relative w-56 h-56 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl backdrop-blur-sm bg-gradient-to-br from-blue-500/10 to-purple-500/10 group">
                   {loading ? (
                     <Skeleton variant="circular" width="100%" height="100%" />
                   ) : profile?.photoUrl ? (
@@ -523,7 +524,7 @@ const Home = () => {
                     return (
                       <div
                         key={index}
-                        className={`absolute ${getPositionClass(badge.position)} px-4 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl text-xs font-bold shadow-xl animate-float`}
+                        className={`absolute ${getPositionClass(badge.position)} px-3 py-1.5 md:px-4 md:py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-xl md:rounded-2xl text-[10px] md:text-xs font-bold shadow-xl animate-float`}
                         style={{ animationDelay: `${index * 1.5}s` }}
                       >
                         <span className={`${getColorClass(badge.color)} mr-2`}>
@@ -557,18 +558,18 @@ const Home = () => {
         </div>
 
         {/* Statistics Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-16 md:mb-24">
           {loading
             ? Array(4)
                 .fill(0)
                 .map((_, i) => (
                   <div
                     key={i}
-                    className="h-32 bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10"
+                    className="h-28 md:h-32 bg-white/5 backdrop-blur-xl p-4 md:p-6 rounded-xl md:rounded-2xl border border-white/10"
                   >
-                    <Skeleton width={40} height={40} className="mb-3" />
-                    <Skeleton width={80} height={32} className="mb-1" />
-                    <Skeleton width={100} height={16} />
+                    <Skeleton width={32} height={32} className="mb-2" />
+                    <Skeleton width={60} height={24} className="mb-1" />
+                    <Skeleton width={80} height={12} />
                   </div>
                 ))
             : stats.map((stat: any, index: number) => (
@@ -580,15 +581,15 @@ const Home = () => {
                   transitionSpeed={1500}
                   className="h-full"
                 >
-                  <div className="h-full bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300 transform origin-left">
+                  <div className="h-full bg-white/5 backdrop-blur-xl p-4 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-3 -mt-3 md:-mr-4 md:-mt-4 transition-transform group-hover:scale-150"></div>
+                    <div className="text-2xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform duration-300 transform origin-left">
                       {stat.icon}
                     </div>
-                    <div className="text-3xl font-bold text-white mb-1 tracking-tight">
+                    <div className="text-2xl md:text-3xl font-bold text-white mb-0.5 md:mb-1 tracking-tight">
                       {stat.value}
                     </div>
-                    <div className="text-xs text-blue-200 font-medium uppercase tracking-wider">
+                    <div className="text-[9px] md:text-xs text-blue-200 font-bold uppercase tracking-wider">
                       {stat.label}
                     </div>
                   </div>
@@ -597,7 +598,7 @@ const Home = () => {
         </div>
 
         {/* Recent Achievements Feed */}
-        <div className="mb-24">
+        <div className="mb-16 md:mb-24">
           <ActivityFeed
             items={achievements}
             onViewAll={() => setIsAchievementsModalOpen(true)}
@@ -605,28 +606,28 @@ const Home = () => {
         </div>
 
         {/* Tech Stack Section */}
-        <div className="mb-24">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <div className="mb-16 md:mb-24">
+          <div className="text-center mb-8 md:mb-12">
+            <h3 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">
               Core Technologies
             </h3>
-            <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+            <p className="text-gray-400 max-w-2xl mx-auto text-xs md:text-base leading-relaxed">
               My preferred stack for building robust and scalable solutions
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 md:gap-6">
             {loading
               ? Array(6)
                   .fill(0)
                   .map((_, i) => (
                     <div
                       key={i}
-                      className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 h-32 flex flex-col items-center justify-center gap-3"
+                      className="bg-white/5 backdrop-blur-xl p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/10 h-28 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3"
                     >
-                      <Skeleton variant="circular" width={40} height={40} />
-                      <Skeleton width={80} height={16} />
-                      <Skeleton width="100%" height={4} />
+                      <Skeleton variant="circular" width={32} height={32} />
+                      <Skeleton width={60} height={12} />
+                      <Skeleton width="80%" height={3} />
                     </div>
                   ))
               : skills.map((tech, index) => (
@@ -637,23 +638,23 @@ const Home = () => {
                     scale={1.1}
                     transitionSpeed={400}
                   >
-                    <div className="group relative bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] cursor-pointer h-full flex flex-col items-center justify-center gap-3">
+                    <div className="group relative bg-white/5 backdrop-blur-xl p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] cursor-pointer h-full flex flex-col items-center justify-center gap-2 md:gap-3">
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${getProficiencyColor(tech.proficiency)} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-500`}
+                        className={`absolute inset-0 bg-gradient-to-br ${getProficiencyColor(tech.proficiency)} opacity-0 group-hover:opacity-10 rounded-xl md:rounded-2xl transition-opacity duration-500`}
                       ></div>
 
-                      <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                      <div className="text-3xl md:text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
                         {tech.iconUrl ? (
                           <img
                             src={tech.iconUrl}
                             alt={tech.name}
-                            className="w-10 h-10 object-contain"
+                            className="w-8 h-8 md:w-10 md:h-10 object-contain"
                           />
                         ) : (
                           <span>⚡</span>
                         )}
                       </div>
-                      <div className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">
+                      <div className="text-[10px] md:text-xs font-bold text-gray-400 group-hover:text-white transition-colors uppercase tracking-wider">
                         {tech.name}
                       </div>
 
@@ -671,7 +672,7 @@ const Home = () => {
         </div>
 
         {/* Quick Links Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-8">
           <Tilt
             tiltMaxAngleX={5}
             tiltMaxAngleY={5}
@@ -680,11 +681,11 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/experience")}
-              className="h-full group bg-gradient-to-br from-blue-500/5 to-purple-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_40px_rgba(59,130,246,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+              className="h-full group bg-gradient-to-br from-blue-500/5 to-purple-500/5 backdrop-blur-xl p-5 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_40px_rgba(59,130,246,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
-                  className="w-32 h-32 text-blue-500"
+                  className="w-24 h-24 md:w-32 md:h-32 text-blue-500"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -692,13 +693,13 @@ const Home = () => {
                 </svg>
               </div>
               <div className="relative z-10 flex-1 flex flex-col">
-                <div className="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-blue-400">
+                <div className="w-11 h-11 md:w-14 md:h-14 bg-blue-500/20 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 text-blue-400">
                   💼
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">
+                <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">
                   Experience
                 </h4>
-                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                <p className="text-gray-400 mb-4 md:mb-6 leading-relaxed text-xs md:text-sm">
                   Explore my professional journey, roles, and key achievements
                   across different companies.
                 </p>
@@ -730,11 +731,11 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/education")}
-              className="h-full group bg-gradient-to-br from-purple-500/5 to-pink-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-purple-500/30 transition-all hover:shadow-[0_0_40px_rgba(168,85,247,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+              className="h-full group bg-gradient-to-br from-purple-500/5 to-pink-500/5 backdrop-blur-xl p-5 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 hover:border-purple-500/30 transition-all hover:shadow-[0_0_40px_rgba(168,85,247,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
-                  className="w-32 h-32 text-purple-500"
+                  className="w-24 h-24 md:w-32 md:h-32 text-purple-500"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -742,11 +743,11 @@ const Home = () => {
                 </svg>
               </div>
               <div className="relative z-10 flex-1 flex flex-col">
-                <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-purple-400">
+                <div className="w-11 h-11 md:w-14 md:h-14 bg-purple-500/20 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 text-purple-400">
                   🎓
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">Education</h4>
-                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Education</h4>
+                <p className="text-gray-400 mb-4 md:mb-6 leading-relaxed text-xs md:text-sm">
                   Check out my academic background, degrees, and professional
                   certifications.
                 </p>
@@ -778,11 +779,11 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/skills")}
-              className="h-full group bg-gradient-to-br from-green-500/5 to-cyan-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-green-500/30 transition-all hover:shadow-[0_0_40px_rgba(34,197,94,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+              className="h-full group bg-gradient-to-br from-green-500/5 to-cyan-500/5 backdrop-blur-xl p-5 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 hover:border-green-500/30 transition-all hover:shadow-[0_0_40px_rgba(34,197,94,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
-                  className="w-32 h-32 text-green-500"
+                  className="w-24 h-24 md:w-32 md:h-32 text-green-500"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -790,11 +791,11 @@ const Home = () => {
                 </svg>
               </div>
               <div className="relative z-10 flex-1 flex flex-col">
-                <div className="w-14 h-14 bg-green-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-green-400">
+                <div className="w-11 h-11 md:w-14 md:h-14 bg-green-500/20 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 text-green-400">
                   ⚡
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">Skills</h4>
-                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Skills</h4>
+                <p className="text-gray-400 mb-4 md:mb-6 leading-relaxed text-xs md:text-sm">
                   Dive into my technical arsenal, tools, and proficiency levels.
                 </p>
                 <div className="text-green-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
@@ -825,11 +826,11 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/projects")}
-              className="h-full group bg-gradient-to-br from-orange-500/5 to-red-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-orange-500/30 transition-all hover:shadow-[0_0_40px_rgba(249,115,22,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+              className="h-full group bg-gradient-to-br from-orange-500/5 to-red-500/5 backdrop-blur-xl p-5 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 hover:border-orange-500/30 transition-all hover:shadow-[0_0_40px_rgba(249,115,22,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
-                  className="w-32 h-32 text-orange-500"
+                  className="w-24 h-24 md:w-32 md:h-32 text-orange-500"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -837,11 +838,11 @@ const Home = () => {
                 </svg>
               </div>
               <div className="relative z-10 flex-1 flex flex-col">
-                <div className="w-14 h-14 bg-orange-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-orange-400">
+                <div className="w-11 h-11 md:w-14 md:h-14 bg-orange-500/20 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 text-orange-400">
                   🚀
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">Projects</h4>
-                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Projects</h4>
+                <p className="text-gray-400 mb-4 md:mb-6 leading-relaxed text-xs md:text-sm">
                   Browse through my portfolio of projects, applications, and solutions.
                 </p>
                 <div className="text-orange-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">
@@ -872,11 +873,11 @@ const Home = () => {
           >
             <div
               onClick={() => navigate("/certifications")}
-              className="h-full group bg-gradient-to-br from-violet-500/5 to-indigo-500/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 hover:border-violet-500/30 transition-all hover:shadow-[0_0_40px_rgba(139,92,246,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
+              className="h-full group bg-gradient-to-br from-violet-500/5 to-indigo-500/5 backdrop-blur-xl p-5 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 hover:border-violet-500/30 transition-all hover:shadow-[0_0_40px_rgba(139,92,246,0.1)] cursor-pointer relative overflow-hidden flex flex-col"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <svg
-                  className="w-32 h-32 text-violet-500"
+                  className="w-24 h-24 md:w-32 md:h-32 text-violet-500"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -884,11 +885,11 @@ const Home = () => {
                 </svg>
               </div>
               <div className="relative z-10 flex-1 flex flex-col">
-                <div className="w-14 h-14 bg-violet-500/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-violet-400">
+                <div className="w-11 h-11 md:w-14 md:h-14 bg-violet-500/20 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 text-violet-400">
                   📜
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">Certifications</h4>
-                <p className="text-gray-400 mb-6 leading-relaxed text-sm">
+                <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Certifications</h4>
+                <p className="text-gray-400 mb-4 md:mb-6 leading-relaxed text-xs md:text-sm">
                   View my professional certifications, courses, and internships.
                 </p>
                 <div className="text-violet-400 font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto">

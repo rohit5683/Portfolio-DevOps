@@ -225,25 +225,25 @@ const ExperienceEdit = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
-      <div className="relative z-10 container mx-auto p-6 pt-20">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-white">Manage Experience</h1>
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-white">Manage Experience</h1>
           <button
             onClick={() => navigate("/portal")}
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors"
           >
             Back to Dashboard
           </button>
         </div>
 
-        <div className="mb-8 bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl">
-          <h2 className="text-xl font-bold mb-6 text-white">
+        <div className="mb-6 md:mb-8 bg-white/10 backdrop-blur-md p-4 md:p-8 rounded-xl border border-white/20 shadow-xl">
+          <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-white border-b border-white/5 pb-3 md:pb-4">
             {editingId ? "Edit Experience" : "Add New Experience"}
           </h2>
-          <form onSubmit={handleCreate} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <form onSubmit={handleCreate} className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
               <div className="md:col-span-2 space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Job Title</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Job Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Senior DevOps Engineer"
@@ -251,12 +251,12 @@ const ExperienceEdit = () => {
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all font-medium"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all font-medium text-sm md:text-base"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Company</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Company</label>
                 <input
                   type="text"
                   placeholder="e.g. Google"
@@ -264,12 +264,12 @@ const ExperienceEdit = () => {
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, company: e.target.value }))
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm md:text-base"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Location</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Location</label>
                 <input
                   type="text"
                   placeholder="e.g. Remote"
@@ -277,37 +277,37 @@ const ExperienceEdit = () => {
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, location: e.target.value }))
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm md:text-base"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Start Date</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Start Date</label>
                 <input
                   type="date"
                   value={newExp.startDate}
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, startDate: e.target.value }))
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">End Date</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">End Date</label>
                 <input
                   type="date"
                   value={newExp.endDate}
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, endDate: e.target.value }))
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                 />
               </div>
               <div className="md:col-span-2 space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Company Logo URL</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Company Logo URL</label>
                 <input
                   type="url"
                   placeholder="https://example.com/logo.png"
@@ -315,28 +315,28 @@ const ExperienceEdit = () => {
                   onChange={(e) =>
                     setNewExp((prev) => ({ ...prev, companyLogo: e.target.value }))
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
+              <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
               <input
                 type="text"
-                placeholder="e.g. AWS, Docker, Kubernetes, Jenkins"
+                placeholder="e.g. AWS, Docker, Jenkins"
                 value={newExp.techStack}
                 onChange={(e) =>
                   setNewExp((prev) => ({ ...prev, techStack: e.target.value }))
                 }
-                className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-sm md:text-base"
               />
             </div>
 
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Summary Description</label>
-                <div className="bg-black/40 rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Summary Description</label>
+                <div className="bg-black/40 rounded-lg md:rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
                   <ErrorBoundary>
                     <ReactQuill
                       theme="snow"
@@ -346,37 +346,16 @@ const ExperienceEdit = () => {
                       }}
                       modules={modules}
                       formats={formats}
-                      placeholder="Brief summary of your role..."
-                      className="text-white [&_.ql-editor]:min-h-[100px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent [&_.ql-editor]:text-base"
+                      placeholder="Brief summary..."
+                      className="text-white [&_.ql-editor]:min-h-[80px] md:[&_.ql-editor]:min-h-[100px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent text-sm md:text-base"
                     />
                   </ErrorBoundary>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Detailed Achievements</label>
-                <div className="bg-black/40 rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
-                  <style>
-                    {`
-                      .ql-snow.ql-toolbar button svg .ql-stroke, .ql-snow .ql-toolbar button svg .ql-stroke, .ql-snow.ql-toolbar button svg line, .ql-snow.ql-toolbar button svg path, .ql-snow.ql-toolbar button svg rect, .ql-snow.ql-toolbar button svg polyline { stroke: #e5e7eb !important; }
-                      .ql-snow.ql-toolbar button svg .ql-fill, .ql-snow .ql-toolbar button svg .ql-fill { fill: #e5e7eb !important; }
-                      .ql-snow.ql-toolbar button.ql-active svg .ql-stroke { stroke: #60a5fa !important; }
-                      .ql-snow.ql-toolbar button.ql-active svg .ql-fill { fill: #60a5fa !important; }
-                      .ql-snow .ql-picker { color: #e5e7eb !important; }
-                      .ql-snow .ql-picker-label { color: #e5e7eb !important; }
-                      .ql-snow .ql-picker-label svg .ql-stroke { stroke: #e5e7eb !important; }
-                      .ql-snow .ql-picker-options { background-color: #1f2937 !important; border-color: #374151 !important; }
-                      .ql-snow .ql-picker-item { color: #e5e7eb !important; }
-                      .ql-snow .ql-picker-item:hover { color: #60a5fa !important; }
-                      .ql-editor { color: #e5e7eb !important; min-height: 200px; }
-                      .ql-editor.ql-blank::before { color: #9ca3af !important; font-style: normal !important; }
-                      .ql-toolbar { border-color: rgba(255, 255, 255, 0.1) !important; }
-                      .ql-container { border-color: rgba(255, 255, 255, 0.1) !important; }
-                      .ql-editor ol { list-style-type: decimal !important; padding-left: 1.5em !important; }
-                      .ql-editor ul { list-style-type: disc !important; padding-left: 1.5em !important; }
-                      .ql-editor li { margin-bottom: 0.5em !important; }
-                    `}
-                  </style>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Detailed Achievements</label>
+                <div className="bg-black/40 rounded-lg md:rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all">
                   <ErrorBoundary>
                     <ReactQuill
                       theme="snow"
@@ -386,37 +365,37 @@ const ExperienceEdit = () => {
                       }}
                       modules={modules}
                       formats={formats}
-                      placeholder="Detailed responsibilities and key achievements..."
-                      className="text-white [&_.ql-editor]:min-h-[250px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent [&_.ql-editor]:text-base"
+                      placeholder="Detailed responsibilities..."
+                      className="text-white [&_.ql-editor]:min-h-[200px] md:[&_.ql-editor]:min-h-[250px] [&_.ql-toolbar]:border-white/5 [&_.ql-container]:border-transparent text-sm md:text-base"
                     />
                   </ErrorBoundary>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pb-6">
               {/* Achievements Section */}
-              <div className="bg-black/20 p-5 rounded-2xl border border-white/5 space-y-4">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1 flex items-center gap-2">
+              <div className="bg-black/20 p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/5 space-y-4">
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  Key Achievements (Bullet Points)
+                  Key Achievements
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="e.g. Optimized CI/CD pipeline by 40%"
+                    placeholder="e.g. Optimized CI/CD by 40%"
                     value={achievementInput}
                     onChange={(e) => setAchievementInput(e.target.value)}
                     onKeyPress={(e) =>
                       e.key === "Enter" &&
                       (e.preventDefault(), handleAddAchievement())
                     }
-                    className="flex-1 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                    className="flex-1 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   />
                   <button
                     type="button"
                     onClick={handleAddAchievement}
-                    className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl border border-white/10 transition-colors text-sm font-bold"
+                    className="px-3 md:px-4 py-1.5 md:py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg md:rounded-xl border border-white/10 transition-colors text-xs md:text-sm font-bold"
                   >
                     Add
                   </button>
@@ -426,16 +405,16 @@ const ExperienceEdit = () => {
                     {achievementsList.map((achievement, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5 group/item"
+                        className="flex items-center gap-2 bg-black/40 p-2 md:p-2.5 rounded-lg md:rounded-xl border border-white/5 group/item"
                       >
-                        <span className="text-green-400 text-xs">✓</span>
-                        <span className="flex-1 text-gray-300 text-xs line-clamp-2">
+                        <span className="text-green-400 text-[10px]">✓</span>
+                        <span className="flex-1 text-gray-300 text-[10px] md:text-xs line-clamp-2">
                           {achievement}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleRemoveAchievement(index)}
-                          className="text-gray-500 hover:text-red-400 font-bold transition-colors opacity-0 group-hover/item:opacity-100"
+                          className="text-gray-500 hover:text-red-400 font-bold transition-colors opacity-100 lg:opacity-0 lg:group-hover/item:opacity-100 px-1"
                         >
                           ×
                         </button>
@@ -443,30 +422,28 @@ const ExperienceEdit = () => {
                     ))}
                   </div>
                 )}
-              </div>
-
-              {/* Challenges Section */}
-              <div className="bg-black/20 p-5 rounded-2xl border border-white/5 space-y-4">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1 flex items-center gap-2">
+              </div>              {/* Challenges Section */}
+              <div className="bg-black/20 p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/5 space-y-4">
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Technical Challenges
+                  Key Challenges
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="e.g. Scaling database for 1M+ users"
+                    placeholder="e.g. Scaling to 1M users"
                     value={challengeInput}
                     onChange={(e) => setChallengeInput(e.target.value)}
                     onKeyPress={(e) =>
                       e.key === "Enter" &&
                       (e.preventDefault(), handleAddChallenge())
                     }
-                    className="flex-1 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                    className="flex-1 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   />
                   <button
                     type="button"
                     onClick={handleAddChallenge}
-                    className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl border border-white/10 transition-colors text-sm font-bold"
+                    className="px-3 md:px-4 py-1.5 md:py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg md:rounded-xl border border-white/10 transition-colors text-xs md:text-sm font-bold"
                   >
                     Add
                   </button>
@@ -476,16 +453,16 @@ const ExperienceEdit = () => {
                     {challengesList.map((challenge, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5 group/item"
+                        className="flex items-center gap-2 bg-black/40 p-2 md:p-2.5 rounded-lg md:rounded-xl border border-white/5 group/item"
                       >
-                        <span className="text-orange-400 text-xs">⚠</span>
-                        <span className="flex-1 text-gray-300 text-xs line-clamp-2">
+                        <span className="text-orange-400 text-[10px]">⚠</span>
+                        <span className="flex-1 text-gray-300 text-[10px] md:text-xs line-clamp-2">
                           {challenge}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleRemoveChallenge(index)}
-                          className="text-gray-500 hover:text-red-400 font-bold transition-colors opacity-0 group-hover/item:opacity-100"
+                          className="text-gray-500 hover:text-red-400 font-bold transition-colors opacity-100 lg:opacity-0 lg:group-hover/item:opacity-100 px-1"
                         >
                           ×
                         </button>
@@ -496,22 +473,22 @@ const ExperienceEdit = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4 border-t border-white/5">
+            <div className="flex gap-3 md:gap-4 pt-4 border-t border-white/5">
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-4 md:px-6 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] text-sm md:text-base"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span>{editingId ? "Update Experience" : "Create Experience"}</span>
+                <span>{editingId ? "Update" : "Create Experience"}</span>
               </button>
 
               {editingId && (
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
+                  className="px-4 md:px-6 py-2.5 md:py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-lg md:rounded-xl border border-white/10 transition-all active:scale-[0.98] text-sm md:text-base"
                 >
                   Cancel
                 </button>
@@ -524,70 +501,79 @@ const ExperienceEdit = () => {
           {experience.map((exp) => (
             <div
               key={exp._id}
-              className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-lg hover:bg-white/15 transition-all"
+              className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-lg hover:bg-white/15 transition-all group/card"
             >
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
+              <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+                <div className="flex-1 w-full">
+                  <div className="flex items-center gap-3 mb-3">
                     {exp.companyLogo && (
                       <img
                         src={exp.companyLogo}
                         alt={exp.company}
-                        className="w-12 h-12 rounded-lg object-cover border border-white/20"
+                        className="w-10 h-10 md:w-12 md:h-12 rounded-lg object-cover border border-white/20 shrink-0"
                       />
                     )}
-                    <div>
-                      <h3 className="text-xl font-bold text-white">
+                    <div className="min-w-0">
+                      <h3 className="text-lg md:text-xl font-bold text-white truncate">
                         {exp.title}
                       </h3>
-                      <p className="text-blue-400 font-semibold">
+                      <p className="text-blue-400 font-semibold text-sm md:text-base">
                         {exp.company}
                       </p>
                       {exp.location && (
-                        <p className="text-gray-400 text-xs">{exp.location}</p>
+                        <p className="text-gray-400 text-[10px] md:text-xs">{exp.location}</p>
                       )}
                     </div>
                   </div>
-                  <p className="text-gray-400 text-sm mb-3">
-                    {new Date(exp.startDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}{" "}
-                    -
-                    {exp.endDate
-                      ? new Date(exp.endDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : " Present"}
-                  </p>
-                  {exp.techStack && exp.techStack.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {exp.techStack.map((tech: string, idx: number) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded border border-blue-500/30"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <p className="text-gray-300 mb-3">{exp.description}</p>
+                  
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] md:text-sm text-gray-400 mb-3 border-b border-white/5 pb-3">
+                    <span className="flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {new Date(exp.startDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        year: "numeric",
+                      })} - {exp.endDate
+                        ? new Date(exp.endDate).toLocaleDateString("en-US", {
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : " Present"}
+                    </span>
+                    {exp.techStack && exp.techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {exp.techStack.slice(0, 4).map((tech: string, idx: number) => (
+                          <span
+                            key={idx}
+                            className="px-1.5 py-0.5 bg-blue-500/10 text-blue-300 text-[9px] md:text-xs rounded border border-blue-500/20"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {exp.techStack.length > 4 && (
+                          <span className="text-[9px] text-gray-500 self-center">+{exp.techStack.length - 4}</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="text-gray-300 text-sm mb-4 line-clamp-2 md:line-clamp-none leading-relaxed">{exp.description}</p>
+                  
                   {exp.achievements && exp.achievements.length > 0 && (
-                    <div className="mt-3 bg-white/5 p-3 rounded border border-white/10">
-                      <p className="text-xs text-purple-300 font-semibold mb-2">
-                        🏆 Achievements:
+                    <div className="bg-black/20 p-3 rounded-lg border border-white/10">
+                      <p className="text-[10px] text-purple-300 font-bold uppercase tracking-wider mb-2">
+                        🏆 Key Achievements
                       </p>
-                      <ul className="space-y-1">
-                        {exp.achievements.map(
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1.5">
+                        {exp.achievements.slice(0, 4).map(
                           (achievement: string, idx: number) => (
                             <li
                               key={idx}
-                              className="text-sm text-gray-300 flex items-start gap-2"
+                              className="text-[11px] md:text-sm text-gray-400 flex items-start gap-2"
                             >
-                              <span className="text-green-400">✓</span>
-                              <span>{achievement}</span>
+                              <span className="text-green-500 mt-1 shrink-0">✓</span>
+                              <span className="line-clamp-1">{achievement}</span>
                             </li>
                           ),
                         )}
@@ -595,16 +581,17 @@ const ExperienceEdit = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col md:flex-row gap-2 ml-4">
+
+                <div className="flex md:flex-col gap-2 w-full md:w-auto mt-2 md:mt-0 opacity-100 lg:opacity-0 lg:group-hover/card:opacity-100 transition-opacity">
                   <button
                     onClick={() => handleEdit(exp)}
-                    className="bg-blue-500/20 text-blue-300 border border-blue-500/50 px-3 py-1 rounded text-xs md:text-sm hover:bg-blue-500/30 transition-colors"
+                    className="flex-1 md:flex-none bg-blue-500/20 text-blue-300 border border-blue-500/50 px-4 py-2 rounded-lg text-xs md:text-sm hover:bg-blue-500/30 transition-all active:scale-95 font-bold"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(exp._id)}
-                    className="bg-red-500/20 text-red-300 border border-red-500/50 px-3 py-1 rounded text-xs md:text-sm hover:bg-red-500/30 transition-colors"
+                    className="flex-1 md:flex-none bg-red-500/20 text-red-300 border border-red-500/50 px-4 py-2 rounded-lg text-xs md:text-sm hover:bg-red-500/30 transition-all active:scale-95 font-bold"
                   >
                     Delete
                   </button>

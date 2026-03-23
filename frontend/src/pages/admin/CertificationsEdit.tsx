@@ -142,58 +142,61 @@ const CertificationsEdit = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
-      <div className="relative z-10 container mx-auto p-6 pt-20">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-white">Manage Certifications</h1>
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-white">Manage Certifications</h1>
           <button
             onClick={() => navigate("/portal")}
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-all active:scale-95"
           >
             Back to Dashboard
           </button>
         </div>
 
-        <div className="mb-8 bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl">
-          <h2 className="text-xl font-bold mb-6 text-white">
+        <div className="mb-6 md:mb-8 bg-white/10 backdrop-blur-md p-4 md:p-8 rounded-lg md:rounded-xl border border-white/20 shadow-xl">
+          <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-white border-b border-white/5 pb-2 md:pb-3 flex items-center gap-2">
+            <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
             {editingId ? "Edit Certification" : "Add New Certification"}
           </h2>
-          <form onSubmit={handleCreate} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
+          <form onSubmit={handleCreate} className="space-y-3 md:space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="space-y-1.5">
+                <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   Certification Name
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. AWS Certified Solutions Architect"
+                  placeholder="AWS Solutions Architect"
                   value={newCert.name}
                   onChange={(e) =>
                     setNewCert({ ...newCert, name: e.target.value })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600"
                   required
                 />
               </div>
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
+              <div className="space-y-1.5">
+                <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   Issuer
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Amazon Web Services"
+                  placeholder="Amazon Web Services"
                   value={newCert.issuer}
                   onChange={(e) =>
                     setNewCert({ ...newCert, issuer: e.target.value })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600"
                   required
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="space-y-1.5">
+                <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   Date
                 </label>
                 <input
@@ -202,12 +205,12 @@ const CertificationsEdit = () => {
                   onChange={(e) =>
                     setNewCert({ ...newCert, date: e.target.value })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                   required
                 />
               </div>
-              <div>
-                <label className="block text-gray-300 text-sm font-semibold mb-2">
+              <div className="space-y-1.5">
+                <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                   Type
                 </label>
                 <select
@@ -215,18 +218,18 @@ const CertificationsEdit = () => {
                   onChange={(e) =>
                     setNewCert({ ...newCert, type: e.target.value })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition-colors [&>option]:bg-gray-800 [&>option]:text-white"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all [&>option]:bg-gray-800 [&>option]:text-white"
                 >
-                  <option value="Certification" className="bg-gray-800 text-white">Certification</option>
-                  <option value="Internship" className="bg-gray-800 text-white">Internship</option>
-                  <option value="Course" className="bg-gray-800 text-white">Course</option>
-                  <option value="Award" className="bg-gray-800 text-white">Award</option>
+                  <option value="Certification">Certification</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Course">Course</option>
+                  <option value="Award">Award</option>
                 </select>
               </div>
             </div>
 
-            <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
+            <div className="space-y-1.5">
+              <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                 Credential URL (Optional)
               </label>
               <input
@@ -236,12 +239,12 @@ const CertificationsEdit = () => {
                 onChange={(e) =>
                   setNewCert({ ...newCert, credentialUrl: e.target.value })
                 }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600"
               />
             </div>
 
-            <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
+            <div className="space-y-1.5">
+              <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
                 Description
               </label>
               <textarea
@@ -250,37 +253,37 @@ const CertificationsEdit = () => {
                 onChange={(e) =>
                   setNewCert({ ...newCert, description: e.target.value })
                 }
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-24"
+                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600 h-24"
               />
             </div>
             
             {/* File Input */}
-            <div>
-              <label className="block text-gray-300 text-sm font-semibold mb-2">
-                Upload Certificate (Image or PDF) {editingId && "(Leave empty to keep existing)"}
+            <div className="space-y-1.5">
+              <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
+                Upload Certificate {editingId && "(Optional)"}
               </label>
               <input
                 type="file"
                 accept=".jpg,.jpeg,.png,.gif,.webp,.pdf"
                 onChange={handleFileChange}
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-colors"
+                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm file:mr-3 md:file:mr-4 file:py-1 file:px-3 md:file:py-1.5 md:file:px-4 file:rounded-md md:file:rounded-lg file:border-0 file:text-[10px] md:file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer"
                 required={!editingId}
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4 pt-2">
               <button
                 type="submit"
                 disabled={uploading}
-                className="bg-green-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 md:py-2.5 px-3 md:px-4 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] text-xs md:text-sm disabled:opacity-50"
               >
                 {uploading ? (
                   <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    {editingId ? "Updating..." : "Uploading..."}
+                    {editingId ? "Updating..." : "Adding..."}
                   </>
                 ) : (
                   editingId ? "Update Certification" : "Add Certification"
@@ -291,7 +294,7 @@ const CertificationsEdit = () => {
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="bg-gray-600 px-4 py-2 md:px-6 md:py-3 text-sm md:text-base rounded-lg text-white font-bold hover:bg-gray-700 transition-colors shadow-lg"
+                  className="px-4 py-2 md:px-6 md:py-2.5 bg-white/5 hover:bg-white/10 text-white text-xs md:text-sm font-bold rounded-lg md:rounded-xl border border-white/10 transition-all active:scale-95"
                 >
                   Cancel
                 </button>
@@ -300,53 +303,53 @@ const CertificationsEdit = () => {
           </form>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {certifications.map((cert) => (
             <div
               key={cert._id}
-              className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-lg hover:bg-white/15 transition-all relative group"
+              className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-lg hover:bg-white/15 transition-all relative group"
             >
-              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+              <div className="absolute top-3 right-3 md:top-4 md:right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1.5 md:gap-2">
                 <button
                   onClick={() => handleEdit(cert)}
-                  className="bg-blue-500/80 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  className="bg-blue-500/80 text-white p-1.5 md:p-2 rounded-lg hover:bg-blue-600 transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
                 <button
                   onClick={() => handleDelete(cert._id)}
-                  className="bg-red-500/80 text-white p-2 rounded-lg hover:bg-red-600 transition-colors"
+                  className="bg-red-500/80 text-white p-1.5 md:p-2 rounded-lg hover:bg-red-600 transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
               </div>
 
-              <div className="h-40 bg-black/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
+              <div className="h-32 md:h-40 bg-black/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center border border-white/5">
                 {cert.fileUrl && cert.fileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                   <img
                     src={getImageUrl(cert.fileUrl)}
                     alt={cert.name}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain p-2"
                   />
                 ) : (
-                  <div className="text-gray-500">
-                    <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="text-gray-600">
+                    <svg className="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
                 )}
               </div>
 
-              <h3 className="text-lg font-bold text-white mb-1">{cert.name}</h3>
-              <p className="text-blue-400 text-sm font-medium mb-2">{cert.issuer}</p>
-              <p className="text-gray-400 text-xs mb-3">
+              <h3 className="text-sm md:text-lg font-bold text-white mb-0.5 md:mb-1 truncate">{cert.name}</h3>
+              <p className="text-blue-400 text-xs md:text-sm font-medium mb-1.5 md:mb-2">{cert.issuer}</p>
+              <p className="text-gray-500 text-[10px] md:text-xs mb-2 md:mb-3 font-semibold">
                 {new Date(cert.date).toLocaleDateString()}
               </p>
-              <p className="text-gray-300 text-sm line-clamp-2">{cert.description}</p>
+              <p className="text-gray-400 text-xs md:text-sm line-clamp-2 leading-relaxed">{cert.description}</p>
             </div>
           ))}
         </div>

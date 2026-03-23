@@ -108,7 +108,7 @@ const About = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-3.5 py-8 md:py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header Skeleton */}
           <div className="text-center mb-16">
@@ -189,7 +189,7 @@ const About = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-3.5 py-8 md:py-12">
       <SEO
         title="About Me"
         description="Learn more about Rohit Vishwakarma, a passionate DevOps Engineer with experience in cloud infrastructure, CI/CD, and automation."
@@ -197,18 +197,18 @@ const About = () => {
       />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16 fade-in-element opacity-0">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient">
+        <div className="text-center mb-10 md:mb-16 fade-in-element opacity-0">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient">
             About Me
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xs md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             {profile?.aboutSubtitle ||
               "DevOps Engineer passionate about automation and cloud infrastructure"}
           </p>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-16">
           {/* Left Column - Profile */}
           <div className="lg:col-span-2 space-y-8">
             {/* Bio Section */}
@@ -223,15 +223,15 @@ const About = () => {
               scale={1.02}
               transitionSpeed={2000}
             >
-              <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-8 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] group">
+              <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-5 md:p-8 rounded-xl md:rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] group">
                 {profile?.headline && (
-                  <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4 group-hover:from-blue-300 group-hover:to-purple-400 transition-all duration-300">
+                  <h2 className="text-lg md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2 md:mb-4 group-hover:from-blue-300 group-hover:to-purple-400 transition-all duration-300">
                     {profile.headline}
                   </h2>
                 )}
 
-                <div className="prose prose-lg prose-invert max-w-none">
-                  <p className="text-gray-300 text-base leading-relaxed whitespace-pre-wrap">
+                <div className="prose prose-sm md:prose-lg prose-invert max-w-none">
+                  <p className="text-gray-300 text-[11px] md:text-base leading-relaxed whitespace-pre-wrap">
                     {profile?.about ||
                       "Passionate DevOps Engineer with extensive experience in cloud infrastructure, automation, and continuous integration/deployment. Specialized in building scalable, reliable systems that enable teams to deliver software faster and more efficiently."}
                   </p>
@@ -255,16 +255,16 @@ const About = () => {
                   transitionSpeed={1500}
                 >
                   <div
-                    className="fade-in-element opacity-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-2xl p-6 rounded-xl border border-white/10 hover:border-blue-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] h-full group"
+                    className="fade-in-element opacity-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-2xl p-4 md:p-6 rounded-xl border border-white/10 hover:border-blue-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] h-full group"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <div className="text-3xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
                       {highlight.icon}
                     </div>
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-base md:text-lg font-bold text-white mb-1.5 md:mb-2 group-hover:text-blue-400 transition-colors">
                       {highlight.title}
                     </h3>
-                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                    <p className="text-xs md:text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                       {highlight.description}
                     </p>
                   </div>
@@ -274,7 +274,7 @@ const About = () => {
           </div>
 
           {/* Right Column - Stats & Info */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             {/* Animated Stats */}
             <Tilt
               tiltMaxAngleX={6}
@@ -287,10 +287,10 @@ const About = () => {
               scale={1.03}
               transitionSpeed={2000}
             >
-              <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10 hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
-                <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-4 flex items-center gap-2">
+            <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-5 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+                <h3 className="text-base md:text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-4 flex items-center gap-2">
                   <svg
-                    className="w-6 h-6 text-purple-400"
+                    className="w-5 h-5 md:w-6 md:h-6 text-purple-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -307,15 +307,15 @@ const About = () => {
                 <div className="space-y-5">
                   {profile?.animatedStats?.map((stat: any, index: number) => (
                     <div key={index}>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-300 text-sm font-medium">
+                      <div className="flex justify-between items-center mb-1.5 md:mb-2">
+                        <span className="text-gray-300 text-xs md:text-sm font-medium">
                           {stat.label}
                         </span>
-                        <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                        <span className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
                           {stats[stat.label] || 0}+
                         </span>
                       </div>
-                      <div className="h-2.5 bg-white/10 rounded-full overflow-hidden relative">
+                      <div className="h-2 md:h-2.5 bg-white/10 rounded-full overflow-hidden relative">
                         <div
                           className={`h-full rounded-full transition-all duration-2000 relative overflow-hidden ${getProgressGradient(index)}`}
                           style={{
@@ -343,14 +343,14 @@ const About = () => {
               scale={1.03}
               transitionSpeed={2000}
             >
-              <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(34,197,94,0.2)]">
-                <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-4 flex items-center gap-2">
-                  <span className="text-2xl">📍</span> Details
+            <div className="fade-in-element opacity-0 bg-white/5 backdrop-blur-2xl p-5 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-green-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(34,197,94,0.2)]">
+                <h3 className="text-base md:text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-4 flex items-center gap-2">
+                  <span className="text-xl md:text-2xl">📍</span> Details
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 group cursor-pointer">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-white/10">
-                      <span className="text-xl">💼</span>
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-white/10">
+                      <span className="text-lg md:text-xl">💼</span>
                     </div>
                     <div>
                       <div className="text-xs text-gray-400 uppercase tracking-wider">
@@ -362,8 +362,8 @@ const About = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 group cursor-pointer">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-white/10">
-                      <span className="text-xl">🌍</span>
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-white/10">
+                      <span className="text-lg md:text-xl">🌍</span>
                     </div>
                     <div>
                       <div className="text-xs text-gray-400 uppercase tracking-wider">
@@ -375,8 +375,8 @@ const About = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 group cursor-pointer">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-white/10">
-                      <span className="text-xl">✅</span>
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-white/10">
+                      <span className="text-lg md:text-xl">✅</span>
                     </div>
                     <div>
                       <div className="text-xs text-gray-400 uppercase tracking-wider">
@@ -409,11 +409,11 @@ const About = () => {
                 }
               }}
               id="resume-btn"
-              className="fade-in-element opacity-0 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center gap-3 group relative overflow-hidden"
+              className="fade-in-element opacity-0 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-4 py-2.5 md:px-6 md:py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2 md:gap-3 group relative overflow-hidden text-sm md:text-base"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
               <svg
-                className="w-6 h-6 relative group-hover:animate-bounce"
+                className="w-5 h-5 md:w-6 md:h-6 relative group-hover:animate-bounce"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -442,19 +442,19 @@ const About = () => {
           scale={1.01}
           transitionSpeed={2500}
         >
-          <div className="fade-in-element opacity-0 text-center bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-2xl p-12 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.2)]">
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-4 animate-gradient">
+          <div className="fade-in-element opacity-0 text-center bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-2xl p-8 md:p-12 rounded-xl md:rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.2)]">
+            <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-3 md:mb-4 animate-gradient">
               Let's Work Together
             </h2>
-            <p className="text-gray-300 text-base mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-gray-300 text-sm md:text-base mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
               I'm always interested in hearing about new projects and
               opportunities. Whether you have a question or just want to say hi,
               feel free to reach out!
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-3 md:gap-4 justify-center">
               <a
                 href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] group relative overflow-hidden"
+                className="px-4 py-2 md:px-8 md:py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-lg md:rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] group relative overflow-hidden text-sm md:text-base"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
                 <span className="relative">Get in Touch</span>
@@ -463,10 +463,10 @@ const About = () => {
                 href={profile?.contact?.linkedin || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold backdrop-blur-md border border-white/20 hover:border-blue-500/40 transition-all duration-300 flex items-center gap-3 group hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]"
+                className="px-4 py-2 md:px-8 md:py-4 bg-white/5 hover:bg-white/10 text-white rounded-lg md:rounded-xl font-bold backdrop-blur-md border border-white/20 hover:border-blue-500/40 transition-all duration-300 flex items-center gap-2 md:gap-3 group hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] text-sm md:text-base"
               >
                 <svg
-                  className="w-6 h-6 group-hover:scale-110 transition-transform"
+                  className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >

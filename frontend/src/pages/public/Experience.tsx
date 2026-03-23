@@ -125,13 +125,13 @@ const Experience = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12 min-h-screen">
-        <div className="text-center mb-16">
-          <Skeleton width={300} height={48} className="mx-auto mb-6" />
-          <Skeleton width={500} height={24} className="mx-auto" />
+      <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
+        <div className="text-center mb-10 md:mb-16">
+          <Skeleton width={300} height={40} className="mx-auto mb-4 md:mb-6" />
+          <Skeleton width={250} height={20} className="mx-auto" />
         </div>
 
-        <div className="max-w-5xl mx-auto relative px-4">
+        <div className="max-w-5xl mx-auto relative px-3.5 md:px-4">
           {/* Vertical Timeline Line Skeleton */}
           <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-white/10 rounded-full"></div>
 
@@ -191,22 +191,22 @@ const Experience = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
       <SEO
         title="Experience"
         description="My professional work history and achievements as a DevOps Engineer."
         keywords={["Work Experience", "Resume", "Career History"]}
       />
-      <div className="text-center mb-16">
-        <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
+      <div className="text-center mb-10 md:mb-16">
+        <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
           Professional Journey
         </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+        <p className="text-gray-400 text-xs md:text-lg max-w-2xl mx-auto leading-relaxed">
           My career path and professional milestones
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto relative px-4">
+      <div className="max-w-5xl mx-auto relative px-3.5 md:px-4">
         {/* Vertical Timeline Line */}
         <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-pink-500/50 rounded-full"></div>
 
@@ -237,7 +237,7 @@ const Experience = () => {
                     className="h-full"
                   >
                     <SpotlightCard
-                      className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group cursor-pointer"
+                      className="bg-white/5 backdrop-blur-xl p-5 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group cursor-pointer"
                       onClick={() =>
                         setExpandedId(expandedId === exp._id ? null : exp._id)
                       }
@@ -245,7 +245,7 @@ const Experience = () => {
                       {/* Header with Logo and Title */}
                       <div className="flex items-start gap-3 mb-3">
                         {/* Company Logo */}
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden p-1.5">
+                        <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg md:rounded-xl border border-white/10 flex items-center justify-center overflow-hidden p-1.5">
                           {exp.companyLogo ? (
                             <img
                               src={exp.companyLogo}
@@ -266,7 +266,7 @@ const Experience = () => {
                         {/* Title and Company */}
                         <div className="flex-1 min-w-0">
                           <h3 
-                            className="text-lg font-bold text-white group-hover:text-blue-400 transition-all duration-300 leading-tight cursor-pointer inline-block bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat bg-left-bottom hover:bg-[length:100%_2px]"
+                            className="text-[14px] md:text-lg font-bold text-white group-hover:text-blue-400 transition-all duration-300 leading-tight cursor-pointer inline-block bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat bg-left-bottom hover:bg-[length:100%_2px]"
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedExperience(exp);
@@ -274,7 +274,7 @@ const Experience = () => {
                           >
                             {exp.title}
                           </h3>
-                          <p className="text-blue-400 font-semibold text-xs mt-0.5">
+                           <p className="text-blue-400 font-semibold text-[10px] mt-0.5">
                             {exp.company}
                           </p>
                           {exp.location && (
@@ -316,7 +316,7 @@ const Experience = () => {
                       </div>
 
                       {/* Description */}
-                      <p className="text-gray-300 text-xs leading-relaxed mb-3 line-clamp-3">
+                      <p className="text-gray-300 text-[9.5px] leading-relaxed mb-3 line-clamp-3">
                         {exp.description?.replace(/<[^>]*>?/gm, '')}
                       </p>
 
@@ -540,9 +540,9 @@ const Experience = () => {
         {selectedExperience && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             {/* Left Sidebar - Meta Info */}
-            <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24 lg:self-start">
+            <div className="lg:col-span-4 space-y-5 md:space-y-6 lg:sticky lg:top-24 lg:self-start">
               <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden p-3 shadow-[0_0_30px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] transition-shadow">
+                <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl md:rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden p-3 shadow-[0_0_30px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] transition-shadow">
                   {selectedExperience.companyLogo ? (
                     <img
                       src={selectedExperience.companyLogo}
@@ -560,13 +560,13 @@ const Experience = () => {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white leading-tight tracking-tight">
+                  <h3 className="text-xl md:text-2xl font-bold text-white leading-tight tracking-tight">
                     {selectedExperience.title}
                   </h3>
-                  <p className="text-base font-medium text-blue-400 mt-1">
+                  <p className="text-sm md:text-base font-medium text-blue-400 mt-1">
                     {selectedExperience.company}
                   </p>
-                  <div className="flex items-center gap-2 mt-2 text-xs text-gray-400 font-medium">
+                  <div className="flex items-center gap-2 mt-2 text-[10px] md:text-xs text-gray-400 font-medium">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -576,13 +576,13 @@ const Experience = () => {
                 </div>
               </div>
 
-              <div className="p-5 bg-white/[0.03] backdrop-blur-md rounded-2xl border border-white/10 shadow-xl">
+              <div className="p-4 md:p-5 bg-white/[0.03] backdrop-blur-md rounded-xl md:rounded-2xl border border-white/10 shadow-xl">
                 <div className="mb-6">
                   <h4 className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold mb-2 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                     Duration
                   </h4>
-                  <p className="text-base text-white font-semibold tracking-wide">
+                  <p className="text-sm md:text-base text-white font-semibold tracking-wide">
                     {formatDate(selectedExperience.startDate)} —{" "}
                     <span className={selectedExperience.endDate ? "text-gray-400" : "text-green-400"}>
                       {selectedExperience.endDate
@@ -620,10 +620,10 @@ const Experience = () => {
             </div>
 
             {/* Right Content - Description & Achievements */}
-            <div className="lg:col-span-8 space-y-8">
+            <div className="lg:col-span-8 space-y-6 md:space-y-8">
               {/* Role Overview */}
               <div className="animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
-                <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <h4 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-3">
                   <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -643,7 +643,7 @@ const Experience = () => {
               {/* Description */}
               {selectedExperience.roleDescription && (
                 <div className="animate-fadeInUp" style={{ animationDelay: '0.15s' }}>
-                  <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                  <h4 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-3">
                     <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
@@ -664,7 +664,7 @@ const Experience = () => {
               {/* Achievements */}
               {selectedExperience.achievements && selectedExperience.achievements.length > 0 && (
                 <div className="animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-                  <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                  <h4 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-3">
                     <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -676,7 +676,7 @@ const Experience = () => {
                     {selectedExperience.achievements.map((achievement: string, idx: number) => (
                       <div 
                         key={idx} 
-                        className="group relative flex items-start gap-4 p-4 bg-gradient-to-r from-white/[0.03] to-transparent rounded-xl border border-white/5 hover:border-purple-500/30 transition-all duration-300 hover:translate-x-1"
+                        className="group relative flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-gradient-to-r from-white/[0.03] to-transparent rounded-xl border border-white/5 hover:border-purple-500/30 transition-all duration-300 hover:translate-x-1"
                         style={{ animationDelay: `${0.3 + idx * 0.1}s` }}
                       >
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500 to-blue-500 rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -697,7 +697,7 @@ const Experience = () => {
               {/* Challenges */}
               {selectedExperience.challenges && selectedExperience.challenges.length > 0 && (
                 <div className="animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
-                  <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                  <h4 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 flex items-center gap-3">
                     <div className="p-1.5 rounded-lg bg-orange-500/10 text-orange-400">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -709,7 +709,7 @@ const Experience = () => {
                     {selectedExperience.challenges.map((challenge: string, idx: number) => (
                       <div 
                         key={idx} 
-                        className="group relative flex items-start gap-4 p-4 bg-gradient-to-r from-white/[0.03] to-transparent rounded-xl border border-white/5 hover:border-orange-500/30 transition-all duration-300 hover:translate-x-1"
+                        className="group relative flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-gradient-to-r from-white/[0.03] to-transparent rounded-xl border border-white/5 hover:border-orange-500/30 transition-all duration-300 hover:translate-x-1"
                         style={{ animationDelay: `${0.4 + idx * 0.1}s` }}
                       >
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 to-red-500 rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>

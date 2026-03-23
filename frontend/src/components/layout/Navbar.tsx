@@ -38,13 +38,13 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link
             to="/"
-            className="group flex items-center gap-3 hover:scale-105 transition-transform"
+            className="group flex items-center gap-2 md:gap-3 hover:scale-105 transition-transform"
           >
-            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500/30 group-hover:border-blue-500 transition-all">
+            <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-blue-500/30 group-hover:border-blue-500 transition-all">
               <img
                 src="/logo-transparent.png"
                 alt="RV Logo"
@@ -149,33 +149,33 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-2xl border-b border-white/10 animate-slideDown shadow-2xl">
-            <div className="container mx-auto px-4 py-6 flex flex-col gap-2">
+          <div className="lg:hidden absolute top-16 md:top-20 left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-2xl border-b border-white/10 animate-slideDown shadow-2xl">
+            <div className="container mx-auto px-4 py-4 md:py-6 flex flex-col gap-1.5 md:gap-2">
               {navLinks.map((link, index) => (
                 <Link
                   key={link.path}
                   to={link.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   style={{ animationDelay: `${index * 50}ms` }}
-                  className={`px-4 py-4 rounded-xl font-medium transition-all flex items-center gap-4 animate-fadeIn ${
+                  className={`px-4 py-3 md:py-4 rounded-xl font-medium transition-all flex items-center gap-4 animate-fadeIn ${
                     isActive(link.path)
                       ? "text-white bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30"
                       : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
                   }`}
                 >
-                  <span className="text-xl">{link.icon}</span>
-                  <span className="text-lg">{link.label}</span>
+                  <span className="text-lg md:text-xl">{link.icon}</span>
+                  <span className="text-base md:text-lg">{link.label}</span>
                   {isActive(link.path) && (
                     <div className="ml-auto w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
                   )}
                 </Link>
               ))}
-              <Link
-                to="/contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="mt-4 px-4 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-center shadow-lg animate-fadeIn"
-                style={{ animationDelay: "300ms" }}
-              >
+                <Link
+                  to="/contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="mt-3 md:mt-4 px-4 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-center shadow-lg animate-fadeIn text-base md:text-lg"
+                  style={{ animationDelay: "300ms" }}
+                >
                 Let's Talk 💬
               </Link>
             </div>

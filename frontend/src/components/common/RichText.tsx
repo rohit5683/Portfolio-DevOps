@@ -71,7 +71,7 @@ const RichText: React.FC<RichTextProps> = ({
   };
 
   return (
-    <div className={`mt-1 text-gray-300 text-sm leading-relaxed space-y-2 ${className}`}>
+    <div className={`mt-1 text-gray-300 leading-relaxed space-y-2 ${className}`}>
       {segments.map((seg, i) => {
         if (seg.kind === "bullets") {
           return (

@@ -185,25 +185,25 @@ const ProjectsEdit = () => {
         />
       )}
 
-      <div className="relative z-10 container mx-auto p-6 pt-20">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-white">Manage Projects</h1>
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-white">Manage Projects</h1>
           <button
             onClick={() => navigate("/portal")}
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors"
           >
             Back to Dashboard
           </button>
         </div>
 
-        <div className="mb-8 bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl">
-          <h2 className="text-xl font-bold mb-6 text-white">
+        <div className="mb-6 md:mb-8 bg-white/10 backdrop-blur-md p-4 md:p-8 rounded-xl border border-white/20 shadow-xl">
+          <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-white border-b border-white/5 pb-3">
             {editingId ? "Edit Project" : "Add New Project"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
               <div className="md:col-span-2 space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Project Title</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Project Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Aura Dashboard"
@@ -211,18 +211,18 @@ const ProjectsEdit = () => {
                   onChange={(e) =>
                     setNewProject({ ...newProject, title: e.target.value })
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all font-medium"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all font-medium text-sm md:text-base"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
                 <select
                   value={newProject.category}
                   onChange={(e) =>
                     setNewProject({ ...newProject, category: e.target.value })
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer text-sm md:text-base"
                 >
                   <option value="web" className="text-black">Web Apps</option>
                   <option value="devops" className="text-black">DevOps</option>
@@ -231,13 +231,13 @@ const ProjectsEdit = () => {
                 </select>
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Status</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Status</label>
                 <select
                   value={newProject.status}
                   onChange={(e) =>
                     setNewProject({ ...newProject, status: e.target.value })
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer text-sm md:text-base"
                 >
                   <option value="completed" className="text-black">Completed</option>
                   <option value="in-progress" className="text-black">In Progress</option>
@@ -248,7 +248,7 @@ const ProjectsEdit = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Completion Date</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Completion Date</label>
                 <input
                   type="date"
                   value={newProject.completionDate}
@@ -258,12 +258,12 @@ const ProjectsEdit = () => {
                       completionDate: e.target.value,
                     })
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer text-xs md:text-sm"
                 />
               </div>
               <div className="flex items-end pb-1.5">
                 <div 
-                  className="flex items-center gap-2 px-4 py-2.5 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors group/feat"
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-black/40 border border-white/10 rounded-lg md:rounded-xl cursor-pointer hover:bg-white/5 transition-colors group/feat"
                   onClick={() => setNewProject({ ...newProject, featured: !newProject.featured })}
                 >
                   <input
@@ -273,15 +273,15 @@ const ProjectsEdit = () => {
                     onChange={(e) =>
                       setNewProject({ ...newProject, featured: e.target.checked })
                     }
-                    className="w-4 h-4 rounded border-white/20 bg-transparent text-blue-500 focus:ring-offset-0 focus:ring-0 cursor-pointer"
+                    className="w-3.5 h-3.5 md:w-4 md:h-4 rounded border-white/20 bg-transparent text-blue-500 focus:ring-offset-0 focus:ring-0 cursor-pointer"
                   />
-                  <label htmlFor="featured" className="text-xs text-gray-400 cursor-pointer group-hover/feat:text-white transition-colors">
+                  <label htmlFor="featured" className="text-[10px] md:text-xs text-gray-400 cursor-pointer group-hover/feat:text-white transition-colors">
                     Featured Project
                   </label>
                 </div>
               </div>
               <div className="md:col-span-2 space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
                 <input
                   type="text"
                   placeholder="e.g. React, Node, Docker, AWS"
@@ -289,28 +289,28 @@ const ProjectsEdit = () => {
                   onChange={(e) =>
                     setNewProject({ ...newProject, techStack: e.target.value })
                   }
-                  className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                 />
               </div>
             </div>
 
             <div className="flex flex-col gap-1.5 group/editor">
-              <label className="text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
+              <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1 transition-colors group-focus-within/editor:text-blue-400">
                 Description
               </label>
-              <div className="flex flex-col rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
+              <div className="flex flex-col rounded-lg md:rounded-xl bg-black/40 border border-white/10 overflow-hidden focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all shadow-xl">
                 {/* Top Toolbar: Formatting */}
-                <div className="flex flex-wrap items-center gap-0.5 p-1.5 border-b border-white/5 bg-white/5">
+                <div className="flex flex-wrap items-center gap-0.5 p-1 md:p-1.5 border-b border-white/5 bg-white/5">
                   {[
-                    { icon: <Bold className="w-4 h-4" />, action: "**", title: "Bold" },
-                    { icon: <Italic className="w-4 h-4" />, action: "*", title: "Italic" },
-                    { icon: <Strikethrough className="w-4 h-4" />, action: "~~", title: "Strikethrough" },
-                    { icon: <div className="w-px h-4 bg-white/10 mx-1" />, separator: true },
-                    { icon: <Link2 className="w-4 h-4" />, action: "[", title: "Link" },
-                    { icon: <ListOrdered className="w-4 h-4" />, action: "1. ", title: "Ordered List" },
-                    { icon: <List className="w-4 h-4" />, action: "• ", title: "Bullet List" },
-                    { icon: <Quote className="w-4 h-4" />, action: "> ", title: "Quote" },
-                    { icon: <Code className="w-4 h-4" />, action: "`", title: "Inline Code" },
+                    { icon: <Bold className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "**", title: "Bold" },
+                    { icon: <Italic className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "*", title: "Italic" },
+                    { icon: <Strikethrough className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "~~", title: "Strikethrough" },
+                    { icon: <div className="w-px h-3.5 md:h-4 bg-white/10 mx-1" />, separator: true },
+                    { icon: <Link2 className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "[", title: "Link" },
+                    { icon: <ListOrdered className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "1. ", title: "Ordered List" },
+                    { icon: <List className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "• ", title: "Bullet List" },
+                    { icon: <Quote className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "> ", title: "Quote" },
+                    { icon: <Code className="w-3.5 h-3.5 md:w-4 md:h-4" />, action: "`", title: "Inline Code" },
                   ].map((btn, i) => 
                     btn.separator ? (
                       <div key={i}>{btn.icon}</div>
@@ -332,7 +332,7 @@ const ProjectsEdit = () => {
                             };
                           });
                         }}
-                        className="p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
+                        className="p-1 md:p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all active:scale-95"
                       >
                         {btn.icon}
                       </button>
@@ -345,7 +345,7 @@ const ProjectsEdit = () => {
                   data-lenis-prevent
                   value={newProject.description || ""}
                   onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
-                  className="w-full p-4 bg-transparent text-white text-sm focus:outline-none h-48 leading-relaxed font-sans placeholder:text-gray-600"
+                  className="w-full p-3 md:p-4 bg-transparent text-white text-xs md:text-sm focus:outline-none h-40 md:h-48 leading-relaxed font-sans placeholder:text-gray-600"
                   placeholder="Describe your project..."
                   required
                 />
@@ -388,65 +388,60 @@ const ProjectsEdit = () => {
             </div>
 
             {/* Image Upload Section */}
-            <div className="space-y-4 bg-white/5 p-4 rounded-lg border border-white/10">
-              <h3 className="text-lg font-semibold text-white">
-                Project Images
+            <div className="space-y-4 bg-white/5 p-3 md:p-4 rounded-lg md:rounded-xl border border-white/10 shadow-lg">
+              <h3 className="text-base md:text-lg font-semibold text-white border-b border-white/5 pb-2">
+                Project Visuals
               </h3>
 
               {/* File Upload */}
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-2">
-                  📁 Upload Images (Max 10 files, 5MB each)
+              <div className="space-y-2">
+                <label className="block text-gray-400 text-[11px] md:text-sm font-medium px-1">
+                  📁 Upload Images (Max 10 files)
                 </label>
                 <input
                   type="file"
                   multiple
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer"
+                  className="w-full p-2 md:p-3 rounded-lg bg-black/20 border border-white/5 text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[11px] md:file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer transition-all"
                 />
                 {uploadedFiles.length > 0 && (
-                  <p className="text-green-400 text-sm mt-2">
-                    ✓ {uploadedFiles.length} file(s) selected
+                  <p className="text-green-500 text-[11px] font-medium px-1">
+                    ✓ {uploadedFiles.length} files staged for upload
                   </p>
                 )}
               </div>
 
               {/* OR Divider */}
-              <div className="flex items-center gap-4">
-                <div className="flex-1 h-px bg-white/20"></div>
-                <span className="text-gray-400 text-sm">OR</span>
-                <div className="flex-1 h-px bg-white/20"></div>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-px bg-white/10"></div>
+                <span className="text-gray-500 text-[10px] font-bold">OR</span>
+                <div className="flex-1 h-px bg-white/10"></div>
               </div>
 
               {/* URL Input */}
-              <div>
-                <label className="block text-gray-300 text-sm font-medium mb-2">
-                  🔗 Paste Image URLs (comma separated)
+              <div className="space-y-2">
+                <label className="block text-gray-400 text-[11px] md:text-sm font-medium px-1">
+                  🔗 Image URLs (comma separated)
                 </label>
                 <textarea
                   data-lenis-prevent
-                  placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+                  placeholder="https://example.com/project-1.jpg, https://example.com/project-2.jpg"
                   value={newProject.images}
                   onChange={(e) =>
                     setNewProject({ ...newProject, images: e.target.value })
                   }
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors h-24"
+                  className="w-full p-2.5 md:p-3 rounded-lg md:rounded-xl bg-black/20 border border-white/5 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 h-24 text-xs md:text-sm transition-all"
                 />
               </div>
-
-              <p className="text-gray-400 text-sm">
-                💡 You can upload files, paste URLs, or use both methods
-                together!
-              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Live Demo Link</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Live Demo Link</label>
                 <div className="relative group/link">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within/link:text-blue-500 transition-colors">
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="w-3.5 h-3.5" />
                   </div>
                   <input
                     type="url"
@@ -455,15 +450,15 @@ const ProjectsEdit = () => {
                     onChange={(e) =>
                       setNewProject({ ...newProject, link: e.target.value })
                     }
-                    className="w-full pl-10 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                    className="w-full pl-9 md:pl-10 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase px-1">GitHub Repository</label>
+                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">GitHub Repository</label>
                 <div className="relative group/link">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within/link:text-blue-500 transition-colors">
-                    <Github className="w-4 h-4" />
+                    <Github className="w-3.5 h-3.5" />
                   </div>
                   <input
                     type="url"
@@ -472,29 +467,29 @@ const ProjectsEdit = () => {
                     onChange={(e) =>
                       setNewProject({ ...newProject, githubLink: e.target.value })
                     }
-                    className="w-full pl-10 p-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-sm"
+                    className="w-full pl-9 md:pl-10 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-3 md:gap-4 pt-3 md:pt-4 border-t border-white/5">
               <button
                 type="submit"
                 disabled={uploading}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-4 md:px-6 rounded-lg md:rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 text-sm md:text-base"
               >
                 {uploading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                     <span>Uploading...</span>
                   </>
                 ) : (
                   <>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>{editingId ? "Update Project" : "Create Project"}</span>
+                    <span>{editingId ? "Update" : "Save Project"}</span>
                   </>
                 )}
               </button>
@@ -503,7 +498,7 @@ const ProjectsEdit = () => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
+                  className="px-4 md:px-6 py-2.5 md:py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-lg md:rounded-xl border border-white/10 transition-all active:scale-[0.98] text-sm md:text-base"
                 >
                   Cancel
                 </button>
@@ -512,54 +507,62 @@ const ProjectsEdit = () => {
           </form>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {projects.map((project) => (
             <div
               key={project._id}
-              className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-lg hover:shadow-xl transition-all group/card overflow-hidden"
             >
-              <h3 className="text-xl font-bold text-white mb-2">
-                {project.title}
-              </h3>
-              <div className="text-gray-300 mb-3 text-sm line-clamp-3 overflow-hidden">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-lg md:text-xl font-bold text-white truncate pr-2">
+                  {project.title}
+                </h3>
+                {project.featured && <span className="text-yellow-400 text-xs shrink-0">⭐</span>}
+              </div>
+
+              <div className="text-gray-400 mb-4 text-xs md:text-sm line-clamp-3 md:line-clamp-4 leading-relaxed h-[3.75rem] md:h-auto overflow-hidden border-l-2 border-blue-500/30 pl-3 italic">
                 <RichText text={project.description || ""} />
               </div>
 
               {/* Image Preview */}
               {project.images && project.images.length > 0 && (
-                <div className="mb-3 flex gap-2 overflow-x-auto pb-2">
+                <div className="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
                   {project.images.map((img: string, idx: number) => (
                     <img
                       key={idx}
                       src={getImageUrl(img)}
                       alt={`${project.title} - ${idx + 1}`}
-                      className="h-20 w-32 object-cover rounded border border-white/20"
+                      className="h-16 w-24 md:h-20 md:w-32 object-cover rounded-md border border-white/10 shrink-0 transition-transform hover:scale-105"
                     />
                   ))}
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 mb-3">
-                {project.techStack?.map((tech: string, idx: number) => (
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {project.techStack?.slice(0, 5).map((tech: string, idx: number) => (
                   <span
                     key={idx}
-                    className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded"
+                    className="px-2 py-0.5 bg-blue-500/10 text-blue-300 text-[10px] md:text-xs rounded border border-blue-500/20"
                   >
                     {tech}
                   </span>
                 ))}
+                {project.techStack?.length > 5 && (
+                  <span className="text-[10px] text-gray-500 self-center">+{project.techStack.length - 5}</span>
+                )}
               </div>
 
               {/* Links Display */}
-              <div className="flex gap-2 mb-3 text-sm">
+              <div className="flex gap-4 mb-4 text-[10px] md:text-xs">
                 {project.link && (
                   <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300"
+                    className="text-blue-400 hover:text-blue-300 flex items-center gap-1 font-bold"
                   >
-                    🔗 Live Demo
+                    <ExternalLink className="w-3 h-3" />
+                    Live Demo
                   </a>
                 )}
                 {project.githubLink && (
@@ -567,23 +570,24 @@ const ProjectsEdit = () => {
                     href={project.githubLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-gray-300"
+                    className="text-gray-400 hover:text-gray-300 flex items-center gap-1 font-bold"
                   >
-                    💻 GitHub
+                    <Github className="w-3 h-3" />
+                    Source
                   </a>
                 )}
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 opacity-100 lg:opacity-0 lg:group-hover/card:opacity-100 transition-opacity">
                 <button
                   onClick={() => handleEdit(project)}
-                  className="flex-1 bg-blue-600 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm rounded text-white hover:bg-blue-700 transition-colors"
+                  className="flex-1 bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-2 rounded-lg text-xs md:text-sm font-bold hover:bg-blue-600 hover:text-white transition-all active:scale-95"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(project._id)}
-                  className="flex-1 bg-red-600 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm rounded text-white hover:bg-red-700 transition-colors"
+                  className="flex-1 bg-red-600/20 text-red-400 border border-red-500/30 px-3 py-2 rounded-lg text-xs md:text-sm font-bold hover:bg-red-600 hover:text-white transition-all active:scale-95"
                 >
                   Delete
                 </button>
