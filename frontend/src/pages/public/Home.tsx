@@ -492,15 +492,15 @@ const Home = () => {
                     const getPositionClass = (pos: string) => {
                       switch (pos) {
                         case "top-right":
-                          return "top-10 -right-4";
+                          return "top-2 md:top-4 lg:top-6 -right-3 md:-right-4 lg:-right-5";
                         case "bottom-left":
-                          return "bottom-10 -left-4";
+                          return "bottom-2 md:bottom-4 lg:bottom-6 -left-3 md:-left-4 lg:-left-5";
                         case "top-left":
-                          return "top-10 -left-4";
+                          return "top-2 md:top-4 lg:top-6 -left-3 md:-left-4 lg:-left-5";
                         case "bottom-right":
-                          return "bottom-10 -right-4";
+                          return "bottom-2 md:bottom-4 lg:bottom-6 -right-3 md:-right-4 lg:-right-5";
                         default:
-                          return "top-10 -right-4";
+                          return "top-2 md:top-4 lg:top-6 -right-3 md:-right-4 lg:-right-5";
                       }
                     };
 
@@ -539,7 +539,7 @@ const Home = () => {
                 {!loading &&
                   (!profile?.badges || profile.badges.length === 0) && (
                     <>
-                      <div className="absolute top-10 -right-4 px-4 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl text-xs font-bold shadow-xl animate-float">
+                      <div className="absolute top-2 -right-4 px-4 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl text-xs font-bold shadow-xl animate-float">
                         <span className="text-green-400 mr-2">●</span> Available
                         for hire
                       </div>
