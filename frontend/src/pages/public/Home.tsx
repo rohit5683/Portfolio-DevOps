@@ -6,6 +6,7 @@ import Skeleton from "../../components/common/Skeleton";
 import SEO from "../../components/common/SEO";
 import RichText from "../../components/common/RichText";
 import Modal from "../../components/common/Modal";
+import ArchitectureDiagram from "../../components/public/ArchitectureDiagram";
 
 type AchievementType = "solved" | "learned" | "shipped" | "improved";
 
@@ -673,6 +674,11 @@ const Home = () => {
                   </Tilt>
                 ))}
           </div>
+        </div>
+
+        {/* System Architecture Section */}
+        <div className="mb-16 md:mb-24">
+          <ArchitectureDiagram />
         </div>
 
         {/* Quick Links Section */}
