@@ -124,6 +124,20 @@ html.lenis, html.lenis body {
 }
 
 /* ── Aura Rich Text Editor (Quill Dark Theme) ── */
+.aura-rte {
+  display: flex;
+  flex-direction: column;
+}
+
+.aura-rte > .quill {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-height: 0; /* Prevents flex blowout */
+  border-radius: inherit;
+}
+
 .aura-rte .ql-toolbar {
   background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
@@ -131,12 +145,21 @@ html.lenis, html.lenis body {
   border-left: none !important;
   border-right: none !important;
   padding: 6px 8px;
+  flex-shrink: 0;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
 }
 
 .aura-rte .ql-container {
   background: rgba(0, 0, 0, 0.4);
   border: none !important;
   font-family: inherit;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
 }
 
 .aura-rte .ql-editor {
@@ -181,3 +204,72 @@ html.lenis, html.lenis body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #e2e8f0;
 }
+
+/* ── Rendered Rich Text Content ── */
+.rich-text-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rich-text-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rich-text-content li {
+  margin-bottom: 0.25rem;
+}
+
+.rich-text-content li[data-list="bullet"] {
+  list-style-type: disc !important;
+}
+
+.rich-text-content li[data-list="ordered"] {
+  list-style-type: decimal !important;
+}
+
+.rich-text-content p {
+  margin-bottom: 0.75rem;
+}
+
+.rich-text-content p:last-child {
+  margin-bottom: 0;
+}
+
+.rich-text-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rich-text-content strong {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.rich-text-content em {
+  font-style: italic;
+  color: #e5e7eb;
+}
+
+.rich-text-content s {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.rich-text-content h1,
+.rich-text-content h2,
+.rich-text-content h3 {
+  color: #ffffff;
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.rich-text-content h1 { font-size: 1.5rem; }
+.rich-text-content h2 { font-size: 1.25rem; }
+.rich-text-content h3 { font-size: 1.125rem; }

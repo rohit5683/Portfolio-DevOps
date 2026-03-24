@@ -36,7 +36,10 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`aura-rte rounded-lg md:rounded-xl border border-white/10 overflow-hidden focus-within:border-blue-500/50 transition-all ${className}`}>
+    <div 
+      className={`aura-rte rounded-lg md:rounded-xl border border-white/10 focus-within:border-blue-500/50 transition-all ${className}`}
+      data-lenis-prevent="true"
+    >
       <ReactQuill
         theme="snow"
         value={value}

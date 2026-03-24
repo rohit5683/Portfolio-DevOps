@@ -11,6 +11,7 @@ const ProfileEdit = () => {
   const [photoPreview, setPhotoPreview] = useState<string>("");
   const [editingBadgeIndex, setEditingBadgeIndex] = useState<number>(-1);
   const [editingAchievementIndex, setEditingAchievementIndex] = useState<number>(-1);
+  const [achievementSnapshot, setAchievementSnapshot] = useState<string | null>(null);
 
   const [skills, setSkills] = useState<any[]>([]);
 
@@ -720,6 +721,7 @@ const ProfileEdit = () => {
                   type="button"
                   onClick={() => {
                     const current = ensureAchievements();
+                    setAchievementSnapshot(JSON.stringify(current));
                     const newAchievement = createAchievement();
                     const next = [...current, newAchievement];
                     setProfile({ ...profile, achievements: next });
@@ -792,7 +794,23 @@ const ProfileEdit = () => {
                             <div className="flex items-center gap-2">
                               <button
                                 type="button"
-                                onClick={() => setEditingAchievementIndex(-1)}
+                                onClick={() => {
+                                  if (achievementSnapshot) {
+                                    setProfile({ ...profile, achievements: JSON.parse(achievementSnapshot) });
+                                    setAchievementSnapshot(null);
+                                  }
+                                  setEditingAchievementIndex(-1);
+                                }}
+                                className="px-3 py-1 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-lg transition-colors shadow-lg border border-white/10"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setAchievementSnapshot(null);
+                                  setEditingAchievementIndex(-1);
+                                }}
                                 className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors shadow-lg"
                               >
                                 Done
@@ -960,10 +978,13 @@ const ProfileEdit = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2 opacity-0 group-hover/view:opacity-100 transition-opacity">
+                          <div className="flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover/view:opacity-100 transition-opacity">
                             <button
                               type="button"
-                              onClick={() => setEditingAchievementIndex(index)}
+                              onClick={() => {
+                                setAchievementSnapshot(JSON.stringify(ensureAchievements()));
+                                setEditingAchievementIndex(index);
+                              }}
                               className="p-2 text-blue-400 hover:text-blue-300 bg-blue-400/10 rounded-lg transition-colors"
                               title="Edit"
                             >
