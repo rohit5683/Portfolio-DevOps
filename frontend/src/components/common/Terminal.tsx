@@ -39,9 +39,9 @@ const Terminal = ({ onClose }: TerminalProps) => {
     
     const fileSystem = {
       "about.txt": "Rohit Vishwakarma - DevOps Engineer.\nPassionate about cloud architecture, automation, and scalable deployments. Experienced in AWS, Docker, Kubernetes, and CI/CD pipelines.",
-      "skills.json": `{\n  "cloud": ["AWS", "GCP"],\n  "iac": ["Terraform", "CloudFormation"],\n  "containers": ["Docker", "Kubernetes", "ECS"],\n  "ci_cd": ["GitHub Actions", "Jenkins", "GitLab CI"],\n  "coding": ["Python", "Node.js", "Bash", "React"]\n}`,
+      "skills.json": `{\n  "cloud": ["AWS", "Vercel", "Railway"],\n  "iac": ["Terraform", "CloudFormation"],\n  "containers": ["Docker", "Kubernetes"],\n  "ci_cd": ["GitHub Actions", "Jenkins"],\n  "coding": ["Python", "Node.js", "Bash", "React"]\n}`,
       "resume.pdf": "[BINARY DATA - Downloading...]",
-      "projects.md": "# Active Projects\n- Terraform EKS Cluster Generator\n- Multi-Region CloudFront CDN routing\n- Automated MongoDB Atlas backups",
+      "projects.md": "# Active Projects\n- Terraform EKS Cluster Generator\n- Vercel + Railway Portfolio Deployment\n- Automated MongoDB Atlas backups",
       "contact.sh": `echo "Reach out at: rohit@example.com (replace with real email)\nOr connect on LinkedIn /portal"`,
     };
 
