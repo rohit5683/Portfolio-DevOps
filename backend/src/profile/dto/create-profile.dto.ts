@@ -40,6 +40,7 @@ export class CreateProfileDto {
     title: string;
     description?: string;
     date: string;
+    time?: string;
     tags?: string[];
     pinned?: boolean;
   }>;

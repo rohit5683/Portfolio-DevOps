@@ -74,6 +74,7 @@ export class Profile {
     title: string;
     description?: string;
     date: string; // ISO string
+    time?: string;
     tags?: string[];
     pinned?: boolean;
   }>;

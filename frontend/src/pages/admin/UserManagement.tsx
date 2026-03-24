@@ -277,24 +277,24 @@ const UserManagement = () => {
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
 
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-3 py-6 md:px-4 md:py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-xl md:text-3xl font-bold text-white mb-1">
               User Management
             </h1>
-            <p className="text-gray-400">
+            <p className="text-xs md:text-base text-gray-400 hidden sm:block">
               Manage user accounts and security settings
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3">
             <button
               onClick={() => setShowCreateDialog(true)}
-              className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base rounded-lg transition-colors flex items-center gap-2"
+              className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-base rounded-lg transition-colors flex items-center gap-1.5 md:gap-2"
             >
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4 md:w-5 md:h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -306,13 +306,15 @@ const UserManagement = () => {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Create User
+              <span className="hidden sm:inline">Create User</span>
+              <span className="sm:hidden">Create</span>
             </button>
             <button
               onClick={() => navigate("/portal")}
-              className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+              className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-base bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors"
             >
-              Back to Dashboard
+              <span className="hidden sm:inline">Back to Dashboard</span>
+              <span className="sm:hidden">Back</span>
             </button>
           </div>
         </div>
@@ -361,43 +363,36 @@ const UserManagement = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-white/5 border-b border-white/10">
+                <thead className="hidden md:table-header-group bg-white/5 border-b border-white/10">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
-                      Email
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
-                      Role
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">
-                      MFA Status
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">
-                      MFA Method
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">
-                      MFA Toggle
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">
-                      Actions
-                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Role</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">MFA Status</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">MFA Method</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">MFA Toggle</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/10">
+                <tbody className="divide-y divide-white/10 block md:table-row-group">
                   {filteredUsers.map((user) => (
                     <tr
                       key={user._id}
-                      className="hover:bg-white/5 transition-colors"
+                      className="block md:table-row hover:bg-white/5 transition-colors border-b border-white/10 md:border-0 p-4 md:p-0"
                     >
-                      <td className="px-6 py-4 text-white">{user.email}</td>
-                      <td className="px-6 py-4">
+                      <td className="block md:table-cell px-2 md:px-6 py-2 md:py-4 text-white">
+                        <div className="md:hidden text-[10px] text-gray-500 font-bold uppercase mb-1">Email</div>
+                        {user.email}
+                      </td>
+                      <td className="block md:table-cell px-2 md:px-6 py-2 md:py-4">
+                        <div className="md:hidden text-[10px] text-gray-500 font-bold uppercase mb-1">Role</div>
                         <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs font-medium">
                           {user.role}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="block md:table-cell px-2 md:px-6 py-2 md:py-4 md:text-center">
+                        <div className="md:hidden text-[10px] text-gray-500 font-bold uppercase mb-1">MFA Status</div>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
                             user.mfaEnabled
                               ? "bg-green-500/20 text-green-300"
                               : "bg-orange-500/20 text-orange-300"
@@ -406,7 +401,8 @@ const UserManagement = () => {
                           {user.mfaEnabled ? "✓ Enabled" : "✗ Disabled"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="block md:table-cell px-2 md:px-6 py-2 md:py-4 md:text-center">
+                        <div className="md:hidden text-[10px] text-gray-500 font-bold uppercase mb-1">MFA Method</div>
                         {user.mfaEnabled ? (
                           <select
                             value={user.mfaMethod || "email"}
@@ -429,7 +425,8 @@ const UserManagement = () => {
                           <span className="text-gray-500 text-sm">N/A</span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="block md:table-cell px-2 md:px-6 py-2 md:py-4 md:text-center">
+                        <div className="md:hidden text-[10px] text-gray-500 font-bold uppercase mb-1">MFA Toggle</div>
                         <button
                           onClick={() =>
                             handleToggleMfa(user._id, user.mfaEnabled)
@@ -447,8 +444,9 @@ const UserManagement = () => {
                           />
                         </button>
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        <div className="flex items-center justify-center gap-2">
+                      <td className="block md:table-cell px-2 md:px-6 py-4 md:py-4 md:text-center">
+                        <div className="md:hidden text-[10px] text-gray-500 font-bold uppercase mb-2">Actions</div>
+                        <div className="flex flex-wrap items-center md:justify-center gap-2">
                           <button
                             onClick={() =>
                               handleSetupTotp(user._id, user.email)
@@ -456,18 +454,8 @@ const UserManagement = () => {
                             disabled={settingUpTotp}
                             className="px-2 py-1 md:px-3 md:py-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 rounded-lg transition-colors text-xs md:text-sm font-medium flex items-center gap-1 md:gap-2"
                           >
-                            <svg
-                              className="w-3 h-3 md:w-4 md:h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                              />
+                            <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                             Setup Auth
                           </button>
@@ -483,18 +471,8 @@ const UserManagement = () => {
                             className="px-2 py-1 md:px-3 md:py-1 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 rounded-lg transition-colors text-xs md:text-sm font-medium flex items-center gap-1 md:gap-2"
                             title="Change Password"
                           >
-                            <svg
-                              className="w-3 h-3 md:w-4 md:h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                              />
+                            <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                             </svg>
                             Password
                           </button>
@@ -509,18 +487,8 @@ const UserManagement = () => {
                             }
                             className="px-2 py-1 md:px-3 md:py-1 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg transition-colors text-xs md:text-sm font-medium flex items-center gap-1 md:gap-2"
                           >
-                            <svg
-                              className="w-3 h-3 md:w-4 md:h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
+                            <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                             Delete
                           </button>

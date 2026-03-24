@@ -15,6 +15,7 @@ type AchievementItem = {
   title: string;
   description?: string;
   date: string; // ISO string
+  time?: string; // HH:mm string
   tags?: string[];
   pinned?: boolean;
 };
@@ -68,6 +69,9 @@ const AchievementCard = ({
           </span>
           <span className="text-[9px] md:text-xs text-gray-400">
             {formatAchievementDate(item.date)}
+            {item.time && ` • ${
+              new Date(`1970-01-01T${item.time}`).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
+            }`}
           </span>
         </div>
       </div>

@@ -29,7 +29,8 @@ const ProfileEdit = () => {
     type: "solved",
     title: "New achievement",
     description: "",
-    date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD (stored as string)
+    date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD
+    time: new Date().toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" }),
     tags: [],
     pinned: false,
   });
@@ -818,7 +819,7 @@ const ProfileEdit = () => {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                              <div className="flex flex-col gap-1.5">
                               <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Type</label>
                               <select
@@ -845,6 +846,36 @@ const ProfileEdit = () => {
                                 onChange={(e) => {
                                   const next = [...ensureAchievements()];
                                   next[index] = { ...next[index], date: e.target.value };
+                                  setProfile({ ...profile, achievements: next });
+                                }}
+                                className="p-1.5 md:p-2 rounded-md md:rounded bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
+                              />
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <div className="flex items-center justify-between px-1">
+                                <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase">Time</label>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const next = [...ensureAchievements()];
+                                    next[index] = { 
+                                      ...next[index], 
+                                      time: new Date().toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" }) 
+                                    };
+                                    setProfile({ ...profile, achievements: next });
+                                  }}
+                                  className="text-[9px] font-bold text-blue-400 hover:text-blue-300 transition-colors bg-blue-400/10 hover:bg-blue-400/20 px-1.5 py-0.5 rounded"
+                                >
+                                  Now
+                                </button>
+                              </div>
+                              <input
+                                type="time"
+                                value={a.time || ""}
+                                onChange={(e) => {
+                                  const next = [...ensureAchievements()];
+                                  next[index] = { ...next[index], time: e.target.value };
                                   setProfile({ ...profile, achievements: next });
                                 }}
                                 className="p-1.5 md:p-2 rounded-md md:rounded bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500 outline-none"
@@ -969,6 +1000,12 @@ const ProfileEdit = () => {
                                 <span className={meta.color + " font-bold uppercase tracking-widest"}>{a.type}</span>
                                 <span>•</span>
                                 <span>{a.date ? new Date(a.date).toLocaleDateString() : "No date"}</span>
+                                {a.time && (
+                                  <>
+                                    <span>•</span>
+                                    <span>{new Date(`1970-01-01T${a.time}`).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}</span>
+                                  </>
+                                )}
                                 {a.tags?.length > 0 && (
                                   <>
                                     <span>•</span>
