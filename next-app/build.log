@@ -1,0 +1,27 @@
+
+> next-app@0.1.0 build
+> next build
+
+▲ Next.js 16.2.1 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.4s
+  Running TypeScript ...
+  Finished TypeScript in 9.1s ...
+  Collecting page data using 7 workers ...
+Error: Please define the MONGO_URI environment variable inside .env.local
+    at module evaluation (.next/server/chunks/[root-of-the-server]__095kz2u._.js:1:1674)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:877:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:281:20)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:882:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:895:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:898:18)
+    at Object.<anonymous> (.next/server/app/api/auth/setup-totp/route.js:7:3)
+
+> Build error occurred
+Error: Failed to collect page data for /api/auth/setup-totp
+    at ignore-listed frames {
+  type: 'Error'
+}
