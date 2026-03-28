@@ -20,8 +20,8 @@ const TotpSetup = () => {
   const generateTotp = async () => {
     try {
       // Get user info from localStorage or context
-      const userEmail = localStorage.getItem("userEmail") || "user@example.com";
-      const userId = localStorage.getItem("userId") || "";
+      const userEmail = localStorage.getItem("setupTotpUserEmail") || localStorage.getItem("userEmail") || "user@example.com";
+      const userId = localStorage.getItem("setupTotpUserId") || localStorage.getItem("userId") || "";
 
       const response = await api.post("/auth/setup-totp", {
         userId,

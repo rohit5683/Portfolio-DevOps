@@ -10,13 +10,26 @@ export const sendMfaOtp = async (email: string, otp: string) => {
     return;
   }
 
-  await resend.emails.send({
-    from: 'Portfolio Admin <onboarding@resend.dev>',
-    to: email,
-    subject: '🔐 Your Admin Login Verification Code',
-    text: `Your One-Time Password (OTP) for admin login is: ${otp}. It expires in 10 minutes.`,
-    html: `<p>Your One-Time Password (OTP) for admin login is: <strong>${otp}</strong>. It expires in 10 minutes.</p>`
-  });
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'Portfolio Admin <onboarding@resend.dev>',
+      to: email,
+      subject: '🔐 Your Admin Login Verification Code',
+      text: `Your One-Time Password (OTP) for admin login is: ${otp}. It expires in 10 minutes.`,
+      html: `<p>Your One-Time Password (OTP) for admin login is: <strong>${otp}</strong>. It expires in 10 minutes.</p>`
+    });
+
+    if (error) {
+      console.error("[RESEND ERROR] Failed to send MFA OTP:", error);
+      console.log(`[MOCK EMAIL FALLBACK] To: ${email}, OTP: ${otp}`);
+      return;
+    }
+    
+    console.log("[EMAIL SERVICE] Successfully sent email via Resend:", data);
+  } catch (err) {
+    console.error("[EMAIL SERVICE] Exception caught while sending MFA OTP:", err);
+    console.log(`[MOCK EMAIL FALLBACK] To: ${email}, OTP: ${otp}`);
+  }
 };
 
 export const sendPasswordResetOtp = async (email: string, otp: string) => {
@@ -26,13 +39,24 @@ export const sendPasswordResetOtp = async (email: string, otp: string) => {
     return;
   }
 
-  await resend.emails.send({
-    from: 'Portfolio Admin <onboarding@resend.dev>',
-    to: email,
-    subject: '🔑 Password Reset Verification Code',
-    text: `Your password reset OTP is: ${otp}. It expires in 10 minutes.`,
-    html: `<p>Your password reset OTP is: <strong>${otp}</strong>. It expires in 10 minutes.</p>`
-  });
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'Portfolio Admin <onboarding@resend.dev>',
+      to: email,
+      subject: '🔑 Password Reset Verification Code',
+      text: `Your password reset OTP is: ${otp}. It expires in 10 minutes.`,
+      html: `<p>Your password reset OTP is: <strong>${otp}</strong>. It expires in 10 minutes.</p>`
+    });
+
+    if (error) {
+      console.error("[RESEND ERROR] Failed to send Password Reset OTP:", error);
+      console.log(`[MOCK EMAIL FALLBACK] To: ${email}, OTP: ${otp}`);
+      return;
+    }
+  } catch (err) {
+    console.error("[EMAIL SERVICE] Exception caught while sending Reset OTP:", err);
+    console.log(`[MOCK EMAIL FALLBACK] To: ${email}, OTP: ${otp}`);
+  }
 };
 
 export const sendContactEmail = async (contactData: {

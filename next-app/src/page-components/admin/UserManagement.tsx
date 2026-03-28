@@ -80,8 +80,8 @@ const UserManagement = () => {
 
     try {
       const newStatus = !confirmDialog.currentStatus;
-      await api.patch(`/users/${confirmDialog.userId}/mfa`, {
-        enabled: newStatus,
+      await api.patch(`/users/${confirmDialog.userId}`, {
+        mfaEnabled: newStatus,
       });
 
       // Update local state
@@ -158,8 +158,8 @@ const UserManagement = () => {
     if (!resetMethodDialog.show) return;
 
     try {
-      await api.patch(`/users/${resetMethodDialog.userId}/mfa-method`, {
-        method: "email",
+      await api.patch(`/users/${resetMethodDialog.userId}`, {
+        mfaMethod: "email",
       });
 
       // Update local state
@@ -197,7 +197,7 @@ const UserManagement = () => {
       });
 
       // Update user's MFA method to TOTP
-      await api.patch(`/users/${userId}/mfa-method`, { method: "totp" });
+      await api.patch(`/users/${userId}`, { mfaMethod: "totp" });
 
       // Refresh users list
       fetchUsers();
@@ -219,7 +219,7 @@ const UserManagement = () => {
     }
 
     try {
-      await api.patch(`/users/${changePasswordDialog.userId}/password`, {
+      await api.patch(`/users/${changePasswordDialog.userId}`, {
         password: newPassword,
       });
       setChangePasswordDialog({ show: false, userId: "", email: "" });
@@ -239,7 +239,7 @@ const UserManagement = () => {
     method: "email" | "totp",
   ) => {
     try {
-      await api.patch(`/users/${userId}/mfa-method`, { method });
+      await api.patch(`/users/${userId}`, { mfaMethod: method });
 
       // Update local state
       setUsers(
