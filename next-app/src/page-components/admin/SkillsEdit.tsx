@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../services/api";
+import Loading from "../../components/common/Loading";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 
 const SkillsEdit = () => {
@@ -152,13 +153,7 @@ const SkillsEdit = () => {
     return "from-red-500 to-pink-500";
   };
 
-  if (loading) {
-    return (
-      <div className="container mx-auto text-center text-white text-xl mt-20">
-        Loading...
-      </div>
-    );
-  }
+  if (loading) return <Loading />;
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">

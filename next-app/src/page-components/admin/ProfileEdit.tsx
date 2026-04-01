@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../services/api";
+import Loading from "../../components/common/Loading";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
@@ -108,8 +109,7 @@ const ProfileEdit = () => {
     }
   };
 
-  if (loading)
-    return <div className="text-white text-center mt-20">Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">

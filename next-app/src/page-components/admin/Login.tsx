@@ -77,16 +77,34 @@ const Login = () => {
     show: { opacity: 1, y: 0 }
   };
 
-  // Countdown timer for resend button
+  // Count down for resend
   useEffect(() => {
     if (resendCooldown > 0) {
-      const timer = setTimeout(
-        () => setResendCooldown(resendCooldown - 1),
-        1000,
-      );
+      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
       return () => clearTimeout(timer);
     }
   }, [resendCooldown]);
+
+  // Auto-focus first OTP input when switching to MFA or Reset OTP flow
+  useEffect(() => {
+    if (flowState === "mfa" || flowState === "reset-otp") {
+      setTimeout(() => {
+        const firstInput = document.getElementById("otp-0");
+        firstInput?.focus();
+      }, 300);
+    }
+  }, [flowState]);
+
+  // Auto-submit when OTP is complete (6 digits)
+  useEffect(() => {
+    if (otp.length === 6 && !loading) {
+      if (flowState === "mfa") {
+        handleVerifyMfa({ preventDefault: () => {} } as React.FormEvent);
+      } else if (flowState === "reset-otp") {
+        handleVerifyResetOtp({ preventDefault: () => {} } as React.FormEvent);
+      }
+    }
+  }, [otp, flowState]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -420,28 +438,65 @@ const Login = () => {
                     inputMode="numeric"
                     autoComplete="one-time-code"
                     value={otp[index] || ""}
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+                      if (pastedData) {
+                        setOtp(pastedData);
+                        // Focus the last filled input or the first empty one
+                        const focusIndex = Math.min(pastedData.length, 5);
+                        document.getElementById(`otp-${focusIndex}`)?.focus();
+                      }
+                    }}
                     onChange={(e) => {
-                      const val = e.target.value.replace(/\D/g, "").slice(-1);
-                      if (val) {
+                      const val = e.target.value.replace(/\D/g, "");
+                      if (!val && otp[index]) {
+                        // Handle manual clear
                         const newOtp = otp.split("");
-                        newOtp[index] = val;
+                        newOtp[index] = "";
+                        setOtp(newOtp.join(""));
+                        return;
+                      }
+                      
+                      const char = val.slice(-1);
+                      if (char) {
+                        const newOtp = otp.split("");
+                        newOtp[index] = char;
                         const finalOtp = newOtp.join("");
                         setOtp(finalOtp);
                         
                         // Auto focus next
                         if (index < 5) {
-                          const nextInput = document.getElementById(`otp-${index + 1}`);
-                          nextInput?.focus();
+                          document.getElementById(`otp-${index + 1}`)?.focus();
                         }
                       }
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === "Backspace" && !otp[index] && index > 0) {
-                        const prevInput = document.getElementById(`otp-${index - 1}`);
-                        prevInput?.focus();
+                      if (e.key === "Backspace") {
+                        if (!otp[index] && index > 0) {
+                          // Move focus back and clear previous
+                          const prevIndex = index - 1;
+                          const newOtp = otp.split("");
+                          newOtp[prevIndex] = "";
+                          setOtp(newOtp.join(""));
+                          document.getElementById(`otp-${prevIndex}`)?.focus();
+                        } else if (otp[index]) {
+                          // Clear current
+                          const newOtp = otp.split("");
+                          newOtp[index] = "";
+                          setOtp(newOtp.join(""));
+                        }
+                      } else if (e.key === "ArrowLeft" && index > 0) {
+                        document.getElementById(`otp-${index - 1}`)?.focus();
+                      } else if (e.key === "ArrowRight" && index < 5) {
+                        document.getElementById(`otp-${index + 1}`)?.focus();
                       }
                     }}
-                    className={`w-9 h-9 md:w-14 md:h-14 flex-shrink-0 aspect-square rounded-full bg-white/5 border-2 ${otp.length === index ? 'mfa-input-active' : 'border-white/10'} text-white text-center text-xl md:text-2xl font-bold focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all`}
+                    className={`w-10 h-10 md:w-14 md:h-14 flex-shrink-0 aspect-square rounded-2xl bg-white/5 border-2 transition-all duration-300 text-white text-center text-xl md:text-2xl font-bold focus:outline-none focus:scale-110 ${
+                      otp[index] 
+                        ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]' 
+                        : 'border-white/10 hover:border-white/20'
+                    } ${otp.length === index ? 'ring-2 ring-blue-500/50 border-blue-500/50' : ''}`}
                     placeholder="•"
                   />
                 ))}

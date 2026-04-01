@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "RV-DevOps Engineer",
   description: "DevOps Portfolio",
+  icons: {
+    icon: '/favicon.png',
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

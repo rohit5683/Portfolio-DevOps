@@ -1,7 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../context/AuthContext";
 import { useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import Loading from "../common/Loading";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -14,7 +15,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, [isLoading, isAuthenticated, router]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return isAuthenticated ? <>{children}</> : null;

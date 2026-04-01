@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../services/api";
+import Loading from "../../components/common/Loading";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import UploadProgress from "../../components/common/UploadProgress";
 import RichTextEditor from "../../components/admin/RichTextEditor";
@@ -204,15 +205,7 @@ const EducationEdit = () => {
     setUploadedFiles([]);
   };
 
-  if (loading)
-    return (
-      <div className="relative min-h-screen overflow-hidden">
-        <AnimatedBackground />
-        <div className="relative z-10 text-white text-center mt-20">
-          Loading...
-        </div>
-      </div>
-    );
+  if (loading) return <Loading />;
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
