@@ -203,19 +203,25 @@ const Experience = () => {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : new Date();
 
-    const months =
-      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-      (endDate.getMonth() - startDate.getMonth());
+    let years = endDate.getFullYear() - startDate.getFullYear();
+    let months = endDate.getMonth() - startDate.getMonth();
+    let days = endDate.getDate() - startDate.getDate();
 
-    const years = Math.floor(months / 12);
-    const remainingMonths = months % 12;
+    if (days < 0) {
+      months -= 1;
+    }
+
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
 
     const yearString = years === 1 ? "year" : "years";
-    const monthString = remainingMonths === 1 ? "month" : "months";
+    const monthString = months === 1 ? "month" : "months";
 
-    if (years === 0) return `${remainingMonths} ${monthString}`;
-    if (remainingMonths === 0) return `${years} ${yearString}`;
-    return `${years} ${yearString} ${remainingMonths} ${monthString}`;
+    if (years === 0) return `${months} ${monthString}`;
+    if (months === 0) return `${years} ${yearString}`;
+    return `${years} ${yearString} ${months} ${monthString}`;
   };
 
   const formatDate = (date: string) => {
