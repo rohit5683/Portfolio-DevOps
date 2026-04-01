@@ -5,6 +5,7 @@ import Tilt from "react-parallax-tilt";
 import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import { getImageUrl } from "../../utils/imageUtils";
+import RichText from "../../components/common/RichText";
 
 // Portal Document Preview Component
 const DocumentPreview = ({
@@ -534,9 +535,12 @@ const Education = () => {
                           </p>
 
                           {edu.description && (
-                            <p className="text-gray-400 text-xs leading-relaxed border-t border-white/5 pt-3 mt-2">
-                              {edu.description}
-                            </p>
+                            <div className="text-gray-400 text-xs leading-relaxed border-t border-white/5 pt-3 mt-2 overflow-hidden">
+                              <RichText 
+                                text={edu.description} 
+                                className="!mt-0"
+                              />
+                            </div>
                           )}
 
                           {/* Documents Indicator */}

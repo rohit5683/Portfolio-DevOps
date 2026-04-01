@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import { createPortal } from "react-dom";
 import api from "../../services/api";
 import { getImageUrl } from "../../utils/imageUtils";
+import RichText from "../../components/common/RichText";
 
 // Image Gallery Component for fullscreen viewing
 const ImageGallery = ({
@@ -230,9 +231,12 @@ const Card = ({ cert, index, setIndex, openGallery }: any) => {
             <h3 className="text-lg md:text-3xl font-bold text-white mb-2 md:mb-3 leading-tight">
               {cert.name}
             </h3>
-            <p className="text-gray-300 text-xs md:text-sm line-clamp-3 md:line-clamp-4 leading-relaxed">
-              {cert.description}
-            </p>
+            <div className="text-gray-300 text-xs md:text-sm leading-relaxed overflow-hidden">
+              <RichText 
+                text={cert.description} 
+                className="!mt-0 line-clamp-3 md:line-clamp-4"
+              />
+            </div>
           </div>
 
           <div className="flex gap-3 mt-3 md:mt-6">
