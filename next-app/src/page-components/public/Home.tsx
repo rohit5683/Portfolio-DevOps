@@ -77,11 +77,11 @@ const AchievementCard = ({
       </div>
 
       <div className="min-w-0">
-        <div className="text-white font-bold text-[14px] md:text-lg leading-snug">
+        <div className="text-white font-bold text-[14px] md:text-lg leading-snug break-words">
           {item.title}
         </div>
         {item.description && (
-          <div className="text-[11px] md:text-sm">
+          <div className="text-[11px] md:text-sm break-words overflow-hidden">
             <RichText 
               text={item.description} 
               accentColor={meta.accent.includes("blue") ? "bg-blue-400/70" : meta.accent.includes("purple") ? "bg-purple-400/70" : meta.accent.includes("green") ? "bg-green-400/70" : "bg-orange-400/70"}
