@@ -281,7 +281,16 @@ const AboutEdit = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
-              {profile.animatedStats?.map((stat: any, index: number) => (
+              <div className="md:col-span-2 flex items-start gap-2.5 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs text-blue-300">
+                <span className="mt-0.5">ℹ️</span>
+                <span>Stats with labels containing <strong>"year"</strong> or <strong>"experience"</strong> are auto-calculated from your Experience database and cannot be edited here.</span>
+              </div>
+              {profile.animatedStats?.filter((stat: any) => {
+                const lbl = stat.label.toLowerCase();
+                return !lbl.includes("year") && !lbl.includes("experience");
+              }).map((stat: any, index: number) => {
+                const realIndex = profile.animatedStats.indexOf(stat);
+                return (
                 <div
                   key={index}
                   className="bg-black/40 p-4 md:p-5 rounded-xl border border-white/10 relative group/stat transition-all hover:border-purple-500/30"
@@ -289,7 +298,7 @@ const AboutEdit = () => {
                   <button
                     onClick={() => {
                       const newStats = [...profile.animatedStats];
-                      newStats.splice(index, 1);
+                      newStats.splice(realIndex, 1);
                       setProfile({ ...profile, animatedStats: newStats });
                     }}
                     className="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-100 md:opacity-0 group-hover/stat:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20 text-sm"
@@ -305,7 +314,7 @@ const AboutEdit = () => {
                         value={stat.icon}
                         onChange={(e) => {
                           const newStats = [...profile.animatedStats];
-                          newStats[index].icon = e.target.value;
+                          newStats[realIndex].icon = e.target.value;
                           setProfile({ ...profile, animatedStats: newStats });
                         }}
                         className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-lg md:text-xl text-center outline-none focus:border-purple-500/50"
@@ -319,7 +328,7 @@ const AboutEdit = () => {
                         value={stat.label}
                         onChange={(e) => {
                           const newStats = [...profile.animatedStats];
-                          newStats[index].label = e.target.value;
+                          newStats[realIndex].label = e.target.value;
                           setProfile({ ...profile, animatedStats: newStats });
                         }}
                         className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm outline-none focus:border-purple-500/50"
@@ -333,7 +342,7 @@ const AboutEdit = () => {
                         value={stat.value}
                         onChange={(e) => {
                           const newStats = [...profile.animatedStats];
-                          newStats[index].value = parseInt(e.target.value) || 0;
+                          newStats[realIndex].value = parseInt(e.target.value) || 0;
                           setProfile({ ...profile, animatedStats: newStats });
                         }}
                         className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm text-center outline-none focus:border-purple-500/50"
@@ -342,7 +351,8 @@ const AboutEdit = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="flex gap-3 md:gap-4">

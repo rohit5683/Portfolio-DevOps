@@ -12,14 +12,29 @@ const About = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    api
-      .get("/profile")
-      .then((res) => {
-        setProfile(res.data);
+    Promise.all([api.get("/profile"), api.get("/experience")])
+      .then(([profileRes, experienceRes]) => {
+        const profileData = profileRes.data;
+        if (experienceRes.data.length > 0) {
+          const dates = experienceRes.data.map((exp: any) => new Date(exp.startDate));
+          const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+          const years = (Date.now() - earliest.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+          const computed = years < 1 ? "< 1" : `${parseFloat(years.toFixed(1))}`;
+          if (profileData.animatedStats) {
+            profileData.animatedStats = profileData.animatedStats.map((stat: any) => {
+              const lbl = stat.label.toLowerCase();
+              if (lbl.includes("year") || lbl.includes("experience")) {
+                return { ...stat, displayValue: computed };
+              }
+              return stat;
+            });
+          }
+        }
+        setProfile(profileData);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to fetch profile", err);
+        console.error("Failed to fetch data", err);
         setLoading(false);
       });
   }, []);
@@ -311,7 +326,7 @@ const About = () => {
                           {stat.label}
                         </span>
                         <span className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                          {stats[stat.label] || 0}+
+                          {stat.displayValue ?? `${stats[stat.label] || 0}+`}
                         </span>
                       </div>
                       <div className="h-2 md:h-2.5 bg-white/10 rounded-full overflow-hidden relative">
