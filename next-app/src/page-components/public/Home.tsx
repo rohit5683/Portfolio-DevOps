@@ -286,7 +286,7 @@ const Home = () => {
           const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
           const diffMs = Date.now() - earliest.getTime();
           const years = diffMs / (1000 * 60 * 60 * 24 * 365.25);
-          setTotalExperience(years < 1 ? "< 1" : `${Math.floor(years)}+`);
+          setTotalExperience(years < 1 ? "< 1" : `${parseFloat(years.toFixed(1))}`);
         }
       } catch (err) {
         console.error("Failed to fetch data", err);
