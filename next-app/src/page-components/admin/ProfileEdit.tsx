@@ -326,7 +326,7 @@ const ProfileEdit = () => {
               Homepage Statistics
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-4">
-              {profile.stats?.map((stat: any, index: number) => (
+              {profile.stats?.filter((s:any) => s.label !== "Years Experience").map((stat: any, index: number) => (
                 <div
                   key={index}
                   className="bg-white/5 p-3 md:p-4 rounded-lg border border-white/10 flex gap-3 md:gap-4 items-start"
@@ -429,7 +429,7 @@ const ProfileEdit = () => {
             </p>
 
             <div className="space-y-3 mb-6">
-              {profile.badges?.map((badge: any, index: number) => {
+              {profile.badges?.filter((b:any) => !b.text.toLowerCase().includes("years exp")).map((badge: any, index: number) => {
                 const isEditing = editingBadgeIndex === index;
 
                 const getColorClass = (color: string) => {
@@ -634,12 +634,6 @@ const ProfileEdit = () => {
                           icon: "●",
                           color: "green",
                           position: "top-right",
-                        },
-                        {
-                          text: "5+ Years Exp",
-                          icon: "★",
-                          color: "blue",
-                          position: "bottom-left",
                         },
                       ];
                       setProfile({ ...profile, badges: defaultBadges });

@@ -263,14 +263,16 @@ const Home = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isAchievementsModalOpen, setIsAchievementsModalOpen] = useState(false);
+  const [totalExperience, setTotalExperience] = useState<string>("1+");
 
-  // Fetch profile and skills data
+  // Fetch profile, skills, and experience data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileRes, skillsRes] = await Promise.all([
+        const [profileRes, skillsRes, experienceRes] = await Promise.all([
           api.get("/profile"),
           api.get("/skills"),
+          api.get("/experience"),
         ]);
 
         setProfile(profileRes.data);
@@ -278,6 +280,14 @@ const Home = () => {
           (skill: any) => skill.featured,
         );
         setSkills(featuredSkills);
+
+        if (experienceRes.data.length > 0) {
+          const dates = experienceRes.data.map((exp: any) => new Date(exp.startDate));
+          const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+          const diffMs = Date.now() - earliest.getTime();
+          const years = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+          setTotalExperience(years < 1 ? "< 1" : `${Math.floor(years)}+`);
+        }
       } catch (err) {
         console.error("Failed to fetch data", err);
       } finally {
@@ -321,12 +331,14 @@ const Home = () => {
     return () => clearTimeout(timeout);
   }, [displayedText, isDeleting, currentRoleIndex, roles]);
 
-  const stats = profile?.stats || [
+  const stats = (profile?.stats || [
     { label: "Years Experience", value: "3+", icon: "💼" },
     { label: "Projects Completed", value: "25+", icon: "🚀" },
     { label: "Cloud Deployments", value: "50+", icon: "☁️" },
     { label: "Certifications", value: "5+", icon: "📜" },
-  ];
+  ]).map((stat: any) => 
+    stat.label === "Years Experience" ? { ...stat, value: `${totalExperience}` } : stat
+  );
 
   const getProficiencyColor = (proficiency: number) => {
     if (proficiency >= 90) return "from-green-400 to-emerald-600";
@@ -478,52 +490,59 @@ const Home = () => {
 
                 {/* Floating badges */}
                 {!loading &&
-                  profile?.badges?.map((badge: any, index: number) => {
-                    const getPositionClass = (pos: string) => {
-                      switch (pos) {
-                        case "top-right":
-                          return "top-2 md:top-4 lg:top-6 -right-3 md:-right-4 lg:-right-5";
-                        case "bottom-left":
-                          return "bottom-2 md:bottom-4 lg:bottom-6 -left-3 md:-left-4 lg:-left-5";
-                        case "top-left":
-                          return "top-2 md:top-4 lg:top-6 -left-3 md:-left-4 lg:-left-5";
-                        case "bottom-right":
-                          return "bottom-2 md:bottom-4 lg:bottom-6 -right-3 md:-right-4 lg:-right-5";
-                        default:
-                          return "top-2 md:top-4 lg:top-6 -right-3 md:-right-4 lg:-right-5";
+                  profile?.badges
+                    ?.map((badge: any) => {
+                      if (badge.text.toLowerCase().includes("years exp")) {
+                        return { ...badge, text: `${totalExperience} Years Exp` };
                       }
-                    };
+                      return badge;
+                    })
+                    .map((badge: any, index: number) => {
+                      const getPositionClass = (pos: string) => {
+                        switch (pos) {
+                          case "top-right":
+                            return "top-2 md:top-4 lg:top-6 -right-3 md:-right-4 lg:-right-5";
+                          case "bottom-left":
+                            return "bottom-2 md:bottom-4 lg:bottom-6 -left-3 md:-left-4 lg:-left-5";
+                          case "top-left":
+                            return "top-2 md:top-4 lg:top-6 -left-3 md:-left-4 lg:-left-5";
+                          case "bottom-right":
+                            return "bottom-2 md:bottom-4 lg:bottom-6 -right-3 md:-right-4 lg:-right-5";
+                          default:
+                            return "top-2 md:top-4 lg:top-6 -right-3 md:-right-4 lg:-right-5";
+                        }
+                      };
 
-                    const getColorClass = (color: string) => {
-                      switch (color) {
-                        case "green":
-                          return "text-green-400";
-                        case "blue":
-                          return "text-blue-400";
-                        case "purple":
-                          return "text-purple-400";
-                        case "red":
-                          return "text-red-400";
-                        case "orange":
-                          return "text-orange-400";
-                        default:
-                          return "text-blue-400";
-                      }
-                    };
+                      const getColorClass = (color: string) => {
+                        switch (color) {
+                          case "green":
+                            return "text-green-400";
+                          case "blue":
+                            return "text-blue-400";
+                          case "purple":
+                            return "text-purple-400";
+                          case "red":
+                            return "text-red-400";
+                          case "orange":
+                            return "text-orange-400";
+                          default:
+                            return "text-blue-400";
+                        }
+                      };
 
-                    return (
-                      <div
-                        key={index}
-                        className={`absolute ${getPositionClass(badge.position)} px-3 py-1.5 md:px-4 md:py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-xl md:rounded-2xl text-[10px] md:text-xs font-bold shadow-xl animate-float`}
-                        style={{ animationDelay: `${index * 1.5}s` }}
-                      >
-                        <span className={`${getColorClass(badge.color)} mr-2`}>
-                          {badge.icon}
-                        </span>
-                        {badge.text}
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div
+                          key={index}
+                          className={`absolute ${getPositionClass(badge.position)} px-3 py-1.5 md:px-4 md:py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-xl md:rounded-2xl text-[10px] md:text-xs font-bold shadow-xl animate-float`}
+                          style={{ animationDelay: `${index * 1.5}s` }}
+                        >
+                          <span className={`${getColorClass(badge.color)} mr-2`}>
+                            {badge.icon}
+                          </span>
+                          {badge.text}
+                        </div>
+                      );
+                    })}
 
                 {/* Fallback if no badges */}
                 {!loading &&
@@ -537,7 +556,7 @@ const Home = () => {
                         className="absolute bottom-10 -left-4 px-4 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl text-xs font-bold shadow-xl animate-float"
                         style={{ animationDelay: "1.5s" }}
                       >
-                        <span className="text-blue-400 mr-2">★</span> 5+ Years
+                        <span className="text-blue-400 mr-2">★</span> {totalExperience} Years
                         Exp
                       </div>
                     </>

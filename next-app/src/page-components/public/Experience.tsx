@@ -5,6 +5,7 @@ import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import Modal from "../../components/common/Modal";
 import RichText from "../../components/common/RichText";
+import { motion, AnimatePresence } from "framer-motion";
 const SpotlightCard = ({ 
   children, 
   className = "", 
@@ -57,11 +58,109 @@ const SpotlightCard = ({
   );
 };
 
+const AnimatedDigit = ({ value }: { value: string | number }) => {
+  return (
+    <div className="relative overflow-hidden h-5 md:h-6 w-[0.6em] md:w-[0.7em] flex items-center justify-center">
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={value}
+          initial={{ y: "100%", opacity: 0, filter: "blur(2px)" }}
+          animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+          exit={{ y: "-100%", opacity: 0, filter: "blur(2px)" }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, mass: 0.5 }}
+          className="absolute text-[13px] md:text-base font-extrabold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+        >
+          {value}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const LiveExperienceCounter = ({ startDate }: { startDate: Date | null }) => {
+  const calculateElapsed = () => {
+    if (!startDate) return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const now = new Date();
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+    let hours = now.getHours() - startDate.getHours();
+    let minutes = now.getMinutes() - startDate.getMinutes();
+    let seconds = now.getSeconds() - startDate.getSeconds();
+
+    if (seconds < 0) {
+      minutes -= 1;
+      seconds += 60;
+    }
+    if (minutes < 0) {
+      hours -= 1;
+      minutes += 60;
+    }
+    if (hours < 0) {
+      days -= 1;
+      hours += 24;
+    }
+    if (days < 0) {
+      months -= 1;
+      const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += previousMonth.getDate();
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+    return { years, months, days, hours, minutes, seconds };
+  };
+
+  const [elapsed, setElapsed] = useState(calculateElapsed());
+
+  useEffect(() => {
+    if (!startDate) return;
+    setElapsed(calculateElapsed());
+    const interval = setInterval(() => {
+      setElapsed(calculateElapsed());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [startDate]);
+
+  if (!startDate) return null;
+
+  return (
+    <div className="mt-4 mb-5 font-mono w-full">
+      <div className="text-[9px] md:text-[10px] text-gray-400 uppercase tracking-wider font-semibold mb-1.5 md:mb-2">
+        Live Duration:
+      </div>
+      <div className="grid grid-cols-6 gap-1 md:gap-2">
+        {[
+          { value: String(elapsed.years).padStart(2, "0"), label: "Yrs" },
+          { value: String(elapsed.months).padStart(2, "0"), label: "Mos" },
+          { value: String(elapsed.days).padStart(2, "0"), label: "Days" },
+          { value: String(elapsed.hours).padStart(2, "0"), label: "Hrs" },
+          { value: String(elapsed.minutes).padStart(2, "0"), label: "Min" },
+          { value: String(elapsed.seconds).padStart(2, "0"), label: "Sec" },
+        ].map((item, idx) => (
+          <div key={item.label} className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10 py-1.5 md:py-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] w-full ring-1 ring-white/5">
+            <div className="flex items-center justify-center">
+              {item.value.split("").map((digit, dIdx) => (
+                <AnimatedDigit key={dIdx} value={digit} />
+              ))}
+            </div>
+            <span className="text-[7px] md:text-[8px] uppercase tracking-[0.1em] text-gray-400 mt-1 font-bold">
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 const Experience = () => {
   const [experience, setExperience] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [selectedExperience, setSelectedExperience] = useState<any | null>(null);
+  const [earliestDate, setEarliestDate] = useState<Date | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -69,6 +168,10 @@ const Experience = () => {
       .get("/experience")
       .then((res) => {
         setExperience(res.data);
+        if (res.data && res.data.length > 0) {
+          const dates = res.data.map((e: any) => new Date(e.startDate).getTime());
+          setEarliestDate(new Date(Math.min(...dates)));
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -308,6 +411,11 @@ const Experience = () => {
                           {calculateDuration(exp.startDate, exp.endDate)}
                         </span>
                       </div>
+
+                      {/* Live Counter for Present Roles */}
+                      {!exp.endDate && (
+                        <LiveExperienceCounter startDate={new Date(exp.startDate)} />
+                      )}
 
                       {/* Description */}
                       <p className="text-gray-300 text-[9.5px] leading-relaxed mb-3 line-clamp-3">
