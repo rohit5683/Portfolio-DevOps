@@ -766,7 +766,7 @@ const Projects = () => {
                     )}
 
                     {/* Content */}
-                    <div className="p-5 md:p-6 flex-1 flex flex-col relative">
+                    <div className="p-5 md:p-6 flex-1 flex flex-col relative min-w-0">
                       <div className="flex items-start justify-between mb-2 md:mb-3">
                         <h3 className="text-lg md:text-2xl font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
                           {project.title}
@@ -783,7 +783,7 @@ const Projects = () => {
                         )}
                       </div>
 
-                      <div className="text-[10px] md:text-base">
+                      <div className="text-[10px] md:text-base min-w-0 break-words overflow-hidden">
                         <RichText 
                           text={project.description} 
                           className="mb-6 !mt-0" 

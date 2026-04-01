@@ -26,7 +26,7 @@ const RichText: React.FC<RichTextProps> = ({
   if (isHtml) {
     return (
       <div 
-        className={`rich-text-content ${className}`}
+        className={`rich-text-content break-words overflow-hidden min-w-0 ${className}`}
         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
       />
     );
@@ -81,7 +81,7 @@ const RichText: React.FC<RichTextProps> = ({
   };
 
   return (
-    <div className={`mt-1 text-gray-300 leading-relaxed space-y-2 ${className}`}>
+    <div className={`mt-1 text-gray-300 leading-relaxed space-y-2 break-words overflow-hidden ${className}`}>
       {segments.map((seg, i) => {
         if (seg.kind === "bullets") {
           return (
@@ -92,7 +92,7 @@ const RichText: React.FC<RichTextProps> = ({
                   className="flex items-start gap-2.5 text-gray-300 group/item"
                 >
                   <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${accentColor} flex-shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.5)] group-hover/item:scale-125 transition-transform`} />
-                  <span className="flex-1">{renderLine(item)}</span>
+                  <span className="flex-1 min-w-0">{renderLine(item)}</span>
                 </li>
               ))}
             </ul>
