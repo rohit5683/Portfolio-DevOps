@@ -209,11 +209,19 @@ html.lenis, html.lenis body {
 }
 
 /* ── Rendered Rich Text Content ── */
+.rich-text-content, .rich-text-content * {
+  white-space: normal !important;
+  word-break: normal !important; /* allow natural word breaks */
+  overflow-wrap: break-word !important; /* only break mid-word as a last resort */
+  max-width: 100%; /* prevent flex blowout */
+}
+
 .rich-text-content ul {
   list-style-type: disc;
   padding-left: 1.5rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .rich-text-content ol {

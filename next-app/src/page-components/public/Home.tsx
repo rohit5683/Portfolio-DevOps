@@ -44,13 +44,9 @@ const AchievementCard = ({
   meta: typeof achievementTypeMeta[keyof typeof achievementTypeMeta] 
 }) => (
   <div
-    className={`group relative p-4 md:py-5 md:pl-5 md:pr-4 rounded-xl md:rounded-2xl border transition-all duration-300 ${
-      item.pinned
-        ? "bg-gradient-to-br from-white/10 to-yellow-500/5 border-yellow-500/25 shadow-[0_0_40px_rgba(234,179,8,0.1)] scale-[1.01]"
-        : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]"
-    }`}
+    className="group relative p-4 md:p-5 rounded-xl md:rounded-2xl border bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all duration-300"
   >
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3 w-full min-w-0">
       <div className="flex items-center gap-3 flex-wrap">
         <div
           className={`w-6 h-6 rounded-full bg-gradient-to-r ${meta.accent} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0`}
@@ -59,11 +55,6 @@ const AchievementCard = ({
         </div>
         
         <div className="flex items-center gap-2 flex-wrap">
-          {item.pinned && (
-            <span className="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
-              PIN
-            </span>
-          )}
           <span className="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
             {meta.label}
           </span>
@@ -76,25 +67,29 @@ const AchievementCard = ({
         </div>
       </div>
 
-      <div className="min-w-0">
-        <div className="text-white font-bold text-[14px] md:text-lg leading-snug break-words">
+      <div className="flex-1 w-full min-w-0">
+        <div 
+          className="text-white font-bold text-[14px] md:text-lg leading-snug whitespace-normal break-words"
+          style={{ wordBreak: 'normal' }}
+        >
           {item.title}
         </div>
         {item.description && (
-          <div className="text-[11px] md:text-sm break-words overflow-hidden">
+          <div className="text-[11px] md:text-sm mt-1.5 w-full min-w-0">
             <RichText 
               text={item.description} 
+              className="w-full"
               accentColor={meta.accent.includes("blue") ? "bg-blue-400/70" : meta.accent.includes("purple") ? "bg-purple-400/70" : meta.accent.includes("green") ? "bg-green-400/70" : "bg-orange-400/70"}
             />
           </div>
         )}
         
         {item.tags?.length ? (
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             {item.tags.slice(0, 6).map((t) => (
               <span
                 key={t}
-                className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-blue-200 border border-white/10"
+                className="text-[10px] px-2 py-1 rounded-full bg-white/5 text-blue-200 border border-white/10 hover:bg-white/10 transition-colors"
               >
                 {t}
               </span>

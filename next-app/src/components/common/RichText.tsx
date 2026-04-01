@@ -24,10 +24,13 @@ const RichText: React.FC<RichTextProps> = ({
   const isHtml = text.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(text);
 
   if (isHtml) {
+    // Normalize &nbsp; to regular spaces so they wrap correctly instead of breaking mid-word.
+    const normalizedHtml = text.replace(/&nbsp;/g, ' ');
+
     return (
       <div 
-        className={`rich-text-content break-words overflow-hidden min-w-0 ${className}`}
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
+        className={`rich-text-content min-w-0 w-full ${className}`}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(normalizedHtml) }}
       />
     );
   }
@@ -81,25 +84,34 @@ const RichText: React.FC<RichTextProps> = ({
   };
 
   return (
-    <div className={`mt-1 text-gray-300 leading-relaxed space-y-2 break-words overflow-hidden ${className}`}>
+    <div 
+      className={`mt-1 text-gray-300 leading-relaxed space-y-2 whitespace-normal break-words ${className}`}
+      style={{ wordBreak: 'normal' }}
+    >
       {segments.map((seg, i) => {
         if (seg.kind === "bullets") {
           return (
-            <ul key={i} className="space-y-1.5 pl-1">
+            <ul key={i} className="space-y-1.5 pl-1 w-full">
               {seg.items.map((item, j) => (
                 <li
                   key={j}
-                  className="flex items-start gap-2.5 text-gray-300 group/item"
+                  className="flex items-start gap-2.5 text-gray-300 group/item w-full min-w-0"
                 >
                   <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${accentColor} flex-shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.5)] group-hover/item:scale-125 transition-transform`} />
-                  <span className="flex-1 min-w-0">{renderLine(item)}</span>
+                  <span className="flex-1 min-w-0 whitespace-normal break-words" style={{ wordBreak: 'normal' }}>
+                    {renderLine(item)}
+                  </span>
                 </li>
               ))}
             </ul>
           );
         }
         return (
-          <p key={i} className="text-gray-300 last:mb-0">
+          <p 
+            key={i} 
+            className="text-gray-300 last:mb-0 w-full whitespace-normal break-words"
+            style={{ wordBreak: 'normal' }}
+          >
             {renderLine(seg.text)}
           </p>
         );
