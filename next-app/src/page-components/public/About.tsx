@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import api from "../../services/api";
 import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
+import RichText from "../../components/common/RichText";
 
 const About = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -226,10 +227,13 @@ const About = () => {
                 )}
 
                 <div className="prose prose-sm md:prose-lg prose-invert max-w-none">
-                  <p className="text-gray-300 text-[11px] md:text-base leading-relaxed whitespace-pre-wrap">
-                    {profile?.about ||
-                      "Passionate DevOps Engineer with extensive experience in cloud infrastructure, automation, and continuous integration/deployment. Specialized in building scalable, reliable systems that enable teams to deliver software faster and more efficiently."}
-                  </p>
+                  {profile?.about ? (
+                    <RichText text={profile.about} className="text-[11px] md:text-base leading-relaxed" />
+                  ) : (
+                    <p className="text-gray-300 text-[11px] md:text-base leading-relaxed whitespace-pre-wrap">
+                      Passionate DevOps Engineer with extensive experience in cloud infrastructure, automation, and continuous integration/deployment. Specialized in building scalable, reliable systems that enable teams to deliver software faster and more efficiently.
+                    </p>
+                  )}
                 </div>
               </div>
             </Tilt>
@@ -259,9 +263,9 @@ const About = () => {
                     <h3 className="text-base md:text-lg font-bold text-white mb-1.5 md:mb-2 group-hover:text-blue-400 transition-colors">
                       {highlight.title}
                     </h3>
-                    <p className="text-xs md:text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
-                      {highlight.description}
-                    </p>
+                    <div className="text-xs md:text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                      <RichText text={highlight.description} className="text-xs md:text-sm" />
+                    </div>
                   </div>
                 </Tilt>
               ))}

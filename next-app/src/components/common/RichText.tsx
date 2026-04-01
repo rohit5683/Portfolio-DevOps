@@ -20,23 +20,29 @@ const RichText: React.FC<RichTextProps> = ({
 }) => {
   if (!text) return null;
 
+  // Decode HTML entities in case the string was double-escaped by a Rich Text Editor
+  const decodedText = text
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ');
+
   // Simple heuristic: if it contains HTML-like tags, treat as HTML
-  const isHtml = text.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(text);
+  const isHtml = decodedText.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(decodedText);
 
   if (isHtml) {
-    // Normalize &nbsp; to regular spaces so they wrap correctly instead of breaking mid-word.
-    const normalizedHtml = text.replace(/&nbsp;/g, ' ');
-
     return (
       <div 
         className={`rich-text-content min-w-0 w-full ${className}`}
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(normalizedHtml) }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(decodedText) }}
       />
     );
   }
 
-  // Fallback to Markdown Parser
-  const lines = text.split("\n").filter((l) => l.trim() !== "");
+  // Fallback to Markdown Parser: use decodedText instead of raw text
+  const lines = decodedText.split("\n").filter((l) => l.trim() !== "");
 
   type Segment =
     | { kind: "bullets"; items: string[] }
