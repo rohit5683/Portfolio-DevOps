@@ -50,17 +50,27 @@ const ProjectsEdit = () => {
 
   const handleEdit = (project: any) => {
     setEditingId(project._id);
+    
+    // Format date for HTML input (YYYY-MM-DD)
+    let formattedDate = "";
+    if (project.completionDate) {
+      const date = new Date(project.completionDate);
+      if (!isNaN(date.getTime())) {
+        formattedDate = date.toISOString().split("T")[0];
+      }
+    }
+
     setNewProject({
-      title: project.title,
-      description: project.description,
-      techStack: project.techStack.join(", "),
-      images: project.images.join(", "),
+      title: project.title || "",
+      description: project.description || "",
+      techStack: Array.isArray(project.techStack) ? project.techStack.join(", ") : "",
+      images: Array.isArray(project.images) ? project.images.join(", ") : "",
       link: project.link || "",
       githubLink: project.githubLink || "",
       status: project.status || "completed",
       featured: project.featured || false,
       category: project.category || "web",
-      completionDate: project.completionDate || "",
+      completionDate: formattedDate,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
