@@ -5,10 +5,10 @@ export const SITE_CONFIG = {
   description: "Specializing in AWS, Kubernetes, and Infrastructure Automation. Building scalable and robust cloud solutions.",
   url: "https://rvdevops.vercel.app",
   ogImage: "https://rvdevops.vercel.app/og-image.png", 
-  twitterHandle: "@rohit_devops", // Placeholder
+  twitterHandle: "@vishwarohit5683", // Placeholder
   links: {
     github: "https://github.com/rohit5683",
-    linkedin: "https://linkedin.com/in/rohit-atq",
+    linkedin: "https://www.linkedin.com/in/rohitvishwakarma568347",
   },
   keywords: [
     "DevOps Engineer",
