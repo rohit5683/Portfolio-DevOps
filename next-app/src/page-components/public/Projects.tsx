@@ -4,7 +4,6 @@ import { createPortal } from "react-dom";
 import Tilt from "react-parallax-tilt";
 import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
-import SEO from "../../components/common/SEO";
 import { getImageUrl } from "../../utils/imageUtils";
 import RichText from "../../components/common/RichText";
 
@@ -540,16 +539,6 @@ const Projects = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
-        <SEO
-          title="Projects"
-          description="Explore my DevOps projects including cloud infrastructure setups, CI/CD pipelines, and automation scripts."
-          keywords={[
-            "DevOps Projects",
-            "Terraform Examples",
-            "Kubernetes Clusters",
-            "CI/CD Pipelines",
-          ]}
-        />
         <div className="max-w-7xl mx-auto mb-12 space-y-8">
           <Skeleton
             width="100%"

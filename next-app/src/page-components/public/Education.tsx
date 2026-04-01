@@ -5,7 +5,6 @@ import Tilt from "react-parallax-tilt";
 import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 import { getImageUrl } from "../../utils/imageUtils";
-import SEO from "../../components/common/SEO";
 
 // Portal Document Preview Component
 const DocumentPreview = ({
@@ -277,11 +276,6 @@ const Education = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
-        <SEO
-          title="Education"
-          description="My academic background and degrees."
-          keywords={["Education", "Degrees", "Academic Qualifications"]}
-        />
         <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16">
           <Skeleton width={300} height={40} className="mx-auto mb-4 md:mb-6" />
           <Skeleton width={250} height={20} className="mx-auto" />

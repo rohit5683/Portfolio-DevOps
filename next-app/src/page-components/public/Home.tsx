@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import api from "../../services/api";
 import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
-import SEO from "../../components/common/SEO";
 import RichText from "../../components/common/RichText";
 import Modal from "../../components/common/Modal";
 
@@ -346,15 +345,6 @@ const Home = () => {
 
   return (
     <div className="container mx-auto px-3.5 py-8 md:py-20 overflow-hidden">
-      <SEO
-        title="Home"
-        description="Rohit Vishwakarma - DevOps Engineer specializing in AWS, Kubernetes, and Infrastructure Automation. View my portfolio and projects."
-        keywords={[
-          "DevOps Portfolio",
-          "Cloud Engineer",
-          "Infrastructure as Code",
-        ]}
-      />
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center mb-16 md:mb-24">

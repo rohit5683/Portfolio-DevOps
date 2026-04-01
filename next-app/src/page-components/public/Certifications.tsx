@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { createPortal } from "react-dom";
 import api from "../../services/api";
-import SEO from "../../components/common/SEO";
 import { getImageUrl } from "../../utils/imageUtils";
 
 // Image Gallery Component for fullscreen viewing
@@ -318,11 +317,6 @@ const Certifications = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-10 md:py-20 overflow-hidden relative">
-      <SEO
-        title="Certifications"
-        description="My professional certifications and credentials."
-        keywords={["Certifications", "Credentials", "DevOps", "Cloud"]}
-      />
 
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import Tilt from "react-parallax-tilt";
 import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
-import SEO from "../../components/common/SEO";
 import Modal from "../../components/common/Modal";
 import RichText from "../../components/common/RichText";
 const SpotlightCard = ({ 
@@ -192,11 +191,6 @@ const Experience = () => {
 
   return (
     <div className="container mx-auto px-3.5 py-8 md:py-12 min-h-screen">
-      <SEO
-        title="Experience"
-        description="My professional work history and achievements as a DevOps Engineer."
-        keywords={["Work Experience", "Resume", "Career History"]}
-      />
       <div className="text-center mb-10 md:mb-16">
         <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">
           Professional Journey
