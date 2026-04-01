@@ -48,6 +48,15 @@ const ProjectsEdit = () => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setNewProject(prev => ({
+      ...prev,
+      [name]: val
+    }));
+  };
+
   const handleEdit = (project: any) => {
     setEditingId(project._id);
     
@@ -60,18 +69,20 @@ const ProjectsEdit = () => {
       }
     }
 
-    setNewProject({
+    const editData = {
       title: project.title || "",
       description: project.description || "",
-      techStack: Array.isArray(project.techStack) ? project.techStack.join(", ") : "",
-      images: Array.isArray(project.images) ? project.images.join(", ") : "",
+      techStack: Array.isArray(project.techStack) ? project.techStack.join(", ") : (typeof project.techStack === 'string' ? project.techStack : ""),
+      images: Array.isArray(project.images) ? project.images.join(", ") : (typeof project.images === 'string' ? project.images : ""),
       link: project.link || "",
       githubLink: project.githubLink || "",
-      status: project.status || "completed",
+      status: (project.status || "completed").toLowerCase(),
       featured: project.featured || false,
-      category: project.category || "web",
+      category: (project.category || "web").toLowerCase(),
       completionDate: formattedDate,
-    });
+    };
+
+    setNewProject(editData);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -157,7 +168,7 @@ const ProjectsEdit = () => {
 
     const projectData = {
       ...newProject,
-      techStack: newProject.techStack.split(",").map((t) => t.trim()),
+      techStack: newProject.techStack.split(",").map((t) => t.trim()).filter(t => t),
       images: allImageUrls,
     };
 
@@ -215,11 +226,10 @@ const ProjectsEdit = () => {
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Project Title</label>
                 <input
                   type="text"
+                  name="title"
                   placeholder="e.g. Aura Dashboard"
                   value={newProject.title}
-                  onChange={(e) =>
-                    setNewProject({ ...newProject, title: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all font-medium text-sm md:text-base"
                   required
                 />
@@ -227,10 +237,9 @@ const ProjectsEdit = () => {
               <div className="space-y-1.5">
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Category</label>
                 <select
+                  name="category"
                   value={newProject.category}
-                  onChange={(e) =>
-                    setNewProject({ ...newProject, category: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer text-sm md:text-base"
                 >
                   <option value="web" className="text-black">Web Apps</option>
@@ -242,10 +251,9 @@ const ProjectsEdit = () => {
               <div className="space-y-1.5">
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Status</label>
                 <select
+                  name="status"
                   value={newProject.status}
-                  onChange={(e) =>
-                    setNewProject({ ...newProject, status: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer text-sm md:text-base"
                 >
                   <option value="completed" className="text-black">Completed</option>
@@ -260,28 +268,23 @@ const ProjectsEdit = () => {
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Completion Date</label>
                 <input
                   type="date"
+                  name="completionDate"
                   value={newProject.completionDate}
-                  onChange={(e) =>
-                    setNewProject({
-                      ...newProject,
-                      completionDate: e.target.value,
-                    })
-                  }
+                  onChange={handleInputChange}
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer text-xs md:text-sm"
                 />
               </div>
               <div className="flex items-end pb-1.5">
                 <div 
                   className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-black/40 border border-white/10 rounded-lg md:rounded-xl cursor-pointer hover:bg-white/5 transition-colors group/feat"
-                  onClick={() => setNewProject({ ...newProject, featured: !newProject.featured })}
+                  onClick={() => setNewProject(prev => ({ ...prev, featured: !prev.featured }))}
                 >
                   <input
                     type="checkbox"
                     id="featured"
+                    name="featured"
                     checked={newProject.featured}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, featured: e.target.checked })
-                    }
+                    onChange={handleInputChange}
                     className="w-3.5 h-3.5 md:w-4 md:h-4 rounded border-white/20 bg-transparent text-blue-500 focus:ring-offset-0 focus:ring-0 cursor-pointer"
                   />
                   <label htmlFor="featured" className="text-[10px] md:text-xs text-gray-400 cursor-pointer group-hover/feat:text-white transition-colors">
@@ -293,11 +296,10 @@ const ProjectsEdit = () => {
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Tech Stack</label>
                 <input
                   type="text"
+                  name="techStack"
                   placeholder="e.g. React, Node, Docker, AWS"
                   value={newProject.techStack}
-                  onChange={(e) =>
-                    setNewProject({ ...newProject, techStack: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                 />
               </div>
@@ -309,7 +311,7 @@ const ProjectsEdit = () => {
               </label>
               <RichTextEditor
                 value={newProject.description || ""}
-                onChange={(content: string) => setNewProject({ ...newProject, description: content })}
+                onChange={(content: string) => setNewProject(prev => ({ ...prev, description: content }))}
                 placeholder="Describe your project..."
                 className="h-48 md:h-56"
               />
@@ -354,16 +356,15 @@ const ProjectsEdit = () => {
                 </label>
                 <textarea
                   data-lenis-prevent
+                  name="images"
                   placeholder="https://example.com/project-1.jpg, https://example.com/project-2.jpg"
                   value={newProject.images}
-                  onChange={(e) =>
-                    setNewProject({ ...newProject, images: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   className="w-full p-2.5 md:p-3 rounded-lg md:rounded-xl bg-black/20 border border-white/5 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 h-24 text-xs md:text-sm transition-all"
                 />
               </div>
             </div>
-
+ 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-1.5">
                 <label className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase px-1">Live Demo Link</label>
@@ -373,11 +374,10 @@ const ProjectsEdit = () => {
                   </div>
                   <input
                     type="url"
+                    name="link"
                     placeholder="https://your-site.com"
                     value={newProject.link}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, link: e.target.value })
-                    }
+                    onChange={handleInputChange}
                     className="w-full pl-9 md:pl-10 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   />
                 </div>
@@ -390,11 +390,10 @@ const ProjectsEdit = () => {
                   </div>
                   <input
                     type="url"
+                    name="githubLink"
                     placeholder="https://github.com/user/repo"
                     value={newProject.githubLink}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, githubLink: e.target.value })
-                    }
+                    onChange={handleInputChange}
                     className="w-full pl-9 md:pl-10 p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all text-xs md:text-sm"
                   />
                 </div>
