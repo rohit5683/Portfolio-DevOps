@@ -3,8 +3,8 @@ export const SITE_CONFIG = {
   shortName: "Rohit",
   title: "Rohit Vishwakarma | DevOps Engineer & Cloud Architect",
   description: "Specializing in AWS, Kubernetes, and Infrastructure Automation. Building scalable and robust cloud solutions.",
-  url: "https://rvdevops.vercel.app",
-  ogImage: "https://rvdevops.vercel.app/og-image.png", 
+  url: "https://rvdevops.online",
+  ogImage: "https://rvdevops.online/og-image.png", 
   twitterHandle: "@vishwarohit5683", // Placeholder
   links: {
     github: "https://github.com/rohit5683",
