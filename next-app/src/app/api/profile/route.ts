@@ -3,9 +3,11 @@ import connectDB from '@/lib/db/mongoose';
 import Profile from '@/lib/models/Profile';
 import { verifyAuth } from '@/lib/auth/jwt';
 
+export const revalidate = 60; // Revalidate every 60 seconds
+
 export async function GET() {
   await connectDB();
-  const profile = await Profile.findOne();
+  const profile = await Profile.findOne().lean();
   return NextResponse.json(profile || {});
 }
 

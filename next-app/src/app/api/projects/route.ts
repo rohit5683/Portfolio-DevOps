@@ -3,10 +3,12 @@ import connectDB from '@/lib/db/mongoose';
 import Project from '@/lib/models/Project';
 import { verifyAuth } from '@/lib/auth/jwt';
 
+export const revalidate = 60; // Revalidate every 60 seconds
+
 export async function GET() {
   try {
     await connectDB();
-    const items = await Project.find({}).sort({ createdAt: -1 });
+    const items = await Project.find({}).sort({ createdAt: -1 }).lean();
     return NextResponse.json(items);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
