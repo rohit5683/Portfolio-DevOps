@@ -50,10 +50,26 @@ export const generateResume = async () => {
       return y + 8;
     };
 
+    // Helper to decode HTML entities
+    const decodeHTMLEntities = (text: string) => {
+      const entities: { [key: string]: string } = {
+        '&nbsp;': ' ',
+        '&amp;': '&',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#39;': "'",
+        '&ndash;': '–',
+        '&mdash;': '—',
+      };
+      return text.replace(/&[a-z0-9#]+;/gi, (match) => entities[match] || match);
+    };
+
     // Helper to strip HTML tags
     const stripHTML = (html: string) => {
       if (!html) return "";
-      return html.replace(/<[^>]*>?/gm, "");
+      const noTags = html.replace(/<[^>]*>?/gm, "");
+      return decodeHTMLEntities(noTags);
     };
 
     /**
@@ -249,7 +265,7 @@ export const generateResume = async () => {
           doc.setFont("helvetica", "italic");
           doc.setFontSize(10);
           doc.setTextColor(80);
-          const techText = proj.techStack.join(", ");
+          const techText = decodeHTMLEntities(proj.techStack.join(", "));
           const splitTech = doc.splitTextToSize(techText, pageWidth - margin * 2);
           doc.text(splitTech, margin, yPos);
           yPos += (splitTech.length * 5);
@@ -325,13 +341,13 @@ export const generateResume = async () => {
           doc.setFont("helvetica", "italic");
           doc.setFontSize(10);
           doc.setTextColor(50);
-          let degreeText = edu.degree;
+          let degreeText = decodeHTMLEntities(edu.degree);
           if (edu.grade) {
             degreeText += ` | ${edu.gradeType || "Percentage"}: ${edu.grade}`;
           }
           doc.text(degreeText, margin, yPos);
           if (edu.location) {
-            doc.text(edu.location, pageWidth - margin, yPos, { align: "right" });
+            doc.text(decodeHTMLEntities(edu.location), pageWidth - margin, yPos, { align: "right" });
           }
           yPos += 6;
 

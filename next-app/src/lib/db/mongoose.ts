@@ -25,6 +25,10 @@ async function connectDB() {
     const opts = {
       bufferCommands: false,
       dbName: 'portfolio-devops',
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI as string, opts).then((mongoose) => {
