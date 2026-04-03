@@ -5,11 +5,11 @@ import { useAuth } from "../../context/AuthContext";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import api from "../../services/api";
 
-const Dashboard = () => {
+const Dashboard = ({ initialStats }: { initialStats?: any }) => {
   const { logout } = useAuth();
   const navigate = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
+  const [loading, setLoading] = useState(!initialStats);
+  const [stats, setStats] = useState(initialStats || {
     projects: 0,
     skills: 0,
     experience: 0,
@@ -20,6 +20,8 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    if (initialStats) return;
+
     const fetchData = async () => {
       try {
         const [profileRes, projectsRes, skillsRes, expRes, eduRes, certRes] =
@@ -51,7 +53,7 @@ const Dashboard = () => {
     };
 
     fetchData();
-  }, []);
+  }, [initialStats]);
 
   // Scroll restoration
   useLayoutEffect(() => {
