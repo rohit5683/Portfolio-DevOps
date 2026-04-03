@@ -158,6 +158,7 @@ const LiveExperienceCounter = ({ startDate }: { startDate: Date | null }) => {
 const ExperienceComponent = ({ initialExperience }: { initialExperience?: any[] }) => {
   const [experience, setExperience] = useState<any[]>(initialExperience || []);
   const [loading, setLoading] = useState(!initialExperience);
+  const [loadedAll, setLoadedAll] = useState(!initialExperience || initialExperience.length < 6);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [selectedExperience, setSelectedExperience] = useState<any | null>(null);
   const [earliestDate, setEarliestDate] = useState<Date | null>(() => {
@@ -170,30 +171,43 @@ const ExperienceComponent = ({ initialExperience }: { initialExperience?: any[] 
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    if (initialExperience) return;
+    if (initialExperience && loadedAll) return;
+    if (initialExperience && !loadedAll) return; // Wait for Intersection Observer
 
-    api
-      .get("/experience")
-      .then((res) => {
-        setExperience(res.data);
-        if (res.data && res.data.length > 0) {
-          const dates = res.data.map((e: any) => new Date(e.startDate).getTime());
-          setEarliestDate(new Date(Math.min(...dates)));
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch experience", err);
-        setLoading(false);
-      });
-  }, [initialExperience]);
+    if (!initialExperience) {
+      api
+        .get("/experience")
+        .then((res) => {
+          setExperience(res.data);
+          if (res.data && res.data.length > 0) {
+            const dates = res.data.map((e: any) => new Date(e.startDate).getTime());
+            setEarliestDate(new Date(Math.min(...dates)));
+          }
+          setLoading(false);
+          setLoadedAll(true);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch experience", err);
+          setLoading(false);
+        });
+    }
+  }, [initialExperience, loadedAll]);
 
   useEffect(() => {
-    // Intersection Observer for scroll animations
+    // Intersection Observer for scroll animations and data fetching
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.target.id === "lazy-load-trigger" && entry.isIntersecting && !loadedAll) {
+             api.get("/experience?limit=0").then((res) => {
+                setExperience(res.data);
+                if (res.data && res.data.length > 0) {
+                  const dates = res.data.map((e: any) => new Date(e.startDate).getTime());
+                  setEarliestDate(new Date(Math.min(...dates)));
+                }
+                setLoadedAll(true);
+             });
+          } else if (entry.isIntersecting && entry.target.classList.contains("experience-card-wrapper")) {
             entry.target.classList.add("animate-fadeInUp");
           }
         });
@@ -204,8 +218,13 @@ const ExperienceComponent = ({ initialExperience }: { initialExperience?: any[] 
     const cards = document.querySelectorAll(".experience-card-wrapper");
     cards.forEach((card) => observerRef.current?.observe(card));
 
+    const trigger = document.getElementById("lazy-load-trigger");
+    if (trigger && observerRef.current && !loadedAll) {
+      observerRef.current.observe(trigger);
+    }
+
     return () => observerRef.current?.disconnect();
-  }, [experience]);
+  }, [experience, loadedAll]);
 
   const calculateDuration = (start: string, end: string | null) => {
     const startDate = new Date(start);
@@ -521,6 +540,16 @@ const ExperienceComponent = ({ initialExperience }: { initialExperience?: any[] 
             </div>
           ))}
         </div>
+
+        {/* Lazy Load Trigger */}
+        {!loadedAll && (
+          <div id="lazy-load-trigger" className="w-full mt-10 md:mt-12 flex justify-center">
+            <div className="flex items-center gap-3 text-blue-400">
+               <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+               <span className="font-semibold text-sm">Loading more experience...</span>
+            </div>
+          </div>
+        )}
 
         {experience.length === 0 && (
           <div className="text-center py-20">

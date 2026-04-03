@@ -5,10 +5,27 @@ import { verifyAuth } from '@/lib/auth/jwt';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     await connectDB();
-    const items = await Education.find({}).sort({ createdAt: -1 }).lean();
+    const searchParams = req.nextUrl?.searchParams || new URL(req.url).searchParams;
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '0', 10);
+
+    let query = Education.find({}).sort({ createdAt: -1 });
+    if (limit > 0) {
+      query = query.skip((page - 1) * limit).limit(limit);
+    }
+    
+    const items = await query.lean();
+    
+    if (limit > 0) {
+      const total = await Education.countDocuments({});
+      const response = NextResponse.json(items);
+      response.headers.set('x-total-count', total.toString());
+      return response;
+    }
+    
     return NextResponse.json(items);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });

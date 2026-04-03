@@ -19,7 +19,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Page() {
   await connectDB();
-  const experience = await Experience.find({}).sort({ createdAt: -1 }).lean();
+  const experience = await Experience.find({}).sort({ createdAt: -1 }).limit(6).lean();
 
   return <ExperienceComponent initialExperience={JSON.parse(JSON.stringify(experience))} />;
 }

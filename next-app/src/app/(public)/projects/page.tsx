@@ -21,7 +21,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Page() {
   await connectDB();
-  const rawProjects = await Project.find({}).sort({ createdAt: -1 }).lean();
+  const rawProjects = await Project.find({}).sort({ createdAt: -1 }).limit(6).lean();
   
   const projects = rawProjects.map((p: any) => ({
     ...p,

@@ -24,26 +24,15 @@ const Dashboard = ({ initialStats }: { initialStats?: any }) => {
 
     const fetchData = async () => {
       try {
-        const [profileRes, projectsRes, skillsRes, expRes, eduRes, certRes] =
-          await Promise.all([
-            api
-              .get("/profile")
-              .catch(() => ({ data: { name: "Admin", role: "Developer" } })),
-            api.get("/projects").catch(() => ({ data: [] })),
-            api.get("/skills").catch(() => ({ data: [] })),
-            api.get("/experience").catch(() => ({ data: [] })),
-            api.get("/education").catch(() => ({ data: [] })),
-            api.get("/certifications").catch(() => ({ data: [] })),
-          ]);
-
+        const statsRes = await api.get("/stats");
         setStats({
-          name: profileRes.data.name || "Admin",
-          role: profileRes.data.role || "Developer",
-          projects: projectsRes.data.length,
-          skills: skillsRes.data.length,
-          experience: expRes.data.length,
-          education: eduRes.data.length,
-          certifications: certRes.data.length,
+          name: statsRes.data.name || "Admin",
+          role: statsRes.data.role || "Developer",
+          projects: statsRes.data.projects || 0,
+          skills: statsRes.data.skills || 0,
+          experience: statsRes.data.experience || 0,
+          education: statsRes.data.education || 0,
+          certifications: statsRes.data.certifications || 0,
         });
       } catch (error) {
         console.error("Error fetching dashboard data:", error);

@@ -27,22 +27,43 @@ const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
     { value: "tools", label: "Tools", icon: "🛠️" },
   ];
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
-    if (initialData) return;
-    fetchSkills();
+    if (initialData) {
+       if (initialData.length < 10) setHasMore(false);
+       return;
+    }
+    fetchSkills(1);
   }, [initialData]);
 
-  const fetchSkills = () => {
+  const fetchSkills = (pageNum = 1) => {
     api
-      .get("/skills")
+      .get(`/skills?page=${pageNum}&limit=10`)
       .then((res) => {
-        setSkills(res.data);
+        if (pageNum === 1) {
+          setSkills(res.data);
+        } else {
+          setSkills((prev) => {
+            const existingIds = new Set(prev.map(s => s._id || s.name));
+            const newSkills = res.data.filter((s: any) => !existingIds.has(s._id || s.name));
+            return [...prev, ...newSkills];
+          });
+        }
+        if (res.data.length < 10) setHasMore(false);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Failed to fetch skills", err);
         setLoading(false);
       });
+  };
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchSkills(nextPage);
   };
 
   const handleInputChange = (
@@ -67,7 +88,9 @@ const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
       api
         .put(`/skills/${editingId}`, formData)
         .then(() => {
-          fetchSkills();
+          setPage(1);
+          setHasMore(true);
+          fetchSkills(1);
           resetForm();
         })
         .catch((err) => console.error("Failed to update skill", err));
@@ -75,7 +98,9 @@ const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
       api
         .post("/skills", formData)
         .then(() => {
-          fetchSkills();
+          setPage(1);
+          setHasMore(true);
+          fetchSkills(1);
           resetForm();
         })
         .catch((err) => console.error("Failed to create skill", err));
@@ -99,7 +124,11 @@ const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
     if (window.confirm("Are you sure you want to delete this skill?")) {
       api
         .delete(`/skills/${id}`)
-        .then(() => fetchSkills())
+        .then(() => {
+          setPage(1);
+          setHasMore(true);
+          fetchSkills(1);
+        })
         .catch((err) => console.error("Failed to delete skill", err));
     }
   };
@@ -154,7 +183,7 @@ const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
     return "from-red-500 to-pink-500";
   };
 
-  if (loading) return <Loading />;
+
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
@@ -411,6 +440,20 @@ const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
             <p className="text-gray-400 text-lg">
               No skills added yet. Add your first skill above!
             </p>
+          </div>
+        )}
+
+        {hasMore && !loading && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={loadMore}
+              className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors flex items-center gap-2 font-medium"
+            >
+              <span>Load More Skills</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           </div>
         )}
       </div>

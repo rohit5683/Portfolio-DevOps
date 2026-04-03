@@ -22,16 +22,39 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
   const [uploading, setUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
-    if (initialData) return;
-    fetchCertifications();
+    if (initialData) {
+       if (initialData.length < 10) setHasMore(false);
+       return;
+    }
+    fetchCertifications(1);
   }, [initialData]);
 
-  const fetchCertifications = () => {
+  const fetchCertifications = (pageNum = 1) => {
     api
-      .get("/certifications")
-      .then((res) => setCertifications(res.data))
+      .get(`/certifications?page=${pageNum}&limit=10`)
+      .then((res) => {
+        if (pageNum === 1) {
+          setCertifications(res.data);
+        } else {
+          setCertifications((prev) => {
+            const existingIds = new Set(prev.map(c => c._id));
+            const newCerts = res.data.filter((c: any) => !existingIds.has(c._id));
+            return [...prev, ...newCerts];
+          });
+        }
+        if (res.data.length < 10) setHasMore(false);
+      })
       .catch(console.error);
+  };
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchCertifications(nextPage);
   };
 
   const handleEdit = (cert: any) => {
@@ -65,7 +88,9 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure?")) {
       await api.delete(`/certifications/${id}`);
-      fetchCertifications();
+      setPage(1);
+      setHasMore(true);
+      fetchCertifications(1);
     }
   };
 
@@ -132,7 +157,9 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
 
       // Reset form
       handleCancelEdit();
-      fetchCertifications();
+      setPage(1);
+      setHasMore(true);
+      fetchCertifications(1);
     } catch (error: any) {
       console.error("Failed to save certification:", error);
       const errorMessage = error.response?.data?.message || error.message || "Failed to save certification";
@@ -354,6 +381,20 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
             </div>
           ))}
         </div>
+
+        {hasMore && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={loadMore}
+              className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors flex items-center gap-2 font-medium"
+            >
+              <span>Load More Certifications</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

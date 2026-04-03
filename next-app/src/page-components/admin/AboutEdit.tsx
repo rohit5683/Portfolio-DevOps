@@ -33,7 +33,7 @@ const AboutEdit = ({ initialData }: { initialData?: any }) => {
     }
   };
 
-  if (loading) return <Loading />;
+
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">

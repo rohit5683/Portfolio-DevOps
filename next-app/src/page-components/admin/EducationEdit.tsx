@@ -32,22 +32,43 @@ const EducationEdit = ({ initialData }: { initialData?: any[] }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
-    if (initialData) return;
-    fetchEducation();
+    if (initialData) {
+       if (initialData.length < 10) setHasMore(false);
+       return;
+    }
+    fetchEducation(1);
   }, [initialData]);
 
-  const fetchEducation = () => {
+  const fetchEducation = (pageNum = 1) => {
     api
-      .get("/education")
+      .get(`/education?page=${pageNum}&limit=10`)
       .then((res) => {
-        setEducation(res.data);
+        if (pageNum === 1) {
+          setEducation(res.data);
+        } else {
+          setEducation((prev) => {
+            const existingIds = new Set(prev.map(e => e._id));
+            const newEdu = res.data.filter((e: any) => !existingIds.has(e._id));
+            return [...prev, ...newEdu];
+          });
+        }
+        if (res.data.length < 10) setHasMore(false);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Failed to fetch education", err);
         setLoading(false);
       });
+  };
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchEducation(nextPage);
   };
 
   const handleInputChange = (
@@ -140,13 +161,15 @@ const EducationEdit = ({ initialData }: { initialData?: any[] }) => {
         grade: "",
         gradeType: "Percentage",
         description: "",
-        documents: "",
-        level: "undergraduate",
         status: "completed",
+        level: "all",
+        documents: "",
         featured: false,
       });
       setUploadedFiles([]);
-      fetchEducation();
+      setPage(1);
+      setHasMore(true);
+      fetchEducation(1);
     } catch (error) {
       console.error("Failed to save education", error);
       alert("Failed to save education. Please check console for details.");
@@ -178,8 +201,13 @@ const EducationEdit = ({ initialData }: { initialData?: any[] }) => {
       window.confirm("Are you sure you want to delete this education entry?")
     ) {
       try {
-        await api.delete(`/education/${id}`);
-        fetchEducation();
+        await api.delete(`/education/${id}`)
+        .then(() => {
+          setPage(1);
+          setHasMore(true);
+          fetchEducation(1);
+        })
+        .catch((err) => console.error("Failed to delete education", err));
       } catch (error) {
         console.error("Failed to delete education", error);
       }
@@ -206,7 +234,7 @@ const EducationEdit = ({ initialData }: { initialData?: any[] }) => {
     setUploadedFiles([]);
   };
 
-  if (loading) return <Loading />;
+
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
@@ -507,6 +535,20 @@ const EducationEdit = ({ initialData }: { initialData?: any[] }) => {
             </div>
           )}
         </div>
+
+        {hasMore && !loading && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={loadMore}
+              className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors flex items-center gap-2 font-medium"
+            >
+              <span>Load More Education</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

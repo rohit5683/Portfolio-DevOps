@@ -390,6 +390,7 @@ const Projects = ({ initialProjects }: { initialProjects?: any[] }) => {
   const [projects, setProjects] = useState<any[]>(initialProjects || []);
   const [filteredProjects, setFilteredProjects] = useState<any[]>(initialProjects || []);
   const [loading, setLoading] = useState(!initialProjects);
+  const [loadedAll, setLoadedAll] = useState(!initialProjects || initialProjects.length < 6);
   const [galleryData, setGalleryData] = useState<{
     images: string[];
     initialIndex: number;
@@ -430,30 +431,44 @@ const Projects = ({ initialProjects }: { initialProjects?: any[] }) => {
   };
 
   useEffect(() => {
-    if (initialProjects) return;
-    
-    api
-      .get("/projects")
-      .then((res) => {
-        const normalized = (res.data || []).map((p: any) => ({
-          ...p,
-          images: Array.isArray(p?.images) ? p.images.map(getImageUrl) : [],
-        }));
-        setProjects(normalized);
-        setFilteredProjects(normalized);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch projects", err);
-        setLoading(false);
-      });
-  }, [initialProjects]);
+    if (initialProjects && loadedAll) return;
+    if (initialProjects && !loadedAll) return; // Wait for Intersection Observer to trigger fetch
+
+    if (!initialProjects) {
+      api
+        .get("/projects")
+        .then((res) => {
+          const normalized = (res.data || []).map((p: any) => ({
+            ...p,
+            images: Array.isArray(p?.images) ? p.images.map(getImageUrl) : [],
+          }));
+          setProjects(normalized);
+          setFilteredProjects(normalized);
+          setLoading(false);
+          setLoadedAll(true);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch projects", err);
+          setLoading(false);
+        });
+    }
+  }, [initialProjects, loadedAll]);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.target.id === "lazy-load-trigger" && entry.isIntersecting && !loadedAll) {
+             api.get("/projects?limit=0").then((res) => {
+                const normalized = (res.data || []).map((p: any) => ({
+                  ...p,
+                  images: Array.isArray(p?.images) ? p.images.map(getImageUrl) : [],
+                }));
+                // We overwrite entirely since /projects returns ALL
+                setProjects(normalized);
+                setLoadedAll(true);
+             });
+          } else if (entry.isIntersecting && entry.target.classList.contains("project-card-wrapper")) {
             entry.target.classList.add("animate-fadeInUp");
           }
         });
@@ -466,7 +481,7 @@ const Projects = ({ initialProjects }: { initialProjects?: any[] }) => {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [loadedAll]);
 
   useEffect(() => {
     const cards = document.querySelectorAll(".project-card-wrapper");
@@ -475,7 +490,12 @@ const Projects = ({ initialProjects }: { initialProjects?: any[] }) => {
         observerRef.current.observe(card);
       }
     });
-  }, [filteredProjects]);
+
+    const trigger = document.getElementById("lazy-load-trigger");
+    if (trigger && observerRef.current && !loadedAll) {
+      observerRef.current.observe(trigger);
+    }
+  }, [filteredProjects, loadedAll]);
 
   useEffect(() => {
     let filtered = projects;
@@ -894,6 +914,7 @@ const Projects = ({ initialProjects }: { initialProjects?: any[] }) => {
             </button>
           </div>
         )}
+
       </div>
 
       {/* Gallery Portal */}

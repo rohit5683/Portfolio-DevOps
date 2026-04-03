@@ -27,22 +27,47 @@ const ExperienceEdit = ({ initialData }: { initialData?: any[] }) => {
   const [challengesList, setChallengesList] = useState<string[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
-    if (initialData) return;
-    fetchExperience();
+    if (initialData) {
+       if (initialData.length < 10) setHasMore(false);
+       return;
+    }
+    fetchExperience(1);
   }, [initialData]);
 
-  const fetchExperience = () => {
+  const fetchExperience = (pageNum = 1) => {
     api
-      .get("/experience")
-      .then((res) => setExperience(res.data))
+      .get(`/experience?page=${pageNum}&limit=10`)
+      .then((res) => {
+        if (pageNum === 1) {
+          setExperience(res.data);
+        } else {
+          setExperience((prev) => {
+            const existingIds = new Set(prev.map(e => e._id));
+            const newExp = res.data.filter((e: any) => !existingIds.has(e._id));
+            return [...prev, ...newExp];
+          });
+        }
+        if (res.data.length < 10) setHasMore(false);
+      })
       .catch(console.error);
+  };
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchExperience(nextPage);
   };
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure?")) {
       await api.delete(`/experience/${id}`);
-      fetchExperience();
+      setPage(1);
+      setHasMore(true);
+      fetchExperience(1);
     }
   };
 
@@ -138,14 +163,9 @@ const ExperienceEdit = ({ initialData }: { initialData?: any[] }) => {
 
       if (editingId) {
         await api.put(`/experience/${editingId}`, expData);
-        alert("Experience updated successfully!");
       } else {
         await api.post("/experience", expData);
-        alert("Experience added successfully!");
       }
-
-      // Only clear form on success
-      setEditingId(null);
       setNewExp({
         title: "",
         company: "",
@@ -531,6 +551,20 @@ const ExperienceEdit = ({ initialData }: { initialData?: any[] }) => {
             </div>
           ))}
         </div>
+
+        {hasMore && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={loadMore}
+              className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors flex items-center gap-2 font-medium"
+            >
+              <span>Load More Experience</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

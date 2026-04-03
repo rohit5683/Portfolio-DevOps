@@ -26,6 +26,7 @@ const Skills = ({ initialSkills }: { initialSkills?: any[] }) => {
   });
   const [filteredSkills, setFilteredSkills] = useState<any[]>(skills);
   const [loading, setLoading] = useState(!initialSkills);
+  const [loadedAll, setLoadedAll] = useState(!initialSkills || initialSkills.length < 6);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -40,31 +41,45 @@ const Skills = ({ initialSkills }: { initialSkills?: any[] }) => {
   ];
 
   useEffect(() => {
-    if (initialSkills) return;
+    if (initialSkills && loadedAll) return;
+    if (initialSkills && !loadedAll) return; // Wait for Intersection Observer
 
-    api
-      .get("/skills")
-      .then((res) => {
-        const skillsData = res.data.map((skill: any) => ({
-          ...skill,
-          category: skill.category || categorizeSkill(skill.name),
-        }));
-        setSkills(skillsData);
-        setFilteredSkills(skillsData);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch skills", err);
-        setLoading(false);
-      });
-  }, [initialSkills]);
+    if (!initialSkills) {
+      api
+        .get("/skills")
+        .then((res) => {
+          const skillsData = res.data.map((skill: any) => ({
+            ...skill,
+            category: skill.category || categorizeSkill(skill.name),
+          }));
+          setSkills(skillsData);
+          setFilteredSkills(skillsData);
+          setLoading(false);
+          setLoadedAll(true);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch skills", err);
+          setLoading(false);
+        });
+    }
+  }, [initialSkills, loadedAll]);
 
   useEffect(() => {
-    // Intersection Observer for scroll animations
+    // Intersection Observer for scroll animations and data fetching
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.target.id === "lazy-load-trigger" && entry.isIntersecting && !loadedAll) {
+             api.get("/skills?limit=0").then((res) => {
+                const skillsData = res.data.map((skill: any) => ({
+                  ...skill,
+                  category: skill.category || categorizeSkill(skill.name),
+                }));
+                // We overwrite entirely since /skills returns ALL
+                setSkills(skillsData);
+                setLoadedAll(true);
+             });
+          } else if (entry.isIntersecting && entry.target.classList.contains("skill-card-wrapper")) {
             entry.target.classList.add("animate-fadeInUp");
           }
         });
@@ -75,8 +90,13 @@ const Skills = ({ initialSkills }: { initialSkills?: any[] }) => {
     const cards = document.querySelectorAll(".skill-card-wrapper");
     cards.forEach((card) => observerRef.current?.observe(card));
 
+    const trigger = document.getElementById("lazy-load-trigger");
+    if (trigger && observerRef.current && !loadedAll) {
+      observerRef.current.observe(trigger);
+    }
+
     return () => observerRef.current?.disconnect();
-  }, [filteredSkills]);
+  }, [filteredSkills, loadedAll]);
 
   useEffect(() => {
     let filtered = skills;
@@ -384,6 +404,16 @@ const Skills = ({ initialSkills }: { initialSkills?: any[] }) => {
             >
               Clear Filters
             </button>
+          </div>
+        )}
+
+        {/* Lazy Load Trigger */}
+        {!loadedAll && (
+          <div id="lazy-load-trigger" className="w-full mt-10 md:mt-12 flex justify-center">
+            <div className="flex items-center gap-3 text-blue-400">
+               <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+               <span className="font-semibold text-sm">Loading more skills...</span>
+            </div>
           </div>
         )}
       </div>

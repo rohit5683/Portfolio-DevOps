@@ -14,7 +14,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Page() {
   await connectDB();
-  const certifications = await Certification.find({}).sort({ createdAt: -1 }).lean();
+  const certifications = await Certification.find({}).sort({ createdAt: -1 }).limit(6).lean();
 
   return <Certifications initialCertifications={JSON.parse(JSON.stringify(certifications))} />;
 }

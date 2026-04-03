@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -17,6 +18,11 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu whenever the route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   const navLinks = [
     { path: "/", label: "Home", icon: "🏠" },
     { path: "/about", label: "About", icon: "👤" },
@@ -29,6 +35,34 @@ const Navbar = () => {
 
   const isActive = (path: string) => {
     return pathname === path;
+  };
+
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        staggerChildren: 0.05,
+        staggerDirection: -1,
+        when: "afterChildren",
+      },
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring" as const,
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.07,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, x: -10 },
+    open: { opacity: 1, x: 0 },
   };
 
   return (
@@ -150,72 +184,53 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-16 md:top-20 left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-2xl border-b border-white/10 animate-slideDown shadow-2xl">
-            <div className="container mx-auto px-4 py-4 md:py-6 flex flex-col gap-1.5 md:gap-2">
-              {navLinks.map((link, index) => (
-                <Link
-                  key={link.path}
-                  href={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  style={{ animationDelay: `${index * 50}ms` }}
-                  className={`px-4 py-3 md:py-4 rounded-xl font-medium transition-all flex items-center gap-4 animate-fadeIn ${
-                    isActive(link.path)
-                      ? "text-white bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30"
-                      : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
-                  }`}
-                >
-                  <span className="text-lg md:text-xl">{link.icon}</span>
-                  <span className="text-base md:text-lg">{link.label}</span>
-                  {isActive(link.path) && (
-                    <div className="ml-auto w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
-                  )}
-                </Link>
-              ))}
-                <Link
-                  href="/contact"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="mt-3 md:mt-4 px-4 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-center shadow-lg animate-fadeIn text-base md:text-lg"
-                  style={{ animationDelay: "300ms" }}
-                >
-                Let's Talk 💬
-              </Link>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={menuVariants}
+              className="lg:hidden absolute top-16 md:top-20 left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-2xl border-b border-white/10 shadow-2xl overflow-hidden"
+            >
+              <div className="container mx-auto px-4 py-4 flex flex-col gap-1.5">
+                {navLinks.map((link) => (
+                  <motion.div key={link.path} variants={itemVariants}>
+                    <Link
+                      href={link.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`px-4 py-2.5 rounded-xl font-medium transition-all flex items-center gap-4 ${
+                        isActive(link.path)
+                          ? "text-white bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30"
+                          : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
+                      }`}
+                    >
+                      <span className="text-lg">{link.icon}</span>
+                      <span className="text-base">{link.label}</span>
+                      {isActive(link.path) && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
+                      )}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div variants={itemVariants}>
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="mt-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-center shadow-lg text-base flex items-center justify-center gap-2"
+                  >
+                    Let's Talk 💬
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <style>{`
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateX(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        .animate-slideDown {
-          animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .animate-fadeIn {
-          animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
+        /* Custom scrollbar and other styles remain if needed, 
+           but CSS keyframes are replaced by Framer Motion */
       `}</style>
     </nav>
   );

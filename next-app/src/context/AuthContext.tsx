@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
+    // Read localStorage on mount (client only)
     const token = localStorage.getItem("accessToken");
     if (token) {
       setUser({ email: "rohit@example.com" }); // Placeholder

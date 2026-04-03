@@ -19,7 +19,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Page() {
   await connectDB();
-  const education = await EducationModel.find({}).sort({ endDate: -1 }).lean();
+  const education = await EducationModel.find({}).sort({ endDate: -1 }).limit(6).lean();
 
   return <Education initialEducation={JSON.parse(JSON.stringify(education))} />;
 }

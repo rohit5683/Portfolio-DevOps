@@ -12,8 +12,12 @@ import {
 import api from "../../services/api";
 import Skeleton from "../../components/common/Skeleton";
 
-const Contact = () => {
-  const [profile, setProfile] = useState<any>(null);
+interface ContactProps {
+  initialProfile?: any;
+}
+
+const Contact = ({ initialProfile }: ContactProps) => {
+  const [profile, setProfile] = useState<any>(initialProfile || null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,27 +26,33 @@ const Contact = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pageLoading, setPageLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(!initialProfile);
   const [errors, setErrors] = useState<any>({});
   const [errorMessage, setErrorMessage] = useState("");
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Fetch profile data
-    api
-      .get("/profile")
-      .then((res) => {
-        setProfile(res.data);
-        setPageLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch profile", err);
-        setPageLoading(false);
-      });
+    if (!initialProfile) {
+      // Fetch profile data
+      api
+        .get("/profile")
+        .then((res) => {
+          setProfile(res.data);
+          setPageLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch profile", err);
+          setPageLoading(false);
+        });
+    }
 
-    // Update time
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    setMounted(true);
+    // Update time — only runs on client, preventing SSR/hydration mismatch
+    const updateTime = () => setCurrentTime(new Date());
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -168,6 +178,7 @@ const Contact = () => {
   ];
 
   const getIndiaTime = () => {
+    if (!currentTime) return "--:-- --";
     return currentTime.toLocaleTimeString("en-IN", {
       timeZone: "Asia/Kolkata",
       hour: "2-digit",
@@ -189,7 +200,8 @@ const Contact = () => {
             Let's connect and discuss how we can work together
           </p>
 
-          {/* Timezone Display */}
+          {/* Timezone Display — rendered only on client to prevent hydration mismatch */}
+          {mounted && (
           <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-blue-500/10 border border-blue-500/30 rounded-full">
             <svg
               className="w-3.5 h-3.5 text-blue-400"
@@ -208,6 +220,7 @@ const Contact = () => {
               🇮🇳 India Time: {getIndiaTime()}
             </span>
           </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">

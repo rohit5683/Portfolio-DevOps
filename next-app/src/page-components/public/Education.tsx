@@ -163,6 +163,7 @@ const Education = ({ initialEducation }: { initialEducation?: any[] }) => {
   const [education, setEducation] = useState<any[]>(initialEducation || []);
   const [filteredEducation, setFilteredEducation] = useState<any[]>(initialEducation || []);
   const [loading, setLoading] = useState(!initialEducation);
+  const [loadedAll, setLoadedAll] = useState(!initialEducation || initialEducation.length < 6);
   const [selectedEducation, setSelectedEducation] = useState<any | null>(null);
   const [previewDocument, setPreviewDocument] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
@@ -198,27 +199,36 @@ const Education = ({ initialEducation }: { initialEducation?: any[] }) => {
   };
 
   useEffect(() => {
-    if (initialEducation) return;
-    
-    api
-      .get("/education")
-      .then((res) => {
-        setEducation(res.data);
-        setFilteredEducation(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch education", err);
-        setLoading(false);
-      });
-  }, [initialEducation]);
+    if (initialEducation && loadedAll) return;
+    if (initialEducation && !loadedAll) return; // Wait for observer
+
+    if (!initialEducation) {
+      api
+        .get("/education")
+        .then((res) => {
+          setEducation(res.data);
+          setFilteredEducation(res.data);
+          setLoading(false);
+          setLoadedAll(true);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch education", err);
+          setLoading(false);
+        });
+    }
+  }, [initialEducation, loadedAll]);
 
   useEffect(() => {
-    // Intersection Observer for scroll animations
+    // Intersection Observer for scroll animations and data fetching
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.target.id === "lazy-load-trigger" && entry.isIntersecting && !loadedAll) {
+             api.get("/education?limit=0").then((res) => {
+                setEducation(res.data);
+                setLoadedAll(true);
+             });
+          } else if (entry.isIntersecting && entry.target.classList.contains("education-card-wrapper")) {
             entry.target.classList.add("animate-fadeInUp");
           }
         });
@@ -229,8 +239,13 @@ const Education = ({ initialEducation }: { initialEducation?: any[] }) => {
     const cards = document.querySelectorAll(".education-card-wrapper");
     cards.forEach((card) => observerRef.current?.observe(card));
 
+    const trigger = document.getElementById("lazy-load-trigger");
+    if (trigger && observerRef.current && !loadedAll) {
+      observerRef.current.observe(trigger);
+    }
+
     return () => observerRef.current?.disconnect();
-  }, [filteredEducation]);
+  }, [filteredEducation, loadedAll]);
 
   useEffect(() => {
     let filtered = education;
@@ -675,6 +690,16 @@ const Education = ({ initialEducation }: { initialEducation?: any[] }) => {
               );
             })}
           </div>
+
+          {/* Lazy Load Trigger */}
+          {!loadedAll && (
+            <div id="lazy-load-trigger" className="w-full mt-10 md:mt-12 flex justify-center">
+              <div className="flex items-center gap-3 text-blue-400">
+                 <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                 <span className="font-semibold text-sm">Loading more education...</span>
+              </div>
+            </div>
+          )}
 
           {filteredEducation.length === 0 && (
             <div className="text-center py-20">

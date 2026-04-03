@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, [isLoading, isAuthenticated, router]);
 
   if (isLoading) {
-    return <Loading />;
+    return null;
   }
 
   return isAuthenticated ? <>{children}</> : null;

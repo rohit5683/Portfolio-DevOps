@@ -273,6 +273,7 @@ const Card = ({ cert, index, setIndex, openGallery }: any) => {
 const Certifications = ({ initialCertifications }: { initialCertifications?: any[] }) => {
   const [certifications, setCertifications] = useState<any[]>(initialCertifications || []);
   const [loading, setLoading] = useState(!initialCertifications);
+  const [loadedAll, setLoadedAll] = useState(!initialCertifications || initialCertifications.length < 6);
   const [index, setIndex] = useState(0);
   const [galleryData, setGalleryData] = useState<{
     imageUrl: string;
@@ -286,19 +287,20 @@ const Certifications = ({ initialCertifications }: { initialCertifications?: any
   };
 
   useEffect(() => {
-    if (initialCertifications) return;
+    if (initialCertifications && loadedAll) return;
 
     api
-      .get("/certifications")
+      .get("/certifications?limit=0")
       .then((res) => {
         setCertifications(res.data);
         setLoading(false);
+        setLoadedAll(true);
       })
       .catch((err) => {
         console.error("Failed to fetch certifications", err);
         setLoading(false);
       });
-  }, [initialCertifications]);
+  }, [initialCertifications, loadedAll]);
 
   // Circular navigation logic
   const currentIndex = ((index % certifications.length) + certifications.length) % certifications.length;
