@@ -6,16 +6,16 @@ import Loading from "../../components/common/Loading";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
-const ProfileEdit = () => {
+const ProfileEdit = ({ initialData, initialSkills }: { initialData?: any, initialSkills?: any[] }) => {
   const navigate = useRouter();
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [photoPreview, setPhotoPreview] = useState<string>("");
+  const [profile, setProfile] = useState<any>(initialData);
+  const [loading, setLoading] = useState(!initialData);
+  const [photoPreview, setPhotoPreview] = useState<string>(initialData?.photoUrl || "");
   const [editingBadgeIndex, setEditingBadgeIndex] = useState<number>(-1);
   const [editingAchievementIndex, setEditingAchievementIndex] = useState<number>(-1);
   const [achievementSnapshot, setAchievementSnapshot] = useState<string | null>(null);
 
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<any[]>(initialSkills || []);
 
   const ensureAchievements = () => {
     if (!profile) return [];
@@ -38,6 +38,8 @@ const ProfileEdit = () => {
   });
 
   useEffect(() => {
+    if (initialData && initialSkills) return;
+
     const fetchData = async () => {
       try {
         const [profileRes, skillsRes] = await Promise.all([
@@ -58,7 +60,7 @@ const ProfileEdit = () => {
     };
 
     fetchData();
-  }, []);
+  }, [initialData, initialSkills]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

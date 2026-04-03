@@ -6,9 +6,9 @@ import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
 
-const ExperienceEdit = () => {
+const ExperienceEdit = ({ initialData }: { initialData?: any[] }) => {
   const navigate = useRouter();
-  const [experience, setExperience] = useState<any[]>([]);
+  const [experience, setExperience] = useState<any[]>(initialData || []);
   const [newExp, setNewExp] = useState({
     title: "",
     company: "",
@@ -28,8 +28,9 @@ const ExperienceEdit = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initialData) return;
     fetchExperience();
-  }, []);
+  }, [initialData]);
 
   const fetchExperience = () => {
     api

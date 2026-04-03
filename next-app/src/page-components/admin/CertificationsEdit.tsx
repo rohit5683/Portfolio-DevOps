@@ -6,9 +6,9 @@ import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import { getImageUrl } from "../../utils/imageUtils";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
-const CertificationsEdit = () => {
+const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
   const navigate = useRouter();
-  const [certifications, setCertifications] = useState<any[]>([]);
+  const [certifications, setCertifications] = useState<any[]>(initialData || []);
   const [newCert, setNewCert] = useState({
     name: "",
     issuer: "",
@@ -23,8 +23,9 @@ const CertificationsEdit = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initialData) return;
     fetchCertifications();
-  }, []);
+  }, [initialData]);
 
   const fetchCertifications = () => {
     api

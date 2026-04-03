@@ -5,10 +5,10 @@ import api from "../../services/api";
 import Loading from "../../components/common/Loading";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 
-const SkillsEdit = () => {
+const SkillsEdit = ({ initialData }: { initialData?: any[] }) => {
   const navigate = useRouter();
-  const [skills, setSkills] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [skills, setSkills] = useState<any[]>(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -28,8 +28,9 @@ const SkillsEdit = () => {
   ];
 
   useEffect(() => {
+    if (initialData) return;
     fetchSkills();
-  }, []);
+  }, [initialData]);
 
   const fetchSkills = () => {
     api

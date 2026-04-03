@@ -12,10 +12,10 @@ interface User {
   mfaMethod?: "email" | "totp";
 }
 
-const UserManagement = () => {
+const UserManagement = ({ initialData }: { initialData?: User[] }) => {
   const navigate = useRouter();
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<User[]>(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmDialog, setConfirmDialog] = useState<{
     show: boolean;
@@ -57,8 +57,9 @@ const UserManagement = () => {
   const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
+    if (initialData) return;
     fetchUsers();
-  }, []);
+  }, [initialData]);
 
   const fetchUsers = async () => {
     try {

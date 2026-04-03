@@ -6,12 +6,14 @@ import Loading from "../../components/common/Loading";
 import AnimatedBackground from "../../components/layout/AnimatedBackground";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
-const AboutEdit = () => {
+const AboutEdit = ({ initialData }: { initialData?: any }) => {
   const navigate = useRouter();
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>(initialData);
+  const [loading, setLoading] = useState(!initialData);
 
   useEffect(() => {
+    if (initialData) return;
+    
     api
       .get("/profile")
       .then((res) => {
@@ -19,7 +21,7 @@ const AboutEdit = () => {
         setLoading(false);
       })
       .catch(console.error);
-  }, []);
+  }, [initialData]);
 
   const handleSave = async (section: string) => {
     try {

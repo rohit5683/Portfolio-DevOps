@@ -10,9 +10,9 @@ import { FaGithub as Github } from "react-icons/fa";
 import RichText from "../../components/common/RichText";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 
-const ProjectsEdit = () => {
+const ProjectsEdit = ({ initialData }: { initialData?: any[] }) => {
   const navigate = useRouter();
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>(initialData || []);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newProject, setNewProject] = useState({
     title: "",
@@ -31,8 +31,9 @@ const ProjectsEdit = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
+    if (initialData) return;
     fetchProjects();
-  }, []);
+  }, [initialData]);
 
   const fetchProjects = () => {
     api

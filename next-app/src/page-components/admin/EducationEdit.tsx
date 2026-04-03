@@ -8,10 +8,10 @@ import UploadProgress from "../../components/common/UploadProgress";
 import RichTextEditor from "../../components/admin/RichTextEditor";
 import RichText from "../../components/common/RichText";
 
-const EducationEdit = () => {
+const EducationEdit = ({ initialData }: { initialData?: any[] }) => {
   const navigate = useRouter();
-  const [education, setEducation] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [education, setEducation] = useState<any[]>(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     schoolCollege: "",
@@ -33,8 +33,9 @@ const EducationEdit = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
+    if (initialData) return;
     fetchEducation();
-  }, []);
+  }, [initialData]);
 
   const fetchEducation = () => {
     api
