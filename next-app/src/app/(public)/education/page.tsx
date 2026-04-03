@@ -2,6 +2,8 @@ import React from 'react';
 import Education from '@/page-components/public/Education';
 import { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constants/metadata';
+import connectDB from '@/lib/db/mongoose';
+import EducationModel from '@/lib/models/Education';
 
 export const metadata: Metadata = {
   title: `Education | ${SITE_CONFIG.name}`,
@@ -13,6 +15,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <Education />;
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Page() {
+  await connectDB();
+  const education = await EducationModel.find({}).sort({ endDate: -1 }).lean();
+
+  return <Education initialEducation={JSON.parse(JSON.stringify(education))} />;
 }

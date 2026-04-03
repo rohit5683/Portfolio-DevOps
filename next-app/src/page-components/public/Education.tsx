@@ -159,10 +159,10 @@ const DocumentPreview = ({
   );
 };
 
-const Education = () => {
-  const [education, setEducation] = useState<any[]>([]);
-  const [filteredEducation, setFilteredEducation] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const Education = ({ initialEducation }: { initialEducation?: any[] }) => {
+  const [education, setEducation] = useState<any[]>(initialEducation || []);
+  const [filteredEducation, setFilteredEducation] = useState<any[]>(initialEducation || []);
+  const [loading, setLoading] = useState(!initialEducation);
   const [selectedEducation, setSelectedEducation] = useState<any | null>(null);
   const [previewDocument, setPreviewDocument] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
@@ -198,6 +198,8 @@ const Education = () => {
   };
 
   useEffect(() => {
+    if (initialEducation) return;
+    
     api
       .get("/education")
       .then((res) => {
@@ -209,7 +211,7 @@ const Education = () => {
         console.error("Failed to fetch education", err);
         setLoading(false);
       });
-  }, []);
+  }, [initialEducation]);
 
   useEffect(() => {
     // Intersection Observer for scroll animations
