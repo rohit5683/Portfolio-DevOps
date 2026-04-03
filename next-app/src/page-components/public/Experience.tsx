@@ -155,15 +155,23 @@ const LiveExperienceCounter = ({ startDate }: { startDate: Date | null }) => {
     </div>
   );
 };
-const Experience = () => {
-  const [experience, setExperience] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const ExperienceComponent = ({ initialExperience }: { initialExperience?: any[] }) => {
+  const [experience, setExperience] = useState<any[]>(initialExperience || []);
+  const [loading, setLoading] = useState(!initialExperience);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [selectedExperience, setSelectedExperience] = useState<any | null>(null);
-  const [earliestDate, setEarliestDate] = useState<Date | null>(null);
+  const [earliestDate, setEarliestDate] = useState<Date | null>(() => {
+    if (initialExperience && initialExperience.length > 0) {
+      const dates = initialExperience.map((e: any) => new Date(e.startDate).getTime());
+      return new Date(Math.min(...dates));
+    }
+    return null;
+  });
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    if (initialExperience) return;
+
     api
       .get("/experience")
       .then((res) => {
@@ -178,7 +186,7 @@ const Experience = () => {
         console.error("Failed to fetch experience", err);
         setLoading(false);
       });
-  }, []);
+  }, [initialExperience]);
 
   useEffect(() => {
     // Intersection Observer for scroll animations
@@ -840,4 +848,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default ExperienceComponent;

@@ -386,10 +386,10 @@ const ImageGallery = ({
   );
 };
 
-const Projects = () => {
-  const [projects, setProjects] = useState<any[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const Projects = ({ initialProjects }: { initialProjects?: any[] }) => {
+  const [projects, setProjects] = useState<any[]>(initialProjects || []);
+  const [filteredProjects, setFilteredProjects] = useState<any[]>(initialProjects || []);
+  const [loading, setLoading] = useState(!initialProjects);
   const [galleryData, setGalleryData] = useState<{
     images: string[];
     initialIndex: number;
@@ -430,6 +430,8 @@ const Projects = () => {
   };
 
   useEffect(() => {
+    if (initialProjects) return;
+    
     api
       .get("/projects")
       .then((res) => {
@@ -445,7 +447,7 @@ const Projects = () => {
         console.error("Failed to fetch projects", err);
         setLoading(false);
       });
-  }, []);
+  }, [initialProjects]);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(

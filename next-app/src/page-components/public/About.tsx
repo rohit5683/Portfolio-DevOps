@@ -5,13 +5,35 @@ import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
 import RichText from "../../components/common/RichText";
 
-const About = () => {
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+const About = ({ initialProfile, initialExperience }: { initialProfile?: any; initialExperience?: any[] }) => {
+  const [profile, setProfile] = useState<any>(() => {
+    if (initialProfile && initialExperience && initialExperience.length > 0) {
+      const profileData = { ...initialProfile };
+      const dates = initialExperience.map((exp: any) => new Date(exp.startDate));
+      const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+      const years = (Date.now() - earliest.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+      const computed = years < 1 ? "< 1" : `${parseFloat(years.toFixed(1))}`;
+      
+      if (profileData.animatedStats) {
+        profileData.animatedStats = profileData.animatedStats.map((stat: any) => {
+          const lbl = stat.label.toLowerCase();
+          if (lbl.includes("year") || lbl.includes("experience")) {
+            return { ...stat, displayValue: computed };
+          }
+          return stat;
+        });
+      }
+      return profileData;
+    }
+    return initialProfile;
+  });
+  const [loading, setLoading] = useState(!initialProfile);
   const [stats, setStats] = useState<any>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    if (initialProfile) return;
+
     Promise.all([api.get("/profile"), api.get("/experience")])
       .then(([profileRes, experienceRes]) => {
         const profileData = profileRes.data;
@@ -37,7 +59,7 @@ const About = () => {
         console.error("Failed to fetch data", err);
         setLoading(false);
       });
-  }, []);
+  }, [initialProfile]);
 
   // Animated counter effect
   useEffect(() => {

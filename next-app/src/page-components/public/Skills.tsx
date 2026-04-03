@@ -4,10 +4,28 @@ import api from "../../services/api";
 import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
 
-const Skills = () => {
-  const [skills, setSkills] = useState<any[]>([]);
-  const [filteredSkills, setFilteredSkills] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const Skills = ({ initialSkills }: { initialSkills?: any[] }) => {
+  // Helper to categorize skills
+  const categorizeSkill = (skillName: string): string => {
+    const name = skillName.toLowerCase();
+    if (name.includes("aws") || name.includes("azure") || name.includes("gcp") || name.includes("cloud")) return "cloud";
+    if (name.includes("docker") || name.includes("kubernetes") || name.includes("jenkins") || name.includes("terraform") || name.includes("ansible") || name.includes("ci/cd")) return "devops";
+    if (name.includes("python") || name.includes("javascript") || name.includes("java") || name.includes("go") || name.includes("bash")) return "programming";
+    if (name.includes("mongo") || name.includes("sql") || name.includes("postgres") || name.includes("redis") || name.includes("database")) return "database";
+    return "tools";
+  };
+
+  const [skills, setSkills] = useState<any[]>(() => {
+    if (initialSkills) {
+      return initialSkills.map((skill: any) => ({
+        ...skill,
+        category: skill.category || categorizeSkill(skill.name),
+      }));
+    }
+    return [];
+  });
+  const [filteredSkills, setFilteredSkills] = useState<any[]>(skills);
+  const [loading, setLoading] = useState(!initialSkills);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -21,45 +39,9 @@ const Skills = () => {
     { id: "tools", label: "Tools", icon: "🛠️", color: "pink" },
   ];
 
-  // Categorize skills based on name (fallback logic)
-  const categorizeSkill = (skillName: string): string => {
-    const name = skillName.toLowerCase();
-    if (
-      name.includes("aws") ||
-      name.includes("azure") ||
-      name.includes("gcp") ||
-      name.includes("cloud")
-    )
-      return "cloud";
-    if (
-      name.includes("docker") ||
-      name.includes("kubernetes") ||
-      name.includes("jenkins") ||
-      name.includes("terraform") ||
-      name.includes("ansible") ||
-      name.includes("ci/cd")
-    )
-      return "devops";
-    if (
-      name.includes("python") ||
-      name.includes("javascript") ||
-      name.includes("java") ||
-      name.includes("go") ||
-      name.includes("bash")
-    )
-      return "programming";
-    if (
-      name.includes("mongo") ||
-      name.includes("sql") ||
-      name.includes("postgres") ||
-      name.includes("redis") ||
-      name.includes("database")
-    )
-      return "database";
-    return "tools";
-  };
-
   useEffect(() => {
+    if (initialSkills) return;
+
     api
       .get("/skills")
       .then((res) => {
@@ -75,7 +57,7 @@ const Skills = () => {
         console.error("Failed to fetch skills", err);
         setLoading(false);
       });
-  }, []);
+  }, [initialSkills]);
 
   useEffect(() => {
     // Intersection Observer for scroll animations

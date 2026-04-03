@@ -13,6 +13,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <Projects />;
+import connectDB from '@/lib/db/mongoose';
+import Project from '@/lib/models/Project';
+import { getImageUrl } from '@/utils/imageUtils';
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Page() {
+  await connectDB();
+  const rawProjects = await Project.find({}).sort({ createdAt: -1 }).lean();
+  
+  const projects = rawProjects.map((p: any) => ({
+    ...p,
+    images: Array.isArray(p?.images) ? p.images.map(getImageUrl) : [],
+  }));
+
+  return <Projects initialProjects={JSON.parse(JSON.stringify(projects))} />;
 }

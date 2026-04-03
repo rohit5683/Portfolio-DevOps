@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DOMPurify from "dompurify";
 
 interface RichTextProps {
@@ -18,9 +18,9 @@ const RichText: React.FC<RichTextProps> = ({
   className = "", 
   accentColor = "bg-blue-400/70" 
 }) => {
-  if (!text) return null;
-
-  // Decode HTML entities in case the string was double-escaped by a Rich Text Editor
+  const [sanitized, setSanitized] = useState(text);
+  
+  // Simple heuristic: if it contains HTML-like tags, treat as HTML
   const decodedText = text
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
@@ -29,14 +29,21 @@ const RichText: React.FC<RichTextProps> = ({
     .replace(/&#39;/g, "'")
     .replace(/&nbsp;/g, ' ');
 
-  // Simple heuristic: if it contains HTML-like tags, treat as HTML
-  const isHtml = decodedText.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(decodedText);
+  const isHtml = decodedText?.trim()?.startsWith("<") || /<[a-z][\s\S]*>/i.test(decodedText || "");
+
+  useEffect(() => {
+    if (isHtml && text) {
+      setSanitized(DOMPurify.sanitize(decodedText));
+    }
+  }, [decodedText, isHtml, text]);
+
+  if (!text) return null;
 
   if (isHtml) {
     return (
       <div 
         className={`rich-text-content min-w-0 w-full ${className}`}
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(decodedText) }}
+        dangerouslySetInnerHTML={{ __html: sanitized }}
       />
     );
   }

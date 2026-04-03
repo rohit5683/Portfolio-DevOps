@@ -254,19 +254,40 @@ const ActivityFeed = ({
   );
 };
 
-const Home = () => {
+const calculateTotalExperience = (experienceData: any[]) => {
+  if (!experienceData || experienceData.length === 0) return "1+";
+  const dates = experienceData.map((exp: any) => new Date(exp.startDate));
+  const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+  const diffMs = Date.now() - earliest.getTime();
+  const years = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+  return years < 1 ? "< 1" : `${parseFloat(years.toFixed(1))}`;
+};
+
+const Home = ({ 
+  initialProfile, 
+  initialSkills, 
+  initialExperience 
+}: { 
+  initialProfile?: any; 
+  initialSkills?: any[]; 
+  initialExperience?: any[]; 
+}) => {
   const navigate = useRouter();
-  const [profile, setProfile] = useState<any>(null);
-  const [skills, setSkills] = useState<any[]>([]);
+  const [profile, setProfile] = useState<any>(initialProfile || null);
+  const [skills, setSkills] = useState<any[]>(initialSkills || []);
   const [displayedText, setDisplayedText] = useState("");
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialProfile);
   const [isAchievementsModalOpen, setIsAchievementsModalOpen] = useState(false);
-  const [totalExperience, setTotalExperience] = useState<string>("1+");
+  const [totalExperience, setTotalExperience] = useState<string>(
+    initialExperience ? calculateTotalExperience(initialExperience) : "1+"
+  );
 
-  // Fetch profile, skills, and experience data
+  // Fetch profile, skills, and experience data (only if not provided by server)
   useEffect(() => {
+    if (initialProfile) return;
+
     const fetchData = async () => {
       try {
         const [profileRes, skillsRes, experienceRes] = await Promise.all([

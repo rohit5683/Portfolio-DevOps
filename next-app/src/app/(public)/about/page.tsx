@@ -13,6 +13,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <About />;
+import connectDB from '@/lib/db/mongoose';
+import Profile from '@/lib/models/Profile';
+import Experience from '@/lib/models/Experience';
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Page() {
+  await connectDB();
+  const [profile, experience] = await Promise.all([
+    Profile.findOne({}).lean(),
+    Experience.find({}).sort({ createdAt: -1 }).lean(),
+  ]);
+
+  return <About initialProfile={JSON.parse(JSON.stringify(profile))} initialExperience={JSON.parse(JSON.stringify(experience))} />;
 }

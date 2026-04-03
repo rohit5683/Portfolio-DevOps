@@ -1,7 +1,9 @@
 import React from 'react';
-import Experience from '@/page-components/public/Experience';
+import ExperienceComponent from '@/page-components/public/Experience';
 import { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constants/metadata';
+import connectDB from '@/lib/db/mongoose';
+import Experience from '@/lib/models/Experience';
 
 export const metadata: Metadata = {
   title: `Experience | ${SITE_CONFIG.name}`,
@@ -13,6 +15,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <Experience />;
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Page() {
+  await connectDB();
+  const experience = await Experience.find({}).sort({ createdAt: -1 }).lean();
+
+  return <ExperienceComponent initialExperience={JSON.parse(JSON.stringify(experience))} />;
 }
