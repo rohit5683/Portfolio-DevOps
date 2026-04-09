@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/experience',
     '/education',
     '/contact',
+    '/certifications',
   ].map((route) => ({
     url: `${SITE_CONFIG.url}${route}`,
     lastModified: new Date(),

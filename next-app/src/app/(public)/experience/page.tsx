@@ -6,11 +6,11 @@ import connectDB from '@/lib/db/mongoose';
 import Experience from '@/lib/models/Experience';
 
 export const metadata: Metadata = {
-  title: `Experience | ${SITE_CONFIG.name}`,
-  description: "A professional timeline of my roles and contributions in the DevOps and Cloud engineering space.",
+  title: `Professional Experience | ${SITE_CONFIG.name} - DevOps & SRE`,
+  description: "Professional journey of Rohit Vishwakarma as a DevOps Engineer and Cloud Architect, featuring roles in infrastructure management, CI/CD, and automation.",
   openGraph: {
-    title: `Experience | ${SITE_CONFIG.shortName}`,
-    description: "A professional timeline of my roles and contributions in the DevOps and Cloud engineering space.",
+    title: `Experience | ${SITE_CONFIG.shortName} - Career Journey`,
+    description: "Professional journey of Rohit Vishwakarma as a DevOps Engineer and Cloud Architect, featuring roles in infrastructure management, CI/CD, and automation.",
     url: `${SITE_CONFIG.url}/experience`,
   },
 };

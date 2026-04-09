@@ -16,8 +16,21 @@ const SchemaOrg: React.FC<SchemaOrgProps> = ({ type = 'Person', data = {} }) => 
   // Default Person Schema if no specific data provided for Person type
   const personSchema = type === 'Person' ? {
     name: SITE_CONFIG.name,
-    jobTitle: 'DevOps Engineer & Cloud Architect',
+    jobTitle: [
+      'DevOps Engineer',
+      'Cloud Architect',
+      'DevSecOps Specialist',
+      'DevOps Freelancer',
+      'Azure & AWS Cloud Expert'
+    ],
     url: SITE_CONFIG.url,
+    description: SITE_CONFIG.description,
+    address: {
+      "@type": "PostalAddress",
+      "addressLocality": "Pune",
+      "addressRegion": "Maharashtra",
+      "addressCountry": "India"
+    },
     sameAs: [
       SITE_CONFIG.links.github,
       SITE_CONFIG.links.linkedin,

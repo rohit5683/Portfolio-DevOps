@@ -4,11 +4,11 @@ import { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constants/metadata';
 
 export const metadata: Metadata = {
-  title: `Projects | ${SITE_CONFIG.name}`,
-  description: "Explore my DevOps projects, focusing on AWS architecture, Kubernetes automation, and CI/CD pipelines.",
+  title: `DevOps Projects | ${SITE_CONFIG.name}`,
+  description: "Explore my DevOps and Cloud projects, focusing on AWS architecture, Kubernetes automation, DevSecOps, and scalable CI/CD pipelines.",
   openGraph: {
-    title: `Projects | ${SITE_CONFIG.shortName}`,
-    description: "Explore my DevOps projects, focusing on AWS architecture, Kubernetes automation, and CI/CD pipelines.",
+    title: `Projects | ${SITE_CONFIG.shortName} - Cloud & DevOps Portfolio`,
+    description: "Explore my DevOps and Cloud projects, focusing on AWS architecture, Kubernetes automation, DevSecOps, and scalable CI/CD pipelines.",
     url: `${SITE_CONFIG.url}/projects`,
   },
 };

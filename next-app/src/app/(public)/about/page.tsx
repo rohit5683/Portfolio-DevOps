@@ -4,11 +4,11 @@ import { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constants/metadata';
 
 export const metadata: Metadata = {
-  title: `About | ${SITE_CONFIG.name}`,
-  description: "Learn more about Rohit Vishwakarma, a DevOps Engineer dedicated to streamlining development workflows and managing cloud infrastructure.",
+  title: `About | ${SITE_CONFIG.name} - DevOps Engineer in Pune`,
+  description: "Learn more about Rohit Vishwakarma, a DevOps Engineer and Freelancer in Pune dedicated to streamlining development workflows, Kubernetes automation, and managing cloud infrastructure.",
   openGraph: {
-    title: `About | ${SITE_CONFIG.shortName}`,
-    description: "Learn more about Rohit Vishwakarma, a DevOps Engineer dedicated to streamlining development workflows and managing cloud infrastructure.",
+    title: `About | ${SITE_CONFIG.shortName} - DevOps & Cloud Architect`,
+    description: "Learn more about Rohit Vishwakarma, a DevOps Engineer and Freelancer in Pune dedicated to streamlining development workflows, Kubernetes automation, and managing cloud infrastructure.",
     url: `${SITE_CONFIG.url}/about`,
   },
 };

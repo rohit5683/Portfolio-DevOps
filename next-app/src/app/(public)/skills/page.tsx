@@ -4,11 +4,11 @@ import { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constants/metadata';
 
 export const metadata: Metadata = {
-  title: `Skills | ${SITE_CONFIG.name}`,
-  description: "Technical skills and proficiencies in AWS, Kubernetes, Terraform, Jenkins, and more.",
+  title: `Technical Skills | ${SITE_CONFIG.name} - DevOps & Cloud Expert`,
+  description: "Advanced technical skills and proficiencies in AWS, Kubernetes, Terraform, Jenkins, DevSecOps, and Cloud Infrastructure Automation.",
   openGraph: {
-    title: `Skills | ${SITE_CONFIG.shortName}`,
-    description: "Technical skills and proficiencies in AWS, Kubernetes, Terraform, Jenkins, and more.",
+    title: `Skills | ${SITE_CONFIG.shortName} - DevOps & Cloud Mastery`,
+    description: "Advanced technical skills and proficiencies in AWS, Kubernetes, Terraform, Jenkins, DevSecOps, and Cloud Infrastructure Automation.",
     url: `${SITE_CONFIG.url}/skills`,
   },
 };

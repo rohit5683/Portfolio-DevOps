@@ -6,8 +6,8 @@ import connectDB from '@/lib/db/mongoose';
 import Certification from '@/lib/models/Certification';
 
 export const metadata: Metadata = {
-  title: `Certifications | ${SITE_CONFIG.name}`,
-  description: "Professional certifications and internship history in DevOps and Cloud engineering.",
+  title: `Certifications | ${SITE_CONFIG.name} - AWS & Cloud Certified`,
+  description: "Explore the professional certifications earned by Rohit Vishwakarma in AWS, Kubernetes, and Cloud Architecture.",
 };
 
 export const revalidate = 60; // Revalidate every 60 seconds

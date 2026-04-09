@@ -5,9 +5,14 @@ import { SITE_CONFIG } from '@/constants/metadata';
 import SchemaOrg from '@/components/common/SchemaOrg';
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.name} | DevOps Engineer Portfolio`,
+  title: `${SITE_CONFIG.name} | DevOps Engineer & Freelancer Portfolio`,
   description: SITE_CONFIG.description,
-  keywords: SITE_CONFIG.keywords,
+  keywords: [
+    ...SITE_CONFIG.keywords,
+    "DevOps Pune",
+    "Azure DevOps Engineer",
+    "Infrastructure Automation Freelancer"
+  ],
   openGraph: {
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,

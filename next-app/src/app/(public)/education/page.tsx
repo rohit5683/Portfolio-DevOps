@@ -6,11 +6,11 @@ import connectDB from '@/lib/db/mongoose';
 import EducationModel from '@/lib/models/Education';
 
 export const metadata: Metadata = {
-  title: `Education | ${SITE_CONFIG.name}`,
-  description: "Academic background, degrees, and professional certifications in DevOps and Computer Science.",
+  title: `Education & Training | ${SITE_CONFIG.name} - DevOps Engineer`,
+  description: "Academic background and professional training in Computer Science and Cloud Computing. Certified in AWS and modern DevOps practices.",
   openGraph: {
-    title: `Education | ${SITE_CONFIG.shortName}`,
-    description: "Academic background, degrees, and professional certifications in DevOps and Computer Science.",
+    title: `Education | ${SITE_CONFIG.shortName} - Academic Background`,
+    description: "Academic background and professional training in Computer Science and Cloud Computing.",
     url: `${SITE_CONFIG.url}/education`,
   },
 };
