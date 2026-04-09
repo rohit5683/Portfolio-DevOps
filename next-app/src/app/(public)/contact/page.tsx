@@ -13,6 +13,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <Contact />;
+import connectDB from '@/lib/db/mongoose';
+import Profile from '@/lib/models/Profile';
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Page() {
+  await connectDB();
+  const profile = await Profile.findOne().lean();
+
+  return <Contact initialProfile={JSON.parse(JSON.stringify(profile))} />;
 }
