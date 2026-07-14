@@ -1,11 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "@/components/layout/Navbar";
 import AnimatedBackground from "@/components/layout/AnimatedBackground";
 import Terminal from "@/components/common/Terminal";
 
+import EmergencyModal from "@/components/common/EmergencyModal";
+
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   const [isTerminalOpen, setTerminalOpen] = useState(false);
+  const [isEmergencyOpen, setEmergencyOpen] = useState(false);
+
+  const tapCountRef = useRef(0);
+  const lastTapRef = useRef(0);
+
+  const handleSecretTap = () => {
+    const now = Date.now();
+    if (now - lastTapRef.current < 500) {
+      tapCountRef.current += 1;
+    } else {
+      tapCountRef.current = 1;
+    }
+    lastTapRef.current = now;
+
+    if (tapCountRef.current >= 3) {
+      setEmergencyOpen(true);
+      tapCountRef.current = 0;
+    }
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -25,7 +46,17 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         </svg>
       </button>
 
+      {/* Hidden Emergency Trigger */}
+      <button
+        onClick={handleSecretTap}
+        className="fixed bottom-0 left-0 w-16 h-16 z-50 opacity-0 cursor-default"
+        title=" "
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+
       {isTerminalOpen && <Terminal onClose={() => setTerminalOpen(false)} />}
+      {isEmergencyOpen && <EmergencyModal onClose={() => setEmergencyOpen(false)} />}
     </div>
   );
 }

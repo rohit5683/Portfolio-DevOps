@@ -9,7 +9,8 @@ const UserSchema = new mongoose.Schema({
   mfaMethod: { type: String, default: 'email' },
   totpSecret: { type: String },
   otp: { type: String },
-  otpExpires: { type: Date }
+  otpExpires: { type: Date },
+  emergencyPin: { type: String, default: '0000' }
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
