@@ -7,6 +7,7 @@ const CertificationSchema = new mongoose.Schema({
   date: { type: Date, required: true },
   credentialUrl: { type: String },
   fileUrl: { type: String, required: true },
+  coverUrl: { type: String },
   description: { type: String }
 }, { timestamps: true });
 

@@ -17,8 +17,10 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
     description: "",
     type: "Certification",
     fileUrl: "",
+    coverUrl: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedCoverFile, setSelectedCoverFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -59,13 +61,14 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
 
   const handleEdit = (cert: any) => {
     setNewCert({
-      name: cert.name,
-      issuer: cert.issuer,
-      date: cert.date.split("T")[0],
+      name: cert.name || "",
+      issuer: cert.issuer || "",
+      date: cert.date ? cert.date.split("T")[0] : "",
       credentialUrl: cert.credentialUrl || "",
       description: cert.description || "",
       type: cert.type || "Certification",
       fileUrl: cert.fileUrl || "",
+      coverUrl: cert.coverUrl || "",
     });
     setEditingId(cert._id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -80,9 +83,11 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
       description: "",
       type: "Certification",
       fileUrl: "",
+      coverUrl: "",
     });
     setEditingId(null);
     setSelectedFile(null);
+    setSelectedCoverFile(null);
   };
 
   const handleDelete = async (id: string) => {
@@ -100,6 +105,12 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
     }
   };
 
+  const handleCoverFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedCoverFile(e.target.files[0]);
+    }
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedFile && !editingId) {
@@ -111,8 +122,21 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
 
     try {
       let fileUrl = newCert.fileUrl; // Keep existing URL if editing and no new file
+      let coverUrl = newCert.coverUrl;
 
-      // 1. Upload File if selected
+      // 1. Upload Cover File if selected
+      if (selectedCoverFile) {
+        const formData = new FormData();
+        formData.append("files", selectedCoverFile);
+        const uploadRes = await api.post("/upload/certifications", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (uploadRes.data.urls && uploadRes.data.urls.length > 0) {
+          coverUrl = uploadRes.data.urls[0];
+        }
+      }
+
+      // 2. Upload Document File if selected
       if (selectedFile) {
         console.log("Uploading file:", selectedFile.name);
         const formData = new FormData();
@@ -134,7 +158,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
         console.log("File uploaded successfully:", fileUrl);
       }
 
-      // 2. Create or Update Certification
+      // 3. Create or Update Certification
       const certData = {
         name: newCert.name,
         issuer: newCert.issuer,
@@ -143,6 +167,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
         description: newCert.description,
         type: newCert.type,
         fileUrl,
+        coverUrl,
       };
 
       console.log("Saving certification:", certData);
@@ -201,7 +226,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
                   placeholder="AWS Solutions Architect"
                   value={newCert.name}
                   onChange={(e) =>
-                    setNewCert({ ...newCert, name: e.target.value })
+                    setNewCert((prev) => ({ ...prev, name: e.target.value }))
                   }
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600"
                   required
@@ -216,7 +241,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
                   placeholder="Amazon Web Services"
                   value={newCert.issuer}
                   onChange={(e) =>
-                    setNewCert({ ...newCert, issuer: e.target.value })
+                    setNewCert((prev) => ({ ...prev, issuer: e.target.value }))
                   }
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600"
                   required
@@ -233,7 +258,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
                   type="date"
                   value={newCert.date}
                   onChange={(e) =>
-                    setNewCert({ ...newCert, date: e.target.value })
+                    setNewCert((prev) => ({ ...prev, date: e.target.value }))
                   }
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
                   required
@@ -246,7 +271,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
                 <select
                   value={newCert.type}
                   onChange={(e) =>
-                    setNewCert({ ...newCert, type: e.target.value })
+                    setNewCert((prev) => ({ ...prev, type: e.target.value }))
                   }
                   className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all [&>option]:bg-gray-800 [&>option]:text-white"
                 >
@@ -267,7 +292,7 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
                 placeholder="https://..."
                 value={newCert.credentialUrl}
                 onChange={(e) =>
-                  setNewCert({ ...newCert, credentialUrl: e.target.value })
+                  setNewCert((prev) => ({ ...prev, credentialUrl: e.target.value }))
                 }
                 className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-600"
               />
@@ -279,24 +304,69 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
               </label>
               <RichTextEditor
                 value={newCert.description}
-                onChange={(content: string) => setNewCert({ ...newCert, description: content })}
+                onChange={(content: string) => setNewCert((prev) => ({ ...prev, description: content }))}
                 placeholder="Brief description..."
                 className="h-24 md:h-32"
               />
             </div>
             
-            {/* File Input */}
-            <div className="space-y-1.5">
-              <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase px-1">
-                Upload Certificate {editingId && "(Optional)"}
-              </label>
-              <input
-                type="file"
-                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf"
-                onChange={handleFileChange}
-                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm file:mr-3 md:file:mr-4 file:py-1 file:px-3 md:file:py-1.5 md:file:px-4 file:rounded-md md:file:rounded-lg file:border-0 file:text-[10px] md:file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer"
-                required={!editingId}
-              />
+            {/* File Inputs */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between px-1">
+                  <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase">
+                    Upload Cover Image (Optional)
+                  </label>
+                  {newCert.coverUrl && !selectedCoverFile && (
+                    <button
+                      type="button"
+                      onClick={() => setNewCert(prev => ({ ...prev, coverUrl: "" }))}
+                      className="text-[10px] md:text-xs text-red-400 hover:text-red-300 font-bold"
+                    >
+                      Remove Current
+                    </button>
+                  )}
+                </div>
+                {newCert.coverUrl && !selectedCoverFile && (
+                  <div className="text-xs text-green-400 px-1 mb-1">
+                    ✓ Cover image currently attached
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
+                  onChange={handleCoverFileChange}
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm file:mr-3 md:file:mr-4 file:py-1 file:px-3 md:file:py-1.5 md:file:px-4 file:rounded-md md:file:rounded-lg file:border-0 file:text-[10px] md:file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between px-1">
+                  <label className="block text-gray-400 text-[10px] md:text-xs font-bold uppercase">
+                    Upload Actual Document {newCert.fileUrl ? "(Optional)" : ""}
+                  </label>
+                  {newCert.fileUrl && !selectedFile && (
+                    <button
+                      type="button"
+                      onClick={() => setNewCert(prev => ({ ...prev, fileUrl: "" }))}
+                      className="text-[10px] md:text-xs text-red-400 hover:text-red-300 font-bold"
+                    >
+                      Remove Current
+                    </button>
+                  )}
+                </div>
+                {newCert.fileUrl && !selectedFile && (
+                  <div className="text-xs text-green-400 px-1 mb-1">
+                    ✓ Document currently attached
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.gif,.webp,.pdf"
+                  onChange={handleFileChange}
+                  className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm file:mr-3 md:file:mr-4 file:py-1 file:px-3 md:file:py-1.5 md:file:px-4 file:rounded-md md:file:rounded-lg file:border-0 file:text-[10px] md:file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer"
+                  required={!newCert.fileUrl}
+                />
+              </div>
             </div>
 
             <div className="flex gap-3 md:gap-4 pt-2">
@@ -337,27 +407,14 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
               key={cert._id}
               className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg md:rounded-xl border border-white/20 shadow-lg hover:bg-white/15 transition-all relative group"
             >
-              <div className="absolute top-3 right-3 md:top-4 md:right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1.5 md:gap-2">
-                <button
-                  onClick={() => handleEdit(cert)}
-                  className="bg-blue-500/80 text-white p-1.5 md:p-2 rounded-lg hover:bg-blue-600 transition-colors"
-                >
-                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => handleDelete(cert._id)}
-                  className="bg-red-500/80 text-white p-1.5 md:p-2 rounded-lg hover:bg-red-600 transition-colors"
-                >
-                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </button>
-              </div>
-
               <div className="h-32 md:h-40 bg-black/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center border border-white/5">
-                {cert.fileUrl && cert.fileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                {cert.coverUrl ? (
+                  <img
+                    src={getImageUrl(cert.coverUrl)}
+                    alt={cert.name}
+                    className="w-full h-full object-contain p-2"
+                  />
+                ) : cert.fileUrl && cert.fileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                   <img
                     src={getImageUrl(cert.fileUrl)}
                     alt={cert.name}
@@ -377,7 +434,22 @@ const CertificationsEdit = ({ initialData }: { initialData?: any[] }) => {
               <p className="text-gray-500 text-[10px] md:text-xs mb-2 md:mb-3 font-semibold">
                 {new Date(cert.date).toLocaleDateString()}
               </p>
-              <p className="text-gray-400 text-xs md:text-sm line-clamp-2 leading-relaxed">{cert.description}</p>
+              <p className="text-gray-400 text-xs md:text-sm line-clamp-2 leading-relaxed mb-4">{cert.description}</p>
+
+              <div className="flex gap-2 w-full mt-auto pt-2 border-t border-white/10 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => handleEdit(cert)}
+                  className="flex-1 bg-blue-500/20 text-blue-300 border border-blue-500/50 px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm hover:bg-blue-500/30 transition-all active:scale-95 font-bold text-center"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(cert._id)}
+                  className="flex-1 bg-red-500/20 text-red-300 border border-red-500/50 px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm hover:bg-red-500/30 transition-all active:scale-95 font-bold text-center"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

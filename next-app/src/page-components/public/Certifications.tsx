@@ -190,7 +190,13 @@ const Card = ({ cert, index, setIndex, openGallery }: any) => {
       <div className="w-full h-full bg-white/10 backdrop-blur-2xl rounded-2xl md:rounded-3xl border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col md:flex-row relative group">
         {/* Image Section */}
         <div className="relative h-40 md:h-full md:w-2/5 overflow-hidden bg-black/20 flex items-center justify-center p-6 md:p-8">
-          {cert.fileUrl && cert.fileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+          {cert.coverUrl ? (
+            <img
+              src={getImageUrl(cert.coverUrl)}
+              alt={cert.name}
+              className="w-full h-full object-contain drop-shadow-2xl"
+            />
+          ) : cert.fileUrl && cert.fileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
             <img
               src={getImageUrl(cert.fileUrl)}
               alt={cert.name}
