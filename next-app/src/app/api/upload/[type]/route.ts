@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAuth } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongoose';
-import File from '@/lib/models/File';
+import FileModel from '@/lib/models/File';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ type: string }> }) {
   const user = await verifyAuth(req);
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ typ
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        const savedFile = await (File as any).create({
+        const savedFile = await FileModel.create({
           filename: file.name,
           contentType: file.type,
           data: buffer,
