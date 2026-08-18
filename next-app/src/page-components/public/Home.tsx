@@ -352,12 +352,18 @@ const Home = ({
     return () => clearTimeout(timeout);
   }, [displayedText, isDeleting, currentRoleIndex, roles]);
 
-  const stats = (profile?.stats || [
-    { label: "Years Experience", value: "3+", icon: "💼" },
-    { label: "Projects Completed", value: "25+", icon: "🚀" },
-    { label: "Cloud Deployments", value: "50+", icon: "☁️" },
-    { label: "Certifications", value: "5+", icon: "📜" },
-  ]).map((stat: any) => 
+  const statsList = (profile?.stats && profile.stats.length > 0)
+    ? profile.stats
+    : ((profile?.animatedStats && profile.animatedStats.length > 0)
+      ? profile.animatedStats
+      : [
+          { label: "Years Experience", value: "3+", icon: "💼" },
+          { label: "Projects Completed", value: "25+", icon: "🚀" },
+          { label: "Cloud Deployments", value: "50+", icon: "☁️" },
+          { label: "Certifications", value: "5+", icon: "📜" },
+        ]);
+
+  const stats = statsList.map((stat: any) => 
     stat.label === "Years Experience" ? { ...stat, value: `${totalExperience}` } : stat
   );
 

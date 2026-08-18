@@ -279,109 +279,125 @@ const AboutEdit = ({ initialData }: { initialData?: any }) => {
               <svg className="w-4 h-4 md:w-5 md:h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              Animated Statistics
+              Statistics (Shared with Home & About Pages)
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
-              <div className="md:col-span-2 flex items-start gap-2.5 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs text-blue-300">
-                <span className="mt-0.5">ℹ️</span>
-                <span>Stats with labels containing <strong>"year"</strong> or <strong>"experience"</strong> are auto-calculated from your Experience database and cannot be edited here.</span>
-              </div>
-              {profile.animatedStats?.filter((stat: any) => {
-                const lbl = stat.label.toLowerCase();
-                return !lbl.includes("year") && !lbl.includes("experience");
-              }).map((stat: any, index: number) => {
-                const realIndex = profile.animatedStats.indexOf(stat);
-                return (
-                <div
-                  key={index}
-                  className="bg-black/40 p-4 md:p-5 rounded-xl border border-white/10 relative group/stat transition-all hover:border-purple-500/30"
-                >
-                  <button
-                    onClick={() => {
-                      const newStats = [...profile.animatedStats];
-                      newStats.splice(realIndex, 1);
-                      setProfile({ ...profile, animatedStats: newStats });
-                    }}
-                    className="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-100 md:opacity-0 group-hover/stat:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20 text-sm"
-                  >
-                    ×
-                  </button>
+            {(() => {
+              const defaultStats = [
+                { label: "Years Experience", value: "3+", icon: "💼" },
+                { label: "Projects Completed", value: "25+", icon: "🚀" },
+                { label: "Cloud Deployments", value: "50+", icon: "☁️" },
+                { label: "Certifications", value: "5+", icon: "📜" },
+              ];
+              const currentStatsList = (profile?.stats && profile.stats.length > 0)
+                ? profile.stats
+                : ((profile?.animatedStats && profile.animatedStats.length > 0) ? profile.animatedStats : defaultStats);
 
-                  <div className="grid grid-cols-4 gap-3 md:gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1 block text-center">Icon</label>
-                      <input
-                        type="text"
-                        value={stat.icon}
-                        onChange={(e) => {
-                          const newStats = [...profile.animatedStats];
-                          newStats[realIndex].icon = e.target.value;
-                          setProfile({ ...profile, animatedStats: newStats });
-                        }}
-                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-lg md:text-xl text-center outline-none focus:border-purple-500/50"
-                        placeholder="📊"
-                      />
+              return (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                    <div className="md:col-span-2 flex items-start gap-2.5 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs text-blue-300">
+                      <span className="mt-0.5">ℹ️</span>
+                      <span>Stats with labels containing <strong>"year"</strong> or <strong>"experience"</strong> are auto-calculated from your Experience database on the website.</span>
                     </div>
-                    <div className="col-span-2 space-y-1.5">
-                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Label</label>
-                      <input
-                        type="text"
-                        value={stat.label}
-                        onChange={(e) => {
-                          const newStats = [...profile.animatedStats];
-                          newStats[realIndex].label = e.target.value;
-                          setProfile({ ...profile, animatedStats: newStats });
-                        }}
-                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm outline-none focus:border-purple-500/50"
-                        placeholder="e.g., Code Commits"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Value</label>
-                      <input
-                        type="number"
-                        value={stat.value}
-                        onChange={(e) => {
-                          const newStats = [...profile.animatedStats];
-                          newStats[realIndex].value = parseInt(e.target.value) || 0;
-                          setProfile({ ...profile, animatedStats: newStats });
-                        }}
-                        className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm text-center outline-none focus:border-purple-500/50"
-                        placeholder="0"
-                      />
-                    </div>
+                    {currentStatsList.map((stat: any, index: number) => {
+                      const realIndex = index;
+                      return (
+                        <div
+                          key={index}
+                          className="bg-black/40 p-4 md:p-5 rounded-xl border border-white/10 relative group/stat transition-all hover:border-purple-500/30"
+                        >
+                          <button
+                            onClick={() => {
+                              const newStats = [...currentStatsList];
+                              newStats.splice(realIndex, 1);
+                              setProfile({ ...profile, stats: newStats, animatedStats: newStats });
+                            }}
+                            className="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-100 md:opacity-0 group-hover/stat:opacity-100 transition-all hover:bg-red-500 hover:text-white border border-red-500/20 text-sm"
+                            title="Delete Stat"
+                          >
+                            ×
+                          </button>
+
+                          <div className="grid grid-cols-4 gap-3 md:gap-4">
+                            <div className="space-y-1.5">
+                              <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1 block text-center">Icon</label>
+                              <input
+                                type="text"
+                                value={stat.icon || ""}
+                                onChange={(e) => {
+                                  const newStats = [...currentStatsList];
+                                  newStats[realIndex] = { ...newStats[realIndex], icon: e.target.value };
+                                  setProfile({ ...profile, stats: newStats, animatedStats: newStats });
+                                }}
+                                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-lg md:text-xl text-center outline-none focus:border-purple-500/50"
+                                placeholder="📊"
+                              />
+                            </div>
+                            <div className="col-span-2 space-y-1.5">
+                              <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Label</label>
+                              <input
+                                type="text"
+                                value={stat.label || ""}
+                                onChange={(e) => {
+                                  const newStats = [...currentStatsList];
+                                  newStats[realIndex] = { ...newStats[realIndex], label: e.target.value };
+                                  setProfile({ ...profile, stats: newStats, animatedStats: newStats });
+                                }}
+                                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm outline-none focus:border-purple-500/50"
+                                placeholder="e.g., Code Commits"
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <label className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase px-1">Value</label>
+                              <input
+                                type="text"
+                                value={stat.value ?? ""}
+                                onChange={(e) => {
+                                  const newStats = [...currentStatsList];
+                                  newStats[realIndex] = { ...newStats[realIndex], value: e.target.value };
+                                  setProfile({ ...profile, stats: newStats, animatedStats: newStats });
+                                }}
+                                className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-black/40 border border-white/10 text-white text-xs md:text-sm text-center outline-none focus:border-purple-500/50"
+                                placeholder="0+"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                </div>
-                );
-              })}
-            </div>
 
-            <div className="flex gap-3 md:gap-4">
-              <button
-                onClick={() =>
-                  setProfile({
-                    ...profile,
-                    animatedStats: [
-                      ...(profile.animatedStats || []),
-                      { label: "New Statistic", value: 0, icon: "🔥" },
-                    ],
-                  })
-                }
-                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2 text-sm"
-              >
-                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Add Stat
-              </button>
-              <button
-                onClick={() => handleSave("Animated Stats")}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 text-sm"
-              >
-                Save All Stats
-              </button>
-            </div>
+                  <div className="flex gap-3 md:gap-4">
+                    <button
+                      onClick={() => {
+                        const newStats = [
+                          ...currentStatsList,
+                          { label: "New Statistic", value: "0+", icon: "🔥" },
+                        ];
+                        setProfile({
+                          ...profile,
+                          stats: newStats,
+                          animatedStats: newStats,
+                        });
+                      }}
+                      className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2 text-sm"
+                    >
+                      <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Add Stat
+                    </button>
+                    <button
+                      onClick={() => handleSave("Animated Stats")}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/20 flex items-center justify-center gap-2 text-sm"
+                    >
+                      Save All Stats
+                    </button>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       </div>

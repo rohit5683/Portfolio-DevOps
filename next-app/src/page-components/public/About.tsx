@@ -5,6 +5,19 @@ import Tilt from "react-parallax-tilt";
 import Skeleton from "../../components/common/Skeleton";
 import RichText from "../../components/common/RichText";
 
+const defaultStatsList = [
+  { label: "Years Experience", value: "3+", icon: "💼" },
+  { label: "Projects Completed", value: "25+", icon: "🚀" },
+  { label: "Cloud Deployments", value: "50+", icon: "☁️" },
+  { label: "Certifications", value: "5+", icon: "📜" },
+];
+
+const getProfileStatsList = (prof: any) => {
+  if (prof?.stats && prof.stats.length > 0) return prof.stats;
+  if (prof?.animatedStats && prof.animatedStats.length > 0) return prof.animatedStats;
+  return defaultStatsList;
+};
+
 const About = ({ initialProfile, initialExperience }: { initialProfile?: any; initialExperience?: any[] }) => {
   const [profile, setProfile] = useState<any>(() => {
     if (initialProfile && initialExperience && initialExperience.length > 0) {
@@ -14,15 +27,14 @@ const About = ({ initialProfile, initialExperience }: { initialProfile?: any; in
       const years = (Date.now() - earliest.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
       const computed = years < 1 ? "< 1" : `${parseFloat(years.toFixed(1))}`;
       
-      if (profileData.animatedStats) {
-        profileData.animatedStats = profileData.animatedStats.map((stat: any) => {
-          const lbl = stat.label.toLowerCase();
-          if (lbl.includes("year") || lbl.includes("experience")) {
-            return { ...stat, displayValue: computed };
-          }
-          return stat;
-        });
-      }
+      const statsList = getProfileStatsList(profileData);
+      profileData.stats = statsList.map((stat: any) => {
+        const lbl = stat.label.toLowerCase();
+        if (lbl.includes("year") || lbl.includes("experience")) {
+          return { ...stat, displayValue: computed };
+        }
+        return stat;
+      });
       return profileData;
     }
     return initialProfile;
@@ -42,15 +54,14 @@ const About = ({ initialProfile, initialExperience }: { initialProfile?: any; in
           const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
           const years = (Date.now() - earliest.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
           const computed = years < 1 ? "< 1" : `${parseFloat(years.toFixed(1))}`;
-          if (profileData.animatedStats) {
-            profileData.animatedStats = profileData.animatedStats.map((stat: any) => {
-              const lbl = stat.label.toLowerCase();
-              if (lbl.includes("year") || lbl.includes("experience")) {
-                return { ...stat, displayValue: computed };
-              }
-              return stat;
-            });
-          }
+          const statsList = getProfileStatsList(profileData);
+          profileData.stats = statsList.map((stat: any) => {
+            const lbl = stat.label.toLowerCase();
+            if (lbl.includes("year") || lbl.includes("experience")) {
+              return { ...stat, displayValue: computed };
+            }
+            return stat;
+          });
         }
         setProfile(profileData);
         setLoading(false);
@@ -63,7 +74,8 @@ const About = ({ initialProfile, initialExperience }: { initialProfile?: any; in
 
   // Animated counter effect
   useEffect(() => {
-    if (!loading && profile?.animatedStats) {
+    const statsList = getProfileStatsList(profile);
+    if (!loading && statsList && statsList.length > 0) {
       const duration = 2000;
       const steps = 60;
       const increment = duration / steps;
@@ -74,14 +86,19 @@ const About = ({ initialProfile, initialExperience }: { initialProfile?: any; in
         const progress = currentStep / steps;
 
         const newStats: any = {};
-        profile.animatedStats.forEach((stat: any) => {
-          newStats[stat.label] = Math.floor(stat.value * progress);
+        statsList.forEach((stat: any) => {
+          const numVal = typeof stat.value === "number"
+            ? stat.value
+            : (parseInt(String(stat.value).replace(/\D/g, "")) || 0);
+          const hasPlus = String(stat.value).includes("+");
+          const count = Math.floor(numVal * progress);
+          newStats[stat.label] = hasPlus ? `${count}+` : count;
         });
         setStats(newStats);
 
         if (currentStep >= steps) {
           const finalStats: any = {};
-          profile.animatedStats.forEach((stat: any) => {
+          statsList.forEach((stat: any) => {
             finalStats[stat.label] = stat.value;
           });
           setStats(finalStats);
@@ -341,28 +358,41 @@ const About = ({ initialProfile, initialExperience }: { initialProfile?: any; in
                   Statistics
                 </h3>
                 <div className="space-y-5">
-                  {profile?.animatedStats?.map((stat: any, index: number) => (
-                    <div key={index}>
-                      <div className="flex justify-between items-center mb-1.5 md:mb-2">
-                        <span className="text-gray-300 text-xs md:text-sm font-medium">
-                          {stat.label}
-                        </span>
-                        <span className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                          {stat.displayValue ?? `${stats[stat.label] || 0}+`}
-                        </span>
-                      </div>
-                      <div className="h-2 md:h-2.5 bg-white/10 rounded-full overflow-hidden relative">
-                        <div
-                          className={`h-full rounded-full transition-all duration-2000 relative overflow-hidden ${getProgressGradient(index)}`}
-                          style={{
-                            width: `${Math.min(((stats[stat.label] || 0) / stat.value) * 100, 100)}%`,
-                          }}
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                  {getProfileStatsList(profile).map((stat: any, index: number) => {
+                    const targetNum = typeof stat.value === "number"
+                      ? stat.value
+                      : (parseInt(String(stat.value).replace(/\D/g, "")) || 100);
+                    const rawVal = stats[stat.label];
+                    const currentNum = typeof rawVal === "number"
+                      ? rawVal
+                      : (parseInt(String(rawVal).replace(/\D/g, "")) || targetNum);
+                    const percentage = targetNum > 0 ? Math.min((currentNum / targetNum) * 100, 100) : 100;
+                    const displayStr = stat.displayValue ?? (rawVal !== undefined ? (typeof rawVal === "string" ? rawVal : `${rawVal}+`) : stat.value);
+
+                    return (
+                      <div key={index}>
+                        <div className="flex justify-between items-center mb-1.5 md:mb-2">
+                          <span className="text-gray-300 text-xs md:text-sm font-medium flex items-center gap-2">
+                            {stat.icon && <span>{stat.icon}</span>}
+                            {stat.label}
+                          </span>
+                          <span className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                            {displayStr}
+                          </span>
+                        </div>
+                        <div className="h-2 md:h-2.5 bg-white/10 rounded-full overflow-hidden relative">
+                          <div
+                            className={`h-full rounded-full transition-all duration-2000 relative overflow-hidden ${getProgressGradient(index)}`}
+                            style={{
+                              width: `${percentage}%`,
+                            }}
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </Tilt>

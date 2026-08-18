@@ -11,11 +11,13 @@ export async function GET() {
   return NextResponse.json(profile || {});
 }
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   const user = await verifyAuth(req);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   await connectDB();
   const body = await req.json();
-  const profile = await Profile.create(body);
+  const { _id, ...updateData } = body;
+  const profile = await Profile.findOneAndUpdate({}, updateData, { new: true, upsert: true, setDefaultsOnInsert: true });
   return NextResponse.json(profile);
 }
+
